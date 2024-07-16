@@ -17,18 +17,20 @@ public class DownloadTask extends Thread {
             int totalDownloadTime = 1000 * (random.nextInt(10) + 1);
             int sleepInterval = totalDownloadTime / totalProgressUpdates;
 
-            System.out.println("Fazendo Download: " + fileName + ": ");
+            System.out.println("Fazendo Download: " + fileName);
 
-            for (int i = 1; i <= totalProgressUpdates; i++) {
+            int progress = 0;
+            while (progress <= 100) {
                 Thread.sleep(sleepInterval);
-                int percentCompleted = i * 10;
-                // System.out.print(percentCompleted + "% "); FIXME!
+                String progressBar = "=".repeat(progress / 10) + " ".repeat(10 - progress / 10);
+                System.out.print("\r" + progress + "% [" + progressBar + "]");
+                progress += 10;
             }
-
-            System.out.println("Download concluido: " + fileName);
+            System.out.println("\nDownload concluído: " + fileName);
 
         } catch (InterruptedException e) {
-            System.err.println("Download interropido: " + fileName + "Erro: " + e.getMessage());
+            System.err.println("Download interrompido: " + fileName + " Erro: " + e.getMessage());
         }
     }
+
 }
