@@ -1,3 +1,4 @@
+/*
 package oop.assignments.rpg.service;
 
 import assignments.rpg.domain.Character;
@@ -127,3 +128,4 @@ public class Battle {
         System.out.println("\nBatalha finalizada!");
     }
 }
+*/

@@ -1,6 +1,6 @@
 # RPG Combat System
 
-# Run App
+# Run Main
 - [Game](https://github.com/thealexcesar/T-Academy/blob/main/OOP/src/assignments/rpg/app/Game.java)
 
 ## JUnit Test

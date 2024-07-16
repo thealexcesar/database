@@ -1,3 +1,4 @@
+/*
 package oop.assignments.rpg.domain;
 
 public class BurnEffect extends Effect {
@@ -16,4 +17,4 @@ public class BurnEffect extends Effect {
             reduceDuration();
         }
     }
-}
+}*/

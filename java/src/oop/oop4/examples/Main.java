@@ -1,7 +1,7 @@
 package oop.oop4.examples;
 
-import oop4.examples.interfaces.GuitarPlayer;
-import oop4.examples.interfaces.Singer;
+import oop.oop4.examples.interfaces.GuitarPlayer;
+import oop.oop4.examples.interfaces.Singer;
 
 public class Main {
     public static void main(String[] args) {
