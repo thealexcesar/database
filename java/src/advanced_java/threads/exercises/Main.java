@@ -1,6 +1,4 @@
-package advanced_java.learn_threads.exercises;
-
-import advanced_java.learn_threads.exercises.DownloadTask;
+package advanced_java.threads.exercises;
 
 public class Main {
     public static void main(String[] args) {

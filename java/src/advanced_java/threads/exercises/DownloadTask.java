@@ -1,4 +1,4 @@
-package advanced_java.learn_threads.exercises;
+package advanced_java.threads.exercises;
 
 import java.util.Random;
 
