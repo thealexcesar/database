@@ -1,12 +1,12 @@
 package advanced_java.generics.exercises.superhero.domain.model;
 
 import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.HashMap;
 
 public enum Weakness {
     FIRE, WATER, ICE, ELECTRICITY, MAGIC, NONE;
 
-    private static final Map<Weakness, String> weakness = new WeakHashMap<>();
+    private static final Map<Weakness, String> weakness = new HashMap<>();
 
     static {
         weakness.put(FIRE, "Fogo");
