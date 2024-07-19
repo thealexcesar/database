@@ -11,13 +11,8 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         String currentDir = System.getProperty("user.dir");
-        System.out.println("Current working directory: " + currentDir);
-
         String textFilePath = currentDir + "/java/assets/textfile.txt";
         String csvFilePath = currentDir + "/java/assets/csvfile.csv";
-
-        System.out.println("Text file path: " + textFilePath);
-        System.out.println("CSV file path: " + csvFilePath);
 
         try {
             DataProcessor<TextData> textDataProcessor = new TextDataProcessor();
@@ -28,7 +23,7 @@ public class App {
             List<CsvData> csvData = csvDataProcessor.process(csvFilePath);
             csvDataProcessor.analyze(csvData);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("ERRO: "+e.getMessage());
         }
     }
 }

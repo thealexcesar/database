@@ -21,7 +21,7 @@ public class TextDataProcessor implements DataProcessor<TextData> {
 
     @Override
     public void analyze(List<TextData> data) {
-        System.out.println("Analisando dados de texto:\n-----------------------------------------------");
+        System.out.println("\nAnalisando dados de texto:\n-----------------------------------------------");
         data.forEach(System.out::println);
     }
 }

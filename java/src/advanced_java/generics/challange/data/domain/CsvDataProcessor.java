@@ -22,7 +22,7 @@ public class CsvDataProcessor implements DataProcessor<CsvData> {
 
     @Override
     public void analyze(List<CsvData> data) {
-        System.out.println("Analisando dados do CSV:\n-----------------------------------------------");
+        System.out.println("\nAnalisando dados do CSV:\n-----------------------------------------------");
         data.forEach(System.out::println);
     }
 }
