@@ -42,30 +42,6 @@ public class Account {
         return id;
     }
 
-    public double getBalance() {
-        return balance;
-    }
-
-    public AccountType getAccountType() {
-        return accountType;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public String getAgency() {
-        return agency;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
     private String generateAccountNumber() {
         StringBuilder accountNumberBuilder = new StringBuilder();
         for (int i = 0; i < 8; i++)  accountNumberBuilder.append((int)(Math.random() * 10));
