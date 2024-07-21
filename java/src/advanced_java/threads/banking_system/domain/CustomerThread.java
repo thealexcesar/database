@@ -1,4 +1,4 @@
-package advanced_java.threads.banking_system;
+package advanced_java.threads.banking_system.domain;
 
 public class CustomerThread extends Thread {
     private final Bank bank;
@@ -23,7 +23,8 @@ public class CustomerThread extends Thread {
                 account.withdraw(amount);
             }
         } catch (InsufficientFundsException e) {
-            System.err.println("Erro na transação para a conta " + accountId + ": " + e.getMessage());
+            String transaction = deposit ? "depósito" : "saque";
+            System.err.println("Erro na transação de "+ transaction +" para a conta " + accountId + ": " + e.getMessage());
         }
     }
 }

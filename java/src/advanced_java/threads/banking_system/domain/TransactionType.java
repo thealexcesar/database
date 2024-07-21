@@ -1,4 +1,4 @@
-package advanced_java.threads.banking_system;
+package advanced_java.threads.banking_system.domain;
 
 import java.util.HashMap;
 import java.util.Map;

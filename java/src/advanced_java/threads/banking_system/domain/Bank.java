@@ -1,7 +1,8 @@
-package advanced_java.threads.banking_system;
+package advanced_java.threads.banking_system.domain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
 
 public class Bank {
     private final Map<Integer, Account> accounts;
@@ -18,5 +19,9 @@ public class Bank {
 
     public Account getAccount(int accountId) {
         return accounts.get(accountId);
+    }
+
+    public Collection<Account> getAccounts() {
+        return accounts.values();
     }
 }

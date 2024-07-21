@@ -1,57 +1,64 @@
 package advanced_java.threads.banking_system;
 
+import advanced_java.threads.banking_system.domain.Bank;
+import advanced_java.threads.banking_system.infrastructure.logs.ParallelLogProcessor;
+import advanced_java.threads.banking_system.service.BankService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
+
 public class Main {
     public static void main(String[] args) {
         Bank bank = new Bank();
-        Owner owner1 = new Owner("Alan Turing");
-        Owner owner2 = new Owner("John Von Neumann");
-        Owner owner3 = new Owner("James Gosling");
+        BankService bankService = new BankService(bank);
 
-        int account1 = bank.addAccount(owner1, AccountType.CHECKING);
-        int account2 = bank.addAccount(owner2, AccountType.SAVINGS);
-        int account3 = bank.addAccount(owner3, AccountType.BUSINESS);
+        bankService.createAccounts();
 
-        Thread t1 = new CustomerThread(bank, account1, true, 100.0);
-        Thread t2 = new CustomerThread(bank, account1, false, 50.0);
-        Thread t3 = new CustomerThread(bank, account1, true, 300.0);
-        Thread t4 = new CustomerThread(bank, account1, false, 150.0);
-        Thread t5 = new CustomerThread(bank, account1, true, 200.0);
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("\u001B[34m\nEscolha uma opção: \u001B[0m");
+            System.out.println("[1] Visualizar transações");
+            System.out.println("[2] Processar arquivos de log para contar ocorrências de uma palavra");
+            System.out.println("[3] Sair");
+            int choice = getValidChoice(scanner);
 
-        Thread t6 = new CustomerThread(bank, account2, true, 500.0);
-        Thread t7 = new CustomerThread(bank, account2, false, 200.0);
-        Thread t8 = new CustomerThread(bank, account2, true, 400.0);
-
-        Thread t9 = new CustomerThread(bank, account3, true, 1000.0);
-        Thread t10 = new CustomerThread(bank, account3, false, 500.0);
-
-        t1.start();
-        t2.start();
-        t3.start();
-        t4.start();
-        t5.start();
-        t6.start();
-        t7.start();
-        t8.start();
-        t9.start();
-        t10.start();
-
-        try {
-            t1.join(100);
-            t2.join(200);
-            t3.join(200);
-            t4.join(100);
-            t5.join(3);
-            t6.join();
-            t7.join();
-            t8.join();
-            t9.join();
-            t10.join();
-        } catch (InterruptedException e) {
-            System.err.println("Main thread interrupted"+e.getMessage());
+            switch (choice) {
+                case 1 -> bankService.showTransactions();
+                case 2 -> {
+                    System.out.print("Digite a palavra a ser contada nos logs: ");
+                    processLogs(scanner.nextLine());
+                }
+                case 3 -> {
+                    System.out.println("Saindo...");
+                    System.exit(0);
+                }
+                default -> System.out.println("Opção inválida.");
+            }
         }
+    }
 
-        System.out.println(bank.getAccount(account1));
-        System.out.println(bank.getAccount(account2));
-        System.out.println(bank.getAccount(account3));
+    private static int getValidChoice(Scanner scanner) {
+        int choice = -1;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Entrada inválida. Por favor, insira um número.");
+        }
+        return choice;
+    }
+
+    private static void processLogs(String wordToCount) {
+        List<String> filePaths = new ArrayList<>();
+        filePaths.add("./transactions.csv");
+
+        ParallelLogProcessor parallelLogProcessor = new ParallelLogProcessor(4);
+        try {
+            int totalOccurrences = parallelLogProcessor.processLogs(filePaths, wordToCount);
+            System.out.println("Total ocorrências da palavra '" + wordToCount + "': " + totalOccurrences);
+        } catch (InterruptedException | ExecutionException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
