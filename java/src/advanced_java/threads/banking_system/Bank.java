@@ -4,18 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Bank {
-    private Map<Integer, Account> accounts;
+    private final Map<Integer, Account> accounts;
 
     public Bank() {
         this.accounts = new HashMap<>();
     }
 
-    public synchronized void addAccount(AccountType accountType) {
-        Account newAccount = new Account(accountType);
+    public synchronized int addAccount(Owner owner, AccountType accountType) {
+        Account newAccount = new Account(owner, accountType);
         accounts.put(newAccount.getId(), newAccount);
+        return newAccount.getId();
     }
 
-    public Map<Integer, Account> getAccounts() {
-        return accounts;
+    public Account getAccount(int accountId) {
+        return accounts.get(accountId);
     }
 }
