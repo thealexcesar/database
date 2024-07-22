@@ -1,6 +1,6 @@
 package advanced_java.netflix.repository;
 
-import advanced_java.netflix.domain.Genre;
+import advanced_java.netflix.domain.GenreType;
 import advanced_java.netflix.domain.Movie;
 
 import java.io.*;
@@ -43,7 +43,7 @@ public class MoviesRepository implements Repository<Movie> {
                 if (parts.length == 5 && "Movie".equalsIgnoreCase(parts[0])) {
                     try {
                         LocalDate releaseDate = LocalDate.parse(parts[4], DATE_FORMATTER);
-                        Movie movie = new Movie(parts[1], Genre.valueOf(parts[2]), releaseDate);
+                        Movie movie = new Movie(parts[1], GenreType.valueOf(parts[2]), releaseDate);
                         movies.add(movie);
                     } catch (DateTimeParseException e) {
                         System.err.println("Erro ao analisar a data: " + parts[4] + " - " + e.getMessage());
@@ -73,16 +73,17 @@ public class MoviesRepository implements Repository<Movie> {
     }
 
     private void loadSampleData() {
-        movies.add(new Movie("Action Movie 1", Genre.ACTION, LocalDate.of(2021, 1, 1)));
-        movies.add(new Movie("Action Movie 2", Genre.ACTION, LocalDate.of(2022, 5, 10)));
-        movies.add(new Movie("Comedy Movie 1", Genre.COMEDY, LocalDate.of(2020, 3, 20)));
-        movies.add(new Movie("Drama Movie 1", Genre.DRAMA, LocalDate.of(2019, 8, 15)));
-        movies.add(new Movie("Horror Movie 1", Genre.HORROR, LocalDate.of(2018, 10, 31)));
-        movies.add(new Movie("Romance Movie 1", Genre.ROMANCE, LocalDate.of(2020, 2, 14)));
-        movies.add(new Movie("Sci-Fi Movie 1", Genre.SCIFI, LocalDate.of(2021, 12, 25)));
-        movies.add(new Movie("Documentary Movie 1", Genre.DOCUMENTARY, LocalDate.of(2019, 11, 20)));
-        movies.add(new Movie("Thriller Movie 1", Genre.THRILLER, LocalDate.of(2020, 7, 4)));
-        movies.add(new Movie("Animation Movie 1", Genre.ANIMATION, LocalDate.of(2021, 4, 1)));
+        movies.add(new Movie("Spider-Man: No Way Home", GenreType.ACTION, LocalDate.of(2021, 12, 17)));
+        movies.add(new Movie("The Batman", GenreType.ACTION, LocalDate.of(2022, 3, 4)));
+        movies.add(new Movie("Dune", GenreType.SCI_FI, LocalDate.of(2021, 10, 22)));
+        movies.add(new Movie("The French Dispatch", GenreType.DRAMA, LocalDate.of(2021, 10, 22)));
+        movies.add(new Movie("No Time to Die", GenreType.ACTION, LocalDate.of(2021, 10, 8)));
+        movies.add(new Movie("The Green Knight", GenreType.FANTASY, LocalDate.of(2021, 7, 30)));
+        movies.add(new Movie("Jungle Cruise", GenreType.ACTION, LocalDate.of(2021, 7, 30)));
+        movies.add(new Movie("Black Widow", GenreType.ACTION, LocalDate.of(2021, 7, 9)));
+        movies.add(new Movie("Cruella", GenreType.DRAMA, LocalDate.of(2021, 5, 28)));
+        movies.add(new Movie("Soul", GenreType.ANIMATION, LocalDate.of(2020, 12, 25)));
+        movies.add(new Movie("Luca", GenreType.ANIMATION, LocalDate.of(2021, 6, 18)));
         saveToFile();
     }
 }

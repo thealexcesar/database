@@ -1,6 +1,6 @@
 package advanced_java.netflix.repository;
 
-import advanced_java.netflix.domain.Genre;
+import advanced_java.netflix.domain.GenreType;
 import advanced_java.netflix.domain.Series;
 
 import java.io.*;
@@ -43,7 +43,7 @@ public class SeriesRepository implements Repository<Series> {
                 if (parts.length == 5 && "Series".equalsIgnoreCase(parts[0])) {
                     try {
                         LocalDate releaseDate = LocalDate.parse(parts[4], DATE_FORMATTER);
-                        Series serie = new Series(parts[1], Genre.valueOf(parts[2]), releaseDate);
+                        Series serie = new Series(parts[1], GenreType.valueOf(parts[2]), releaseDate);
                         series.add(serie);
                     } catch (DateTimeParseException e) {
                         System.err.println("Erro ao analisar a data: " + parts[4] + " - " + e.getMessage());
@@ -73,15 +73,21 @@ public class SeriesRepository implements Repository<Series> {
     }
 
     private void loadSampleData() {
-        series.add(new Series("Action Series 1", Genre.ACTION, LocalDate.of(2021, 1, 1)));
-        series.add(new Series("Drama Series 1", Genre.DRAMA, LocalDate.of(2022, 2, 2)));
-        series.add(new Series("Comedy Series 1", Genre.COMEDY, LocalDate.of(2020, 6, 15)));
-        series.add(new Series("Horror Series 1", Genre.HORROR, LocalDate.of(2019, 9, 30)));
-        series.add(new Series("Romance Series 1", Genre.ROMANCE, LocalDate.of(2018, 5, 20)));
-        series.add(new Series("Sci-Fi Series 1", Genre.SCIFI, LocalDate.of(2021, 3, 10)));
-        series.add(new Series("Documentary Series 1", Genre.DOCUMENTARY, LocalDate.of(2020, 12, 1)));
-        series.add(new Series("Thriller Series 1", Genre.THRILLER, LocalDate.of(2019, 11, 5)));
-        series.add(new Series("Animation Series 1", Genre.ANIMATION, LocalDate.of(2021, 7, 12)));
+        series.add(new Series("Stranger Things", GenreType.SCI_FI, LocalDate.of(2023, 7, 1)));
+        series.add(new Series("The Witcher", GenreType.FANTASY, LocalDate.of(2023, 6, 29)));
+        series.add(new Series("The Mandalorian", GenreType.ACTION, LocalDate.of(2023, 5, 4)));
+        series.add(new Series("Breaking Bad", GenreType.DRAMA, LocalDate.of(2023, 4, 1)));
+        series.add(new Series("The Crown", GenreType.DRAMA, LocalDate.of(2023, 3, 15)));
+        series.add(new Series("Black Mirror", GenreType.THRILLER, LocalDate.of(2023, 8, 17)));
+        series.add(new Series("Friends", GenreType.COMEDY, LocalDate.of(2023, 5, 1)));
+        series.add(new Series("The Haunting of Hill House", GenreType.HORROR, LocalDate.of(2023, 10, 12)));
+        series.add(new Series("Rick and Morty", GenreType.ANIMATION, LocalDate.of(2023, 7, 12)));
+        series.add(new Series("The Simpsons", GenreType.ANIMATION, LocalDate.of(2023, 7, 1)));
+        series.add(new Series("See", GenreType.ACTION, LocalDate.of(2023, 6, 1)));
+        series.add(new Series("The Walking Dead", GenreType.HORROR, LocalDate.of(2023, 5, 15)));
+        series.add(new Series("Young Sheldon", GenreType.COMEDY, LocalDate.of(2023, 7, 8)));
+        series.add(new Series("The Expanse", GenreType.SCI_FI, LocalDate.of(2023, 6, 15)));
+        series.add(new Series("Westworld", GenreType.SCI_FI, LocalDate.of(2023, 8, 5)));
         saveToFile();
     }
 }

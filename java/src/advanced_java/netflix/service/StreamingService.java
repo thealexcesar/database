@@ -1,8 +1,8 @@
 package advanced_java.netflix.service;
 
 import advanced_java.netflix.domain.Content;
-import advanced_java.netflix.domain.Genre;
-import advanced_java.netflix.domain.Category;
+import advanced_java.netflix.domain.GenreType;
+import advanced_java.netflix.domain.CategoryType;
 import advanced_java.netflix.repository.MoviesRepository;
 import advanced_java.netflix.repository.SeriesRepository;
 
@@ -30,7 +30,7 @@ public class StreamingService {
         return movies;
     }
 
-    public List<Content> searchByGenre(Genre genre) {
+    public List<Content> searchByGenre(GenreType genre) {
         List<Content> movies = movieRepository.findAll().stream()
                 .filter(movie -> movie.getGenre() == genre)
                 .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class StreamingService {
         return movies;
     }
 
-    public List<Content> searchByCategory(Category category) {
+    public List<Content> searchByCategory(CategoryType category) {
         List<Content> movies = movieRepository.findAll().stream()
                 .filter(movie -> movie.getCategory() == category)
                 .collect(Collectors.toList());

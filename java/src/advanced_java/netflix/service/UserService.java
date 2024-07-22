@@ -37,6 +37,10 @@ public class UserService {
         return userRepository.authenticate(username, password);
     }
 
+    public boolean userExists(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
+
     public void changePlan(User user, SubscriptionPlan newPlan) {
         user.setPlan(newPlan);
         userRepository.save(user);

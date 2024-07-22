@@ -1,7 +1,7 @@
 package advanced_java.netflix.repository;
 
 import advanced_java.netflix.domain.Content;
-import advanced_java.netflix.domain.Genre;
+import advanced_java.netflix.domain.GenreType;
 import advanced_java.netflix.domain.Movie;
 import advanced_java.netflix.domain.Series;
 import advanced_java.netflix.domain.User;
@@ -37,9 +37,9 @@ public class FavoritesRepository {
 
                     Content content;
                     if (category.equalsIgnoreCase("MOVIE")) {
-                        content = new Movie(title, Genre.valueOf(genre), releaseDate);
+                        content = new Movie(title, GenreType.valueOf(genre), releaseDate);
                     } else {
-                        content = new Series(title, Genre.valueOf(genre), releaseDate);
+                        content = new Series(title, GenreType.valueOf(genre), releaseDate);
                     }
                     favorites.add(content);
                 }

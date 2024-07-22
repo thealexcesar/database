@@ -1,4 +1,4 @@
-package advanced_java.netflix.ui;
+package advanced_java.netflix.ui.utils;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

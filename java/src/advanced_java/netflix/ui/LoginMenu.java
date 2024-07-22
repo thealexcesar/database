@@ -3,74 +3,78 @@ package advanced_java.netflix.ui;
 import advanced_java.netflix.domain.SubscriptionPlan;
 import advanced_java.netflix.domain.User;
 import advanced_java.netflix.service.UserService;
-
-import java.util.Scanner;
+import advanced_java.netflix.ui.utils.ConsoleUtils;
+import advanced_java.netflix.ui.utils.Constants;
+import advanced_java.netflix.ui.utils.PrintMsg;
+import advanced_java.netflix.ui.utils.LoadSpinning;
 
 public class LoginMenu {
-    private UserService userService;
+    private final UserService userService;
+    private static final long LOADING_TIME = 2000;
 
     public LoginMenu(UserService userService) {
         this.userService = userService;
     }
 
     public void displayMenu() {
-        Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("**************************************************");
-            System.out.println("* Bem-vindo ao Login do Netflix de Console!      *");
-            System.out.println("**************************************************");
-            System.out.println("* 1. Login                                      *");
-            System.out.println("* 2. Registrar                                  *");
-            System.out.println("**************************************************");
+            System.out.println(Constants.HR + "\n| Bem-vindo ao Login do Netflix de T-Academy!  |" + Constants.HR);
+            System.out.println("| 1. Login"+" ".repeat(37)+"|\n| 2. Registrar"+" ".repeat(33)+"|"+ Constants.HR);
             int choice = ConsoleUtils.readInt("Escolha uma opção: ");
 
             switch (choice) {
                 case 1 -> login();
                 case 2 -> register();
-                default -> System.out.println("Escolha inválida. Tente novamente.");
+                default -> System.out.println(Constants.INVALID_CHOICE_TRY_AGAIN);
             }
         }
     }
 
     private void login() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Digite seu nome de usuário: ");
-        String username = scanner.nextLine();
+        String username = Constants.input.nextLine();
         System.out.println("Digite sua senha: ");
-        String password = scanner.nextLine();
+        String password = Constants.input.nextLine();
 
-        LoadingAnimation loadingAnimation = new LoadingAnimation();
-        Thread loadingThread = new Thread(loadingAnimation);
-        loadingThread.start();
+        startLoadingAnimation();
 
         boolean authenticated = userService.authenticate(username, password);
 
-        loadingAnimation.stop();
+        if (!authenticated) {
+            PrintMsg.tryAgain("Login ou senha inválidos!");
+            return;
+        }
+        System.out.println("\nLogin bem-sucedido. Bem-vindo, " + username + "!");
+        User user = userService.findByUsername(username);
+        new MainMenu(userService, user).displayMenu();
+    }
+
+    private void register() {
+        System.out.println("Digite seu nome de usuário: ");
+        String username = Constants.input.nextLine();
+        System.out.println("Digite sua senha: ");
+        String password = Constants.input.nextLine();
+
+        if (userService.userExists(username)) {
+            System.out.println("Nome de usuário já está em uso. Tente novamente.");
+            return;
+        }
+
+        User newUser = new User(username, password, SubscriptionPlan.PREMIUM);
+        userService.save(newUser);
+        System.out.println("Registro bem-sucedido. Bem-vindo, " + username + "!");
+        new MainMenu(userService, newUser).displayMenu();
+    }
+
+    private void startLoadingAnimation() {
+        LoadSpinning loadingAnimation = new LoadSpinning(LOADING_TIME);
+        Thread loadingThread = new Thread(loadingAnimation);
+        loadingThread.start();
+
         try {
             loadingThread.join();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-
-        if (authenticated) {
-            System.out.println("\nLogin bem-sucedido. Bem-vindo, " + username + "!");
-            User user = userService.findByUsername(username);
-            new MainMenu(userService, user).displayMenu();
-        } else {
-            System.out.println("\nLogin ou senha inválidos. Tente novamente.");
-        }
-    }
-
-    private void register() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Digite seu nome de usuário: ");
-        String username = scanner.nextLine();
-        System.out.println("Digite sua senha: ");
-        String password = scanner.nextLine();
-
-        User newUser = new User(username, password, SubscriptionPlan.BASIC);
-        userService.save(newUser);
-        System.out.println("Registro bem-sucedido. Bem-vindo, " + username + "!");
-        new MainMenu(userService, newUser).displayMenu();
     }
 }
