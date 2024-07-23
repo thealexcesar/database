@@ -1,5 +1,6 @@
 package advanced_java.netflix.ui;
 
+import advanced_java.netflix.repository.DocumentariesRepository;
 import advanced_java.netflix.repository.MoviesRepository;
 import advanced_java.netflix.repository.SeriesRepository;
 import advanced_java.netflix.repository.UserRepository;
@@ -14,10 +15,12 @@ public class Main {
 
         CompletableFuture<MoviesRepository> moviesFuture = CompletableFuture.supplyAsync(MoviesRepository::new);
         CompletableFuture<SeriesRepository> seriesFuture = CompletableFuture.supplyAsync(SeriesRepository::new);
+        CompletableFuture<DocumentariesRepository> documentariesFuture = CompletableFuture.supplyAsync(DocumentariesRepository::new);
 
         try {
             MoviesRepository movieRepository = moviesFuture.get();
             SeriesRepository seriesRepository = seriesFuture.get();
+            DocumentariesRepository documentariesRepository = documentariesFuture.get();
             UserService userService = new UserService(userRepository);
 
             new LoginMenu(userService).displayMenu();

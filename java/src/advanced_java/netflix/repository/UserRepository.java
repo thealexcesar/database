@@ -22,8 +22,7 @@ public class UserRepository implements Repository<User> {
         return new ArrayList<>(users);
     }
 
-    @Override
-    public void save(User user) {
+    public void create(User user) {
         users.add(user);
         saveToFile();
     }

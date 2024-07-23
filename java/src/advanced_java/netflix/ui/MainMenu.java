@@ -21,12 +21,12 @@ public class MainMenu {
     private final UserService userService;
     private final StreamingService streamingService;
     private final FavoritesRepository favoritesRepository;
-    private static final long LOADING_TIME = 2000; // Tempo de carregamento em milissegundos
+    private static final long LOADING_TIME = 2000;
 
     public MainMenu(UserService userService, User user) {
         this.userService = userService;
         this.user = user;
-        this.streamingService = new StreamingService(userService.getMovieRepository(), userService.getSeriesRepository());
+        this.streamingService = new StreamingService(userService.getMovieRepository(), userService.getSeriesRepository(), userService.getDocumentariesRepository());
         this.favoritesRepository = new FavoritesRepository();
 
         CompletableFuture.runAsync(() -> user.getFavorites().addAll(favoritesRepository.loadFavorites(user)));
@@ -35,23 +35,21 @@ public class MainMenu {
     public void displayMenu() {
         while (true) {
             System.out.print(Constants.HR+"\n| Bem-vindo ao Netflix de Console!"+" ".repeat(13)+"|");
-            System.out.println(Constants.HR+"\n| 1. Ver Filmes "+" ".repeat(31)+"|");
-            System.out.println("| 2. Ver Séries"+" ".repeat(32)+"|\n| 3. Buscar por Nome"+" ".repeat(27)+"|");
-            System.out.println("| 4. Buscar por Gênero"+" ".repeat(25)+"|\n| 5. Ver Favoritos"+" ".repeat(29)+"|");
-            System.out.println("| 6. Adicionar aos Favoritos"+" ".repeat(19)+"|\n| 7. Logout"+" ".repeat(36)+"|" + Constants.HR);
+            System.out.println(Constants.HR+"\n| 1. Ver Filmes "+" ".repeat(31)+"\n| 2. Ver Séries "+" ".repeat(31)+"|");
+            System.out.println("| 3. Ver Documentários"+" ".repeat(32)+"|\n| 4. Buscar por Nome"+" ".repeat(27)+"|");
+            System.out.println("| 5. Buscar por Gênero"+" ".repeat(25)+"|\n| 6. Ver Favoritos"+" ".repeat(29)+"|");
+            System.out.println("| 7. Adicionar aos Favoritos"+" ".repeat(19)+"|\n| 8. Logout"+" ".repeat(36)+"|" + Constants.HR);
             int choice = ConsoleUtils.readInt("\nEscolha uma opção: ");
 
             switch (choice) {
                 case 1 -> viewMovies();
                 case 2 -> viewSeries();
-                case 3 -> searchByName();
-                case 4 -> searchByGenre();
-                case 5 -> viewFavorites();
-                case 6 -> addToFavorites();
-                case 7 -> {
-                    logout();
-                    return;
-                }
+                case 3 -> viewDocumentaries();
+                case 4 -> searchByName();
+                case 5 -> searchByGenre();
+                case 6 -> viewFavorites();
+                case 7 -> addToFavorites();
+                case 8 -> { logout(); return; }
                 default -> PrintMsg.tryAgain("Escolha inválida! ");
             }
         }
@@ -67,6 +65,12 @@ public class MainMenu {
         startLoadingAnimation();
         List<Content> series = CompletableFuture.supplyAsync(() -> streamingService.searchByCategory(CategoryType.SERIES)).join();
         displayContent(series, "\nSéries");
+    }
+
+    private void viewDocumentaries() {
+        startLoadingAnimation();
+        List<Content> documentaries = CompletableFuture.supplyAsync(() -> streamingService.searchByCategory(CategoryType.DOCUMENTARY)).join();
+        displayContent(documentaries, "\nDocumentários");
     }
 
     private void searchByName() {

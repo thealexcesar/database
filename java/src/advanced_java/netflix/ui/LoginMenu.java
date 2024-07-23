@@ -7,6 +7,7 @@ import advanced_java.netflix.ui.utils.ConsoleUtils;
 import advanced_java.netflix.ui.utils.Constants;
 import advanced_java.netflix.ui.utils.PrintMsg;
 import advanced_java.netflix.ui.utils.LoadSpinning;
+import advanced_java.netflix.validation.UserValidator;
 
 public class LoginMenu {
     private final UserService userService;
@@ -19,7 +20,7 @@ public class LoginMenu {
     public void displayMenu() {
         while (true) {
             System.out.println(Constants.HR + "\n| Bem-vindo ao Login do Netflix de T-Academy!  |" + Constants.HR);
-            System.out.println("| 1. Login"+" ".repeat(37)+"|\n| 2. Registrar"+" ".repeat(33)+"|"+ Constants.HR);
+            System.out.println("| 1. Login" + " ".repeat(37) + "|\n| 2. Registrar" + " ".repeat(33) + "|" + Constants.HR);
             int choice = ConsoleUtils.readInt("Escolha uma opção: ");
 
             switch (choice) {
@@ -60,10 +61,35 @@ public class LoginMenu {
             return;
         }
 
-        User newUser = new User(username, password, SubscriptionPlan.PREMIUM);
-        userService.save(newUser);
-        System.out.println("Registro bem-sucedido. Bem-vindo, " + username + "!");
-        new MainMenu(userService, newUser).displayMenu();
+        SubscriptionPlan plan = chooseSubscriptionPlan();
+
+        User newUser = new User(username, password, plan);
+
+        try {
+            UserValidator.validate(newUser);
+            userService.save(newUser);
+            System.out.println("Registro bem-sucedido. Bem-vindo, " + username + "!");
+            new MainMenu(userService, newUser).displayMenu();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Erro de validação: " + e.getMessage());
+        } catch (RuntimeException e) {
+            System.out.println("Erro: " + e.getMessage());
+        }
+    }
+
+    private SubscriptionPlan chooseSubscriptionPlan() {
+        while (true) {
+            System.out.println(Constants.HR + "\nEscolha um plano de assinatura:");
+            for (SubscriptionPlan plan : SubscriptionPlan.values()) {
+                System.out.println(plan.ordinal() + 1 + ". " + plan);
+            }
+            int choice = ConsoleUtils.readInt("Escolha uma opção: ");
+            if (choice > 0 && choice <= SubscriptionPlan.values().length) {
+                return SubscriptionPlan.values()[choice - 1];
+            } else {
+                System.out.println(Constants.INVALID_CHOICE_TRY_AGAIN);
+            }
+        }
     }
 
     private void startLoadingAnimation() {
