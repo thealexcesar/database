@@ -1,7 +1,4 @@
-DROP DATABASE cinema_db;
-CREATE DATABASE cinema_db;
-\c cinema_db
-
+-- CREATE DATABASE simple_cinema;
 CREATE TABLE IF NOT EXISTS cinema (
     id SERIAL PRIMARY KEY,
     movie_name VARCHAR(100) NOT NULL,
@@ -32,5 +29,3 @@ SELECT * FROM cinema ORDER BY release_year DESC;
 
 DELETE FROM cinema WHERE movie_name = 'A Origem';
 SELECT movie_name FROM cinema;
-
-DROP TABLE cinema;
