@@ -57,7 +57,7 @@ public class LoginMenu {
         String password = Constants.input.nextLine();
 
         if (userService.userExists(username)) {
-            System.out.println("Nome de usuário já está em uso. Tente novamente.");
+            System.err.println("Nome de usuário já está em uso. Tente novamente.");
             return;
         }
 

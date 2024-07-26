@@ -33,3 +33,9 @@ replay_pid*
 documents
 documents/
 documents/*
+
+# CSV
+# CSV
+transactions.csv
+*/user.csv
+*/favorites.csv

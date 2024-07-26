@@ -35,8 +35,8 @@ public class MainMenu {
     public void displayMenu() {
         while (true) {
             System.out.print(Constants.HR+"\n| Bem-vindo ao Netflix de Console!"+" ".repeat(13)+"|");
-            System.out.println(Constants.HR+"\n| 1. Ver Filmes "+" ".repeat(31)+"\n| 2. Ver Séries "+" ".repeat(31)+"|");
-            System.out.println("| 3. Ver Documentários"+" ".repeat(32)+"|\n| 4. Buscar por Nome"+" ".repeat(27)+"|");
+            System.out.println(Constants.HR+"\n| 1. Ver Filmes "+" ".repeat(31)+"|\n| 2. Ver Séries "+" ".repeat(31)+"|");
+            System.out.println("| 3. Ver Documentários"+" ".repeat(25)+"|\n| 4. Buscar por Nome"+" ".repeat(27)+"|");
             System.out.println("| 5. Buscar por Gênero"+" ".repeat(25)+"|\n| 6. Ver Favoritos"+" ".repeat(29)+"|");
             System.out.println("| 7. Adicionar aos Favoritos"+" ".repeat(19)+"|\n| 8. Logout"+" ".repeat(36)+"|" + Constants.HR);
             int choice = ConsoleUtils.readInt("\nEscolha uma opção: ");
