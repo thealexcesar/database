@@ -131,3 +131,10 @@ UPDATE customers SET name = 'Alexstraza', email = 'alexsssss@gmail.com' where id
 SELECT * FROM menu_items;
 UPDATE customers set name = 'Go''El' WHERE name = 'Go`El';
 SELECT * FROM customers;
+
+-- JOINs
+SELECT m.name, o.quantity, c.name FROM menu_items m
+    INNER JOIN orders o on m.id = o.menu_item_id
+    INNER JOIN customers c on o.customer_id = c.Id
+    WHERE o.quantity > 0;
+

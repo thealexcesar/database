@@ -21,7 +21,6 @@ SELECT * FROM pacientes ORDER BY data_nascimento;
 SELECT nome, telefone FROM pacientes;
 
 -- Atualize o endereço de um paciente com id = 4 para "Rua Nova, 123".
-
 UPDATE pacientes SET endereco = 'Rua Nova, 123' WHERE  id = 4;
 
 -- 8. Delete uma consulta com id = 5.
