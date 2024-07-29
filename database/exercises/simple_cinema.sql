@@ -13,8 +13,8 @@ INSERT INTO cinema (movie_name, director, release_year, genre, duration_minutes)
     ('O Poderoso Chefão', 'Francis Ford Coppola', 1972, 'Drama', 175),
     ('Fight Club (Clube da Luta)', 'David Fincher', 1999, 'Thriller', 139),
     ('Deadpool & Wolverine', 'Shawn Levy', 2024, 'Aventura', 127),
-    ('Matrix', 'Lana Wachowski', 1999, 'Ficção Científica', 136)
-;
+    ('Matrix', 'Lana Wachowski', 1999, 'Ficção Científica', 136);
+
 SELECT * FROM cinema;
 
 UPDATE cinema SET duration_minutes = 150 WHERE movie_name = 'Matrix';
