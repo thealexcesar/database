@@ -6,8 +6,8 @@ DROP TYPE IF EXISTS DOMAINS,REINOS,STATUS CASCADE;
 
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TYPE DOMAINS AS ENUM('Eukarya', 'Bacteria');
-CREATE TYPE REINOS AS ENUM('Animalia', 'Monera', 'Protista', 'Fungi', 'Plantae', 'Archaea');
+CREATE TYPE DOMAINS AS ENUM ('Eukarya', 'Bacteria');
+CREATE TYPE REINOS AS ENUM ('Animalia', 'Monera', 'Protista', 'Fungi', 'Plantae', 'Archaea');
 CREATE TYPE STATUS AS ENUM (
     'Não Avaliado',
     'Extinto',
@@ -93,7 +93,6 @@ CREATE TABLE IF NOT EXISTS especie (
     localizacao_pontual geometry(POINT, 4326),
     CONSTRAINT fk_genero_id FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE CASCADE
 );
-
 
 CREATE TABLE IF NOT EXISTS habitat (
     id SERIAL PRIMARY KEY,

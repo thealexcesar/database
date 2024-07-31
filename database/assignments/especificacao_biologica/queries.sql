@@ -17,4 +17,3 @@ FROM especie
     LEFT JOIN habitat h on h.id = eh.habitat_id
     LEFT JOIN area a on eh.habitat_id = a.habitat_id
 ORDER BY populacao DESC;
-

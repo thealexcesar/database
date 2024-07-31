@@ -32,11 +32,14 @@ INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
     ('Thraupis', 'Sanhaço', 'Gênero de pássaros de cores vibrantes.', 3),
     ('Aquila', 'Águia', 'Gênero de grandes aves de rapina.', 4);
 
-INSERT INTO especie (nome_cientifico, nome, descricao, status_conservacao, populacao, genero_id, localizacao_pontual) VALUES
-    ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas.', 'Em Perigo', 3000, 1, ST_GeomFromText('POINT(-60 -3)', 4326)),
-    ('Alouatta caraya', 'Bugio-preto', 'Espécie de macaco com forte vocalização.', 'Criticamente em Perigo', 510, 2, ST_GeomFromText('POINT(-55 -12)', 4326)),
-    ('Thraupis episcopus', 'Sanhaço-azul', 'Pássaro de cor azul vibrante.', 'Pouco Preocupante', 200, 3, ST_GeomFromText('POINT(-43 -22)', 4326)),
-    ('Aquila chrysaetos', 'Águia-real', 'Grande ave de rapina encontrada no Hemisfério Norte.', 'Quase Ameaçado', 5, 4, ST_GeomFromText('POINT(-100 40)', 4326));
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, localizacao_pontual) VALUES
+    ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas.', 3000, 1, ST_GeomFromText('POINT(-60 -3)', 4326)),
+    ('Alouatta caraya', 'Bugio-preto', 'Espécie de macaco com forte vocalização.', 510, 2, ST_GeomFromText('POINT(-55 -12)', 4326)),
+    ('Thraupis episcopus', 'Sanhaço-azul', 'Pássaro de cor azul vibrante.', 200, 3, ST_GeomFromText('POINT(-43 -22)', 4326)),
+    ('Aquila chrysaetos', 'Águia-real', 'Grande ave de rapina encontrada no Hemisfério Norte.', 500000, 4, ST_GeomFromText('POINT(-100 40)', 4326));
+
+INSERT INTO especie (nome_cientifico, populacao, genero_id, localizacao_pontual) VALUES
+    ('Panthera onca2', 0, 1, ST_GeomFromText('POINT(-60 -3)', 4326));
 
 INSERT INTO habitat (bioma, localizacao) VALUES
     ('Floresta Amazônica', ST_SetSRID(ST_GeomFromText('POLYGON((-74 -3, -54 -3, -54 5, -74 5, -74 -3))'), 4326)),
