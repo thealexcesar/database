@@ -64,20 +64,17 @@ SELECT
     d.nome AS doenca,
     e.nome AS especie,
     d.taxa_mortalidade
-FROM
-    doenca d
-INNER JOIN
-    especie_doenca ed ON d.id = ed.doenca_id
-INNER JOIN
-    especie e ON ed.especie_id = e.id
+FROM doenca d
+    INNER JOIN especie_doenca ed ON d.id = ed.doenca_id
+    INNER JOIN especie e ON ed.especie_id = e.id
 WHERE
     e.nome_cientifico = 'Pan troglodytes'
     AND d.nome = 'Doença de Chagas';
 ------------------------------------------------------------------------------------------------------------------------
 SELECT genero.nome_cientifico AS genero, COUNT(especie.id) AS numero_de_especies
 FROM genero
-    JOIN familia ON genero.familia_id = familia.id
-    JOIN especie ON especie.genero_id = genero.id
+    INNER JOIN familia ON genero.familia_id = familia.id
+    INNER JOIN especie ON especie.genero_id = genero.id
 WHERE familia.nome_cientifico = 'Felidae'
 GROUP BY genero.nome_cientifico
 ORDER BY numero_de_especies DESC;
@@ -106,9 +103,9 @@ SELECT
     a.desmatado,
     e.nome_cientifico AS especie_buscada
 FROM especie e
-    JOIN especie_habitat eh ON e.id = eh.especie_id
-    JOIN habitat h ON eh.habitat_id = h.id
-    JOIN area a ON h.id = a.habitat_id
+    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
+    INNER JOIN habitat h ON eh.habitat_id = h.id
+    INNER JOIN area a ON h.id = a.habitat_id
 WHERE
     e.nome_cientifico = 'Dalbergia nigra'
     AND a.protegido = TRUE
