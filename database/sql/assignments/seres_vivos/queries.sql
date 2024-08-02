@@ -33,26 +33,28 @@ GROUP BY
 /*
 1-c
 */
-SELECT
-    ht.especie AS nome_cientifico,
-    ht.nome_comum AS nome,
-    ht.descricao,
-    ht.genero_cientifico AS genero
-FROM
-    HierarquiaTaxonomica ht
-    JOIN Especie_Habitat eh ON ht.especie_id = eh.especie_id
-    JOIN Habitat h ON eh.habitat_id = h.id
+SELECT e.nome_cientifico, e.nome, e.descricao, g.nome_cientifico genero
+FROM especie e
+    INNER JOIN genero g ON e.genero_id = g.id
+    INNER JOIN familia f ON g.familia_id = f.id
+    INNER JOIN ordem o ON f.ordem_id = o.id
+    INNER JOIN classe c ON o.classe_id = c.id
+    INNER JOIN filo fi ON c.filo_id = fi.id
+    INNER JOIN reino r ON fi.reino_id = r.id
+    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
+    INNER JOIN habitat h ON eh.habitat_id = h.id
 WHERE
-    ht.reino_cientifico = 'Plantae'
+    r.nome_cientifico = 'Plantae'
     AND h.bioma = 'Mata Atlântica'
-    AND ht.status_conservacao IN ('Criticamente em Perigo', 'Em Perigo', 'Vulnerável')
-    AND translate(lower(ht.descricao), 'ê', 'e') ILIKE '%endemica%';
+    AND e.status_conservacao IN ('Criticamente em Perigo', 'Em Perigo', 'Vulnerável')
+    AND translate(lower(e.descricao), 'ê', 'e') ILIKE '%endemica%' ;
+------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 /*
 3
 */
 SELECT genero.nome_cientifico AS genero, COUNT(especie.id) AS numero_de_especies
-FROM 
+FROM
     genero
     JOIN familia ON genero.familia_id = familia.id
     JOIN especie ON especie.genero_id = genero.id
