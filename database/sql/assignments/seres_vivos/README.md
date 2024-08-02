@@ -22,7 +22,7 @@
 ### Distribuição Geográfica e Ecologia
 - [X] Quais espécies de aves migratórias passam pela Amazônia brasileira?
 - [X] Qual a densidade populacional de onças-pintadas em áreas protegidas do Cerrado?
-- [ ] Quais espécies de plantas são endêmicas da Mata Atlântica e estão ameaçadas de extinção?
+- [X] Quais espécies de plantas são endêmicas da Mata Atlântica e estão ameaçadas de extinção?
 
 ### Doenças e Saúde Animal
 - [ ] Quais doenças acometem principalmente primatas em áreas de desmatamento?

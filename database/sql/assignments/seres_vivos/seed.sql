@@ -19,7 +19,7 @@ INSERT INTO filo (nome_cientifico, nome, descricao, reino_id) VALUES
     ('Annelida', 'Anelídeos', 'Vermes segmentados', (SELECT id FROM reino WHERE nome_cientifico = 'Animalia')),
     ('Tracheophyta', 'Tracheófitas', 'Plantas vasculares', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae')),
     ('Magnoliophyta', 'Angiospermas', 'Plantas com flores', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae')),
-    ('Angiospermae', 'Angiospermae', 'Plantas com flores e frutos', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae'))
+    ('Angiospermae', 'Angiospermae', 'Plantas com flores e frutos', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae'));
 
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES
     ('Mammalia', 'Mamíferos', 'Animais com glândulas mamárias', (SELECT id FROM filo WHERE nome_cientifico = 'Chordata')),
@@ -246,8 +246,8 @@ INSERT INTO interacao_ecologica (descricao, tipo_interacao) VALUES
     ('Parasitismo por fungos', 'Parasitismo');
 
 INSERT INTO interacao_especie (especie_id, interacao_ecologica_id) VALUES
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Dispersão de sementes por aves')),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Predação por onças')),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus leucomelas'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Polinização por abelhas')),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes burrovianus'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Competição por recursos')),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Parasitismo por fungos'));
+    ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Dispersão de sementes por aves' LIMIT 1)),
+    ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Predação por onças' LIMIT 1)),
+    ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus leucomelas' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Polinização por abelhas' LIMIT 1)),
+    ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes burrovianus' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Competição por recursos' LIMIT 1)),
+    ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Parasitismo por fungos' LIMIT 1));

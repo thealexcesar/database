@@ -149,11 +149,11 @@ CREATE TABLE IF NOT EXISTS avistamento (
 
 CREATE TABLE IF NOT EXISTS interacao_ecologica (
     id SERIAL PRIMARY KEY,
-    descricao VARCHAR(255),
-    tipo_interacao VARCHAR(255) NOT NULL DEFAULT 'Não Definido'
+    tipo_interacao VARCHAR(255) UNIQUE NULL DEFAULT 'Não Definido',
+    descricao VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS interacao_especie(
+CREATE TABLE IF NOT EXISTS interacao_especie (
     id SERIAL PRIMARY KEY,
     especie_id BIGINT NOT NULL,
     interacao_ecologica_id BIGINT,
@@ -164,8 +164,7 @@ CREATE TABLE IF NOT EXISTS interacao_especie(
 
 /* Functions
 --------------------------------------------------------------------------------------------------------------------- */
-CREATE OR REPLACE FUNCTION atualizar_status_conservacao() RETURNS TRIGGER AS
-$$
+CREATE OR REPLACE FUNCTION atualizar_status_conservacao() RETURNS TRIGGER AS $$
     BEGIN
         UPDATE especie
         SET status_conservacao = CASE
@@ -181,15 +180,14 @@ $$
     END
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION incrementar_populacao_especie() RETURNS TRIGGER AS
-$$
+CREATE OR REPLACE FUNCTION incrementar_populacao_especie() RETURNS TRIGGER AS $$
 BEGIN
     UPDATE especie SET populacao = especie.populacao + NEW.quantidade_individuos
     WHERE especie.id = NEW.especie_id;
     RAISE NOTICE 'População de espécie incrementada pelo biólogo: %', NEW.nome_biologo;
     RETURN NEW;
 END
-$$language plpgsql;
+$$ language plpgsql;
 /* End Functions ---------------------------------------------------------------------------------------------------- */
 
 /* Triggers
