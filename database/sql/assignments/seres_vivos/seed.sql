@@ -265,3 +265,6 @@ INSERT INTO interacao_especie (especie_id, interacao_ecologica_id) VALUES
     ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus leucomelas' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Polinização por abelhas' LIMIT 1)),
     ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes burrovianus' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Competição por recursos' LIMIT 1)),
     ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Parasitismo por fungos' LIMIT 1));
+
+INSERT INTO area (localizacao, protegido, desmatado, habitat_id) VALUES
+(ST_GeomFromText('POLYGON((-39.6 -13.1, -39.6 -12.9, -39.4 -12.9, -39.4 -13.1, -39.6 -13.1))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
