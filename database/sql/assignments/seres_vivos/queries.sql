@@ -25,7 +25,7 @@ WHERE
 GROUP BY
     e.nome_cientifico;
 ------------------------------------------------------------------------------------------------------------------------
-SELECT e.nome_cientifico, e.nome, e.descricao
+SELECT e.nome_cientifico, e.nome, e.descricao, g.nome_cientifico genero
 FROM especie e
     INNER JOIN genero g ON e.genero_id = g.id
     INNER JOIN familia f ON g.familia_id = f.id
@@ -40,4 +40,37 @@ WHERE
     AND h.bioma = 'Mata Atlântica'
     AND e.status_conservacao IN ('Criticamente em Perigo', 'Em Perigo', 'Vulnerável')
     AND translate(lower(e.descricao), 'ê', 'e') ILIKE '%endemica%' ;
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    a.data_avistamento registrado_em,
+    LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) populacao_anterior,
+    SUM(a.quantidade_individuos) populacao_atual,
+    CASE
+        WHEN LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) IS NULL THEN '0 %'
+        ELSE ROUND(
+            ((SUM(a.quantidade_individuos)::NUMERIC - LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) /
+            LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) * 100, 2
+        )::TEXT || ' %'
+    END AS evolucao
+FROM avistamento a
+    INNER JOIN especie e ON a.especie_id = e.id
+WHERE e.id = 1
+GROUP BY a.data_avistamento
+ORDER BY a.data_avistamento;
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    h.bioma,
+    ST_AsText(a.localizacao) AS localizacao,
+    a.protegido,
+    a.desmatado,
+    e.nome_cientifico AS especie_buscada
+FROM especie e
+    JOIN especie_habitat eh ON e.id = eh.especie_id
+    JOIN habitat h ON eh.habitat_id = h.id
+    JOIN area a ON h.id = a.habitat_id
+WHERE
+    e.nome_cientifico = 'Dalbergia nigra'
+    AND a.protegido = TRUE
+    AND a.desmatado = FALSE
+    AND e.status_conservacao IN ('Criticamente em Perigo', 'Quase Ameaçado');
 ------------------------------------------------------------------------------------------------------------------------

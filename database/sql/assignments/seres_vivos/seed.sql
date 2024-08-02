@@ -148,7 +148,10 @@ INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, lo
     ('Ara macao', 'Arara-vermelha', 'Grande arara vermelha encontrada em florestas tropicais', FALSE, 700, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
     ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas', FALSE, 800000, ST_GeomFromText('POINT(-50 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
     ('Amazona farinosa', 'Papagaio-moleiro', 'Papagaio comum nas florestas brasileiras', FALSE, 75000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
-    ('Dalbergia nigra', 'Jacarandá-da-Bahia', 'Árvore de madeira nobre, endêmica da Mata Atlântica, e criticamente ameaçada.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia'));
+    ('Dalbergia nigra', 'Jacarandá-da-Bahia', 'Árvore de madeira nobre, endêmica da Mata Atlântica, e criticamente ameaçada.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
+    ('Dalbergia frutescens', 'Jacarandá-do-serrado', 'Árvore de madeira nobre, endêmica do Cerrado brasileiro, e vulnerável à extinção.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia'));
+
+
 
 INSERT INTO habitat (bioma, localizacao) VALUES
     ('Floresta Amazônica', ST_SetSRID(ST_GeomFromText('POLYGON((-74 -3, -54 -3, -54 5, -74 5, -74 -3))'), 4326)),
@@ -189,6 +192,7 @@ INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM es
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Recife de Coral'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES     ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia frutescens'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
 
 INSERT INTO doenca (nome, descricao, taxa_mortalidade) VALUES
     ('Malária', 'Doença parasitária transmitida por mosquitos', 5),
@@ -236,7 +240,10 @@ INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, no
     (15, 'Grupo grande encontrado em uma área de floresta', '2024-06-22 08:00:00', 'Dr. Rodrigo Mendes', (SELECT id FROM especie WHERE nome_cientifico = 'Rhea pennata')),
     (30, 'Indivíduos observados durante o voo', '2024-09-05 10:45:00', 'Dra. Camila Ferreira', (SELECT id FROM especie WHERE nome_cientifico = 'Amazilia lactea')),
     (18, 'Grupo encontrado em área de floresta tropical', '2024-07-27 07:20:00', 'Dr. Marcelo Alves', (SELECT id FROM especie WHERE nome_cientifico = 'Amazona aestiva')),
-    (50, 'Avistados em uma área de pantanal', '2024-05-22 17:00:00', 'Dr. Lucas Moreira', (SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna viduata'));
+    (50, 'Avistados em uma área de pantanal', '2024-05-22 17:00:00', 'Dr. Lucas Moreira', (SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna viduata')),
+    (50, 'Observação em floresta densa', '2024-01-15', 'Dr. Ana Silva', 1),
+    (30, 'Observação durante o dia', '2024-06-22', 'Dr. João Oliveira', 1),
+    (40, 'Observação em área restaurada', '2024-12-05', 'Dr. Maria Costa', 1);
 
 INSERT INTO interacao_ecologica (descricao, tipo_interacao) VALUES
     ('Polinização por abelhas', 'Mutualismo'),

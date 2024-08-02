@@ -140,9 +140,9 @@ CREATE TABLE IF NOT EXISTS area (
 CREATE TABLE IF NOT EXISTS avistamento (
     id SERIAL PRIMARY KEY,
     quantidade_individuos BIGINT,
-    observacao VARCHAR(255),
+    observacao TEXT,
     data_avistamento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    nome_biologo VARCHAR(100),
+    nome_biologo VARCHAR(100) NOT NULL,
     especie_id BIGINT NOT NULL,
     CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
 );
@@ -165,20 +165,26 @@ CREATE TABLE IF NOT EXISTS interacao_especie (
 /* Functions
 --------------------------------------------------------------------------------------------------------------------- */
 CREATE OR REPLACE FUNCTION atualizar_status_conservacao() RETURNS TRIGGER AS $$
-    BEGIN
-        UPDATE especie
-        SET status_conservacao = CASE
-            WHEN NEW.populacao = 0 THEN 'Extinto'::STATUS
-            WHEN NEW.populacao BETWEEN 1 AND 500 THEN 'Criticamente em Perigo'::STATUS
-            WHEN NEW.populacao BETWEEN 501 AND 1000 THEN 'Em Perigo'::STATUS
-            WHEN NEW.populacao BETWEEN 1001 AND 1500 THEN 'Vulnerável'::STATUS
-            ELSE 'Pouco Preocupante'::STATUS
-        END
-        WHERE id = NEW.id;
-        RAISE NOTICE 'Status de conservação da espécie "%" atualizado para: "%"', NEW.nome_cientifico, NEW.status_conservacao;
-        RETURN NEW;
+BEGIN
+    UPDATE especie
+    SET status_conservacao = CASE
+        WHEN NEW.populacao = 0 THEN 'Extinto'::STATUS
+        WHEN NEW.populacao BETWEEN 1 AND 500 THEN 'Criticamente em Perigo'::STATUS
+        WHEN NEW.populacao BETWEEN 501 AND 1000 THEN 'Em Perigo'::STATUS
+        WHEN NEW.populacao BETWEEN 1001 AND 1500 THEN 'Vulnerável'::STATUS
+        WHEN NEW.populacao BETWEEN 1501 AND 2000 THEN 'Quase Ameaçado'::STATUS
+        WHEN NEW.populacao > 2000 THEN 'Pouco Preocupante'::STATUS
+        ELSE 'Dados Insuficientes'::STATUS
     END
+    WHERE id = NEW.id;
+
+    RAISE NOTICE 'Status de conservação da espécie "%" atualizado para: "%"', NEW.nome_cientifico,
+    (SELECT status_conservacao FROM especie WHERE id = NEW.id);
+
+    RETURN NEW;
+END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION incrementar_populacao_especie() RETURNS TRIGGER AS $$
 BEGIN

@@ -32,8 +32,8 @@
 - [ ] Quais são os gêneros mais diversos da família Felidae?
 
 ### Monitoramento e Conservação
-- [ ] Qual a evolução da população de uma espécie ao longo dos anos?
-- [ ] Quais são as áreas prioritárias para conservação de uma determinada espécie?
+- [X] Qual a evolução da população de uma espécie ao longo dos anos?
+- [X] Quais são as áreas prioritárias para conservação de uma determinada espécie?
 
 ## Casos de Uso para Guia do Projeto
 - [ ] **Biólogo Estudando a Impacto do Desmatamento em Primatas**:
