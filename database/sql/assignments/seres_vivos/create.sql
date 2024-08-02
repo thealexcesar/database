@@ -1,6 +1,6 @@
 -- DROP DATABASE seres_vivos;
 -- CREATE DATABASE seres_vivos;
-DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat, doenca, especie_doenca, populacao, log CASCADE;
+DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat, doenca, especie_doenca, populacao, avistamento, area CASCADE;
 DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
 DROP FUNCTION IF EXISTS incrementar_populacao_especie CASCADE;
 DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS genero (
     nome_cientifico VARCHAR(24) NOT NULL UNIQUE,
     nome VARCHAR(100),
     descricao TEXT,
-    familia_id BIGINT NOT NULL,
+    familia_id BIGINT,
     CONSTRAINT fk_familia_id FOREIGN KEY (familia_id) REFERENCES familia(id) ON DELETE CASCADE
 );
 
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS especie (
     populacao BIGINT NOT NULL DEFAULT 0 CHECK (populacao >= 0),
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em DATE NOT NULL DEFAULT CURRENT_DATE,
-    genero_id BIGINT NOT NULL,
-    migratoria BOOLEAN DEFAULT FALSE,
+    genero_id BIGINT,
+    migratoria BOOLEAN NOT NULL DEFAULT FALSE,
     localizacao_pontual geometry(POINT, 4326),
     CONSTRAINT fk_genero_id FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE CASCADE
 );
@@ -145,6 +145,20 @@ CREATE TABLE IF NOT EXISTS avistamento (
     nome_biologo VARCHAR(100),
     especie_id BIGINT NOT NULL,
     CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS interacao_ecologica (
+    id SERIAL PRIMARY KEY,
+    descricao VARCHAR(255),
+    tipo_interacao VARCHAR(255) NOT NULL DEFAULT 'Não Definido'
+);
+
+CREATE TABLE IF NOT EXISTS interacao_especie(
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    interacao_ecologica_id BIGINT,
+    CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE,
+    CONSTRAINT fk_interacao_ecologica FOREIGN KEY (interacao_ecologica_id) REFERENCES interacao_ecologica(id) ON DELETE CASCADE
 );
 /* End Tables ------------------------------------------------------------------------------------------------------- */
 

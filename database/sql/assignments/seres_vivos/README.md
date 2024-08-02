@@ -20,8 +20,8 @@
 
 ## Consultas Necessárias
 ### Distribuição Geográfica e Ecologia
-- [ ] Quais espécies de aves migratórias passam pela Amazônia brasileira?
-- [ ] Qual a densidade populacional de onças-pintadas em áreas protegidas do Cerrado?
+- [X] Quais espécies de aves migratórias passam pela Amazônia brasileira?
+- [X] Qual a densidade populacional de onças-pintadas em áreas protegidas do Cerrado?
 - [ ] Quais espécies de plantas são endêmicas da Mata Atlântica e estão ameaçadas de extinção?
 
 ### Doenças e Saúde Animal
