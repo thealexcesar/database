@@ -98,6 +98,7 @@ INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES
 
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
     ('Ara', 'Arara', 'Araras', (SELECT id FROM familia WHERE nome_cientifico = 'Psittacidae')),
+    ('Gorilla', 'Gorila', 'Gênero de grandes primatas encontrados nas florestas da África central', (SELECT id FROM familia WHERE nome_cientifico = 'Hominidae')),
     ('Amazona', 'Papagaio', 'Papagaios', (SELECT id FROM familia WHERE nome_cientifico = 'Psittacidae')),
     ('Dendrocygna', 'Irerê', 'Patos', (SELECT id FROM familia WHERE nome_cientifico = 'Anatidae')),
     ('Chiroxiphia', 'Tangará', 'Aves', (SELECT id FROM familia WHERE nome_cientifico = 'Pipridae')),
@@ -114,10 +115,12 @@ INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
     ('Myrciaria', 'Myrciaria', 'Plantas frutíferas', (SELECT id FROM familia WHERE nome_cientifico = 'Myrtaceae')),
     ('Victoria', 'Vitória-régia', 'Plantas aquáticas', (SELECT id FROM familia WHERE nome_cientifico = 'Nymphaeaceae')),
     ('Anacardium', 'Cajueiro', 'Árvores frutíferas', (SELECT id FROM familia WHERE nome_cientifico = 'Anacardiaceae')),
-    ('Dalbergia', 'Dalbergia', 'Árvores e arbustos conhecidos por sua madeira de alta qualidade.', (SELECT id FROM familia WHERE nome_cientifico = 'Fabaceae'));
+    ('Dalbergia', 'Dalbergia', 'Árvores e arbustos conhecidos por sua madeira de alta qualidade.', (SELECT id FROM familia WHERE nome_cientifico = 'Fabaceae')),
+    ('Felis', 'Gatos', 'Gênero de pequenos felinos dentro da família Felidae', (SELECT id FROM familia WHERE nome_cientifico = 'Felidae'));
 
 INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, localizacao_pontual, genero_id) VALUES
     ('Amazona ochrocephala', 'Papagaio-cabeça-amarela', 'Papagaio encontrado em florestas tropicais', FALSE, 50000, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
+    ('Gorilla gorilla', 'Gorila', 'Gorila das florestas da África central', FALSE, 100000, ST_GeomFromText('POINT(-55 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Gorilla')),
     ('Amazona aestiva', 'Papagaio-verdadeiro', 'Papagaio comum nas florestas brasileiras', FALSE, 100000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Dendrocygna viduata', 'Irerê', 'Pato encontrado em lagos e pântanos', FALSE, 300000, ST_GeomFromText('POINT(-5.79448 -35.211)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dendrocygna')),
     ('Turdus rufiventris', 'Sabiá-laranjeira', 'Ave canora comum em todo o Brasil', FALSE, 2000000, ST_GeomFromText('POINT(-19.9167 -43.9345)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Turdus')),
@@ -149,9 +152,8 @@ INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, lo
     ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas', FALSE, 800000, ST_GeomFromText('POINT(-50 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
     ('Amazona farinosa', 'Papagaio-moleiro', 'Papagaio comum nas florestas brasileiras', FALSE, 75000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Dalbergia nigra', 'Jacarandá-da-Bahia', 'Árvore de madeira nobre, endêmica da Mata Atlântica, e criticamente ameaçada.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
-    ('Dalbergia frutescens', 'Jacarandá-do-serrado', 'Árvore de madeira nobre, endêmica do Cerrado brasileiro, e vulnerável à extinção.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia'));
-
-
+    ('Dalbergia frutescens', 'Jacarandá-do-serrado', 'Árvore de madeira nobre, endêmica do Cerrado brasileiro, e vulnerável à extinção.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
+    ('Felis catus', 'Gato-doméstico', 'Pequeno felino amplamente domesticado e encontrado em todo o mundo', FALSE, 500000000, ST_GeomFromText('POINT(-75 40)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Felis'));
 
 INSERT INTO habitat (bioma, localizacao) VALUES
     ('Floresta Amazônica', ST_SetSRID(ST_GeomFromText('POLYGON((-74 -3, -54 -3, -54 5, -74 5, -74 -3))'), 4326)),
@@ -162,6 +164,7 @@ INSERT INTO habitat (bioma, localizacao) VALUES
     ('Recife de Coral', ST_SetSRID(ST_GeomFromText('POLYGON((145 -10, 145 -5, 150 -5, 150 -10, 145 -10))'), 4326));
 
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara ararauna'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Gorilla gorilla'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna autumnalis'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Chiroxiphia lanceolata'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
@@ -202,6 +205,8 @@ INSERT INTO doenca (nome, descricao, taxa_mortalidade) VALUES
     ('Febre Amarela', 'Doença viral transmitida por mosquitos', 7);
 
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara ararauna'), (SELECT id FROM doenca WHERE nome = 'Doença de Chagas'));
+INSERT INTO especie_doenca (especie_id, doenca_id)
+VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Gorilla gorilla'), (SELECT id FROM doenca WHERE nome = 'Malária')), ((SELECT id FROM especie WHERE nome_cientifico = 'Gorilla gorilla'), (SELECT id FROM doenca WHERE nome = 'Doença de Chagas'));
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala'), (SELECT id FROM doenca WHERE nome = 'Leptospirose'));
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna autumnalis'), (SELECT id FROM doenca WHERE nome = 'Tuberculose'));
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Chiroxiphia lanceolata'), (SELECT id FROM doenca WHERE nome = 'Febre Amarela'));
@@ -228,6 +233,8 @@ INSERT INTO area (localizacao, desmatado, protegido, habitat_id) VALUES
     (ST_GeomFromText('POLYGON((-55 -20, -45 -20, -45 -10, -55 -10, -55 -20))', 4326), TRUE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Cerrado')),
     (ST_GeomFromText('POLYGON((-40 -12, -36 -12, -36 -8, -40 -8, -40 -12))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Caatinga')),
     (ST_GeomFromText('POLYGON((145 -10, 145 -5, 150 -5, 150 -10, 145 -10))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Recife de Coral'));
+UPDATE area SET localizacao = ST_GeomFromText('POLYGON((-60 -20, -60 20, -50 20, -50 -20, -60 -20))', 4326) WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8);
+UPDATE area SET desmatado = TRUE WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8);
 
 INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id) VALUES
     (5, 'Avistados próximos ao rio', '2024-08-01 10:00:00', 'Dr. João Silva', (SELECT id FROM especie WHERE nome_cientifico = 'Pan troglodytes')),
@@ -246,7 +253,7 @@ INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, no
     (40, 'Observação em área restaurada', '2024-12-05', 'Dr. Maria Costa', 1);
 
 INSERT INTO interacao_ecologica (descricao, tipo_interacao) VALUES
-    ('Polinização por abelhas', 'Mutualismo'),
+    ('Polinização por abelhas', 'Colônia'),
     ('Predação por onças', 'Predação'),
     ('Dispersão de sementes por aves', 'Mutualismo'),
     ('Competição por recursos', 'Competição'),

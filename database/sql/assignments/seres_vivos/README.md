@@ -25,11 +25,11 @@
 - [X] Quais espécies de plantas são endêmicas da Mata Atlântica e estão ameaçadas de extinção?
 
 ### Doenças e Saúde Animal
-- [ ] Quais doenças acometem principalmente primatas em áreas de desmatamento?
-- [ ] Qual a taxa de mortalidade por determinada doença em uma espécie específica?
+- [X] Quais doenças acometem principalmente primatas em áreas de desmatamento?
+- [X] Qual a taxa de mortalidade por determinada doença em uma espécie específica?
 
 ### Evolução e Filogenia
-- [ ] Quais são os gêneros mais diversos da família Felidae?
+- [X] Quais são os gêneros mais diversos da família Felidae?
 
 ### Monitoramento e Conservação
 - [X] Qual a evolução da população de uma espécie ao longo dos anos?

@@ -42,15 +42,56 @@ WHERE
     AND translate(lower(e.descricao), 'ê', 'e') ILIKE '%endemica%' ;
 ------------------------------------------------------------------------------------------------------------------------
 SELECT
+    d.nome AS doenca,
+    e.nome AS especie,
+    a.desmatado
+FROM doenca d
+    INNER JOIN especie_doenca ed ON d.id = ed.doenca_id
+    INNER JOIN especie e ON ed.especie_id = e.id
+    INNER JOIN genero g ON e.genero_id = g.id
+    INNER JOIN familia f ON g.familia_id = f.id
+    INNER JOIN ordem o ON f.ordem_id = o.id
+    INNER JOIN classe c ON o.classe_id = c.id
+    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
+    INNER JOIN habitat h ON eh.habitat_id = h.id
+    INNER JOIN area a ON h.id = a.habitat_id
+WHERE
+    o.nome_cientifico = 'Primates'
+    AND a.desmatado = TRUE
+    AND ST_Within(e.localizacao_pontual, a.localizacao);
+------------------------------------------------------------------------------------------------------------------------
+SELECT
+    d.nome AS doenca,
+    e.nome AS especie,
+    d.taxa_mortalidade
+FROM
+    doenca d
+INNER JOIN
+    especie_doenca ed ON d.id = ed.doenca_id
+INNER JOIN
+    especie e ON ed.especie_id = e.id
+WHERE
+    e.nome_cientifico = 'Pan troglodytes'
+    AND d.nome = 'Doença de Chagas';
+------------------------------------------------------------------------------------------------------------------------
+SELECT genero.nome_cientifico AS genero, COUNT(especie.id) AS numero_de_especies
+FROM genero
+    JOIN familia ON genero.familia_id = familia.id
+    JOIN especie ON especie.genero_id = genero.id
+WHERE familia.nome_cientifico = 'Felidae'
+GROUP BY genero.nome_cientifico
+ORDER BY numero_de_especies DESC;
+------------------------------------------------------------------------------------------------------------------------
+SELECT
     a.data_avistamento registrado_em,
     LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) populacao_anterior,
     SUM(a.quantidade_individuos) populacao_atual,
     CASE
-        WHEN LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) IS NULL THEN '0 %'
+        WHEN LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) IS NULL THEN '0%'
         ELSE ROUND(
             ((SUM(a.quantidade_individuos)::NUMERIC - LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) /
             LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) * 100, 2
-        )::TEXT || ' %'
+        )::TEXT || '%'
     END AS evolucao
 FROM avistamento a
     INNER JOIN especie e ON a.especie_id = e.id
