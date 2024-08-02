@@ -5,7 +5,7 @@
 -- DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
 -- DROP VIEW IF EXISTS HierarquiaTaxonomica;
 
-CREATE DATABASE seres_vivos;
+-- CREATE DATABASE seres_vivos;
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 /* ENUMS
@@ -230,20 +230,11 @@ SELECT
     o.nome AS ordem,
     fa.nome AS familia,
     g.nome AS genero
-FROM
-    especie e
-JOIN
-    Genero g ON e.genero_id = g.id
-JOIN
-    Familia fa ON g.familia_id = fa.id
-JOIN
-    Ordem o ON fa.ordem_id = o.id
-JOIN
-    Classe c ON o.classe_id = c.id
-JOIN
-    Filo f ON c.filo_id = f.id
-JOIN
-    Reino r ON f.reino_id = r.id;
-
-
+FROM especie e
+    INNER JOIN Genero g ON e.genero_id = g.id
+    INNER JOIN Familia fa ON g.familia_id = fa.id
+    INNER JOIN Ordem o ON fa.ordem_id = o.id
+    INNER JOIN Classe c ON o.classe_id = c.id
+    INNER JOIN Filo f ON c.filo_id = f.id
+    INNER JOIN Reino r ON f.reino_id = r.id;
 /* End Views ----------------------------------------------------------------------------------------------------- */

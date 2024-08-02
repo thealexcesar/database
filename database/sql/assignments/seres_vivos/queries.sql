@@ -49,6 +49,39 @@ WHERE
     AND e.status_conservacao IN ('Criticamente em Perigo', 'Em Perigo', 'Vulnerável')
     AND translate(lower(e.descricao), 'ê', 'e') ILIKE '%endemica%' ;
 ------------------------------------------------------------------------------------------------------------------------
+/*
+2-a
+*/
+    SELECT
+    d.nome AS doenca,
+    e.nome AS especie,
+    d.taxa_mortalidade
+FROM doenca d
+    INNER JOIN especie_doenca ed ON d.id = ed.doenca_id
+    INNER JOIN especie e ON ed.especie_id = e.id
+WHERE
+    e.nome_cientifico = 'Pan troglodytes'
+    AND d.nome = 'Doença de Chagas';
+------------------------------------------------------------------------------------------------------------------------
+/*
+2-b
+*/
+SELECT
+    a.data_avistamento registrado_em,
+    LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) populacao_anterior,
+    SUM(a.quantidade_individuos) populacao_atual,
+    CASE
+        WHEN LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) IS NULL THEN '0%'
+        ELSE ROUND(
+            ((SUM(a.quantidade_individuos)::NUMERIC - LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) /
+            LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) * 100, 2
+        )::TEXT || '%'
+    END AS evolucao
+FROM avistamento a
+    INNER JOIN especie e ON a.especie_id = e.id
+WHERE e.id = 1
+GROUP BY a.data_avistamento
+ORDER BY a.data_avistamento;
 ------------------------------------------------------------------------------------------------------------------------
 /*
 3
@@ -84,42 +117,6 @@ WHERE
     o.nome_cientifico = 'Primates'
     AND a.desmatado = TRUE
     AND ST_Within(e.localizacao_pontual, a.localizacao);
-------------------------------------------------------------------------------------------------------------------------
-SELECT
-    d.nome AS doenca,
-    e.nome AS especie,
-    d.taxa_mortalidade
-FROM doenca d
-    INNER JOIN especie_doenca ed ON d.id = ed.doenca_id
-    INNER JOIN especie e ON ed.especie_id = e.id
-WHERE
-    e.nome_cientifico = 'Pan troglodytes'
-    AND d.nome = 'Doença de Chagas';
-------------------------------------------------------------------------------------------------------------------------
-SELECT genero.nome_cientifico AS genero, COUNT(especie.id) AS numero_de_especies
-FROM genero
-    INNER JOIN familia ON genero.familia_id = familia.id
-    INNER JOIN especie ON especie.genero_id = genero.id
-WHERE familia.nome_cientifico = 'Felidae'
-GROUP BY genero.nome_cientifico
-ORDER BY numero_de_especies DESC;
-------------------------------------------------------------------------------------------------------------------------
-SELECT
-    a.data_avistamento registrado_em,
-    LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) populacao_anterior,
-    SUM(a.quantidade_individuos) populacao_atual,
-    CASE
-        WHEN LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento) IS NULL THEN '0%'
-        ELSE ROUND(
-            ((SUM(a.quantidade_individuos)::NUMERIC - LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) /
-            LAG(SUM(a.quantidade_individuos)) OVER (ORDER BY a.data_avistamento)) * 100, 2
-        )::TEXT || '%'
-    END AS evolucao
-FROM avistamento a
-    INNER JOIN especie e ON a.especie_id = e.id
-WHERE e.id = 1
-GROUP BY a.data_avistamento
-ORDER BY a.data_avistamento;
 ------------------------------------------------------------------------------------------------------------------------
 /*
 4-b
