@@ -1,15 +1,18 @@
 SELECT
-    e.nome_cientifico,
-    e.nome
-FROM especie e
-    INNER JOIN genero g ON e.genero_id = g.id
-    INNER JOIN familia f ON g.familia_id = f.id
-    INNER JOIN ordem o ON f.ordem_id = o.id
-    INNER JOIN classe c ON o.classe_id = c.id
-    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
-    INNER JOIN habitat h ON eh.habitat_id = h.id
+    ht.especie,
+    ht.nome_comum
+FROM
+    HierarquiaTaxonomica ht
+JOIN
+    especie_habitat eh ON ht.especie_id = eh.especie_id
+JOIN
+    Habitat h ON eh.habitat_id = h.id
 WHERE
-    e.migratoria = TRUE AND h.bioma = 'Floresta Amazônica' AND c.nome_cientifico = 'Aves';
+    ht.migratoria = TRUE
+    AND h.bioma = 'Floresta Amazônica'
+    AND ht.classe = 'Aves';
+
+
 ------------------------------------------------------------------------------------------------------------------------
 SELECT
 e.nome_cientifico,

@@ -1,9 +1,11 @@
 -- DROP DATABASE seres_vivos;
--- CREATE DATABASE seres_vivos;
-DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat, doenca, especie_doenca, populacao, avistamento, area CASCADE;
-DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
-DROP FUNCTION IF EXISTS incrementar_populacao_especie CASCADE;
-DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
+-- DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat, doenca, especie_doenca, populacao, avistamento, area CASCADE;
+-- DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
+-- DROP FUNCTION IF EXISTS incrementar_populacao_especie CASCADE;
+-- DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
+-- DROP VIEW IF EXISTS HierarquiaTaxonomica;
+
+CREATE DATABASE seres_vivos;
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 /* ENUMS
@@ -214,3 +216,34 @@ CREATE TRIGGER incrementa_species_quando_avistadas
     EXECUTE FUNCTION incrementar_populacao_especie();
 /* End Triggers ----------------------------------------------------------------------------------------------------- */
 
+/* Views
+--------------------------------------------------------------------------------------------------------------------- */
+CREATE VIEW HierarquiaTaxonomica AS
+SELECT
+    e.id AS especie_id,
+    e.nome_cientifico AS especie,
+    e.nome AS nome_comum,
+    e.migratoria AS migratoria,
+    r.nome AS reino,
+    f.nome AS filo,
+    c.nome AS classe,
+    o.nome AS ordem,
+    fa.nome AS familia,
+    g.nome AS genero
+FROM
+    especie e
+JOIN
+    Genero g ON e.genero_id = g.id
+JOIN
+    Familia fa ON g.familia_id = fa.id
+JOIN
+    Ordem o ON fa.ordem_id = o.id
+JOIN
+    Classe c ON o.classe_id = c.id
+JOIN
+    Filo f ON c.filo_id = f.id
+JOIN
+    Reino r ON f.reino_id = r.id;
+
+
+/* End Views ----------------------------------------------------------------------------------------------------- */

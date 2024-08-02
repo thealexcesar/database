@@ -9,7 +9,7 @@
 ## Funcionalidades
 - [ ] **Consultas**: Realizar consultas para obter informações sobre a distribuição geográfica de espécies, a riqueza de espécies em um habitat, as doenças que acometem uma espécie específica, entre outras.
 - [X] **Triggers**: Implementar triggers para automatizar tarefas como atualizar o status de conservação de uma espécie quando a população diminui abaixo de um determinado limite, registrar o histórico de alterações nos dados e gerar alertas para espécies ameaçadas.
-- [ ] **Views**: Criar views para facilitar a visualização de dados complexos, como a lista de espécies endêmicas de um país ou a riqueza de espécies em um bioma.
+- [X] **Views**: Criar views para facilitar a visualização de dados complexos, como a lista de espécies endêmicas de um país ou a riqueza de espécies em um bioma.
 - [X] **Funções**: Desenvolver funções personalizadas para realizar cálculos complexos, como a diversidade de espécies em uma área ou a distância entre dois pontos geográficos.
 
 ## Considerações
