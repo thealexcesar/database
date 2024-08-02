@@ -237,4 +237,22 @@ FROM especie e
     INNER JOIN Classe c ON o.classe_id = c.id
     INNER JOIN Filo f ON c.filo_id = f.id
     INNER JOIN Reino r ON f.reino_id = r.id;
-/* End Views ----------------------------------------------------------------------------------------------------- */
+/* End Views -------------------------------------------------------------------------------------------------------- */
+
+/* Index
+--------------------------------------------------------------------------------------------------------------------- */
+CREATE INDEX index_reino_dominio_id ON reino(dominio_id);
+CREATE INDEX index_filo_reino_id ON filo(reino_id);
+CREATE INDEX index_classe_filo_id ON classe(filo_id);
+CREATE INDEX index_ordem_classe_id ON ordem(classe_id);
+CREATE INDEX index_familia_ordem_id ON familia(ordem_id);
+CREATE INDEX index_genero_familia_id ON genero(familia_id);
+CREATE INDEX index_especie_genero_id ON especie(genero_id);
+CREATE INDEX index_especie_habitat_especie_id ON especie_habitat(especie_id);
+CREATE INDEX index_especie_habitat_habitat_id ON especie_habitat(habitat_id);
+CREATE INDEX index_especie_doenca_especie_id ON especie_doenca(especie_id);
+CREATE INDEX index_especie_doenca_doenca_id ON especie_doenca(doenca_id);
+CREATE INDEX index_area_habitat_id ON area(habitat_id);
+CREATE INDEX index_avistamento_especie_id ON avistamento(especie_id);
+CREATE INDEX index_interacao_especie_especie_id ON interacao_especie(especie_id);
+CREATE INDEX index_interacao_especie_interacao_ecologica_id ON interacao_especie(interacao_ecologica_id);
