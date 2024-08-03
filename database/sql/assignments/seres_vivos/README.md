@@ -106,73 +106,103 @@ e a integridade, views para facilitar o acesso, funções e triggers para automa
 
 ## Diagrama de Modelagem de Dados
 
-<img src="images/img.png" width="500" style="border-radius:4px;">
+<img src="images/img.png" width="700" style="border-radius:4px;">
 
 ### Estrutura das Tabelas Principais
 
 #### Tabela [domínio](https://pt.wikipedia.org/wiki/Dom%C3%ADnio)
 - **Descrição**: Armazena os domínios da vida, categorias mais amplas na taxonomia.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada domínio.
   - `nome_cientifico`: Nome científico do domínio (ex.: 'Eukarya', 'Bacteria').
 
+</details>
+
 #### Tabela [reino](https://pt.wikipedia.org/wiki/Reino)
 - **Descrição**: Armazena os reinos dentro de cada domínio.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada reino.
   - `nome_cientifico`: Nome científico do reino.
   - `nome`: Nome comum do reino.
   - `descricao`: Descrição do reino.
   - `dominio_id`: Chave estrangeira que indica a qual domínio o reino pertence.
 
+</details>
+
 #### Tabela [filo](https://pt.wikipedia.org/wiki/Filo)
 - **Descrição**: Armazena os filos dentro de cada reino.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada filo.
   - `nome_cientifico`: Nome científico do filo.
   - `nome`: Nome comum do filo.
   - `descricao`: Descrição do filo.
   - `reino_id`: Chave estrangeira que indica a qual reino o filo pertence.
 
+</details>
+
 #### Tabela [classe](https://pt.wikipedia.org/wiki/Classe)
 - **Descrição**: Armazena as classes dentro de cada filo.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada classe.
   - `nome_cientifico`: Nome científico da classe.
   - `nome`: Nome comum da classe.
   - `descricao`: Descrição da classe.
   - `filo_id`: Chave estrangeira que indica a qual filo a classe pertence.
 
+</details>
+
 #### Tabela [ordem](https://pt.wikipedia.org/wiki/Ordem)
 - **Descrição**: Armazena as ordens dentro de cada classe.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada ordem.
   - `nome_cientifico`: Nome científico da ordem.
   - `nome`: Nome comum da ordem.
   - `descricao`: Descrição da ordem.
   - `classe_id`: Chave estrangeira que indica a qual classe a ordem pertence.
 
+</details>
+
 #### Tabela [familia](https://pt.wikipedia.org/wiki/Fam%C3%ADlia_(biologia))
 - **Descrição**: Armazena as famílias dentro de cada ordem.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada família.
   - `nome_cientifico`: Nome científico da família.
   - `nome`: Nome comum da família.
   - `descricao`: Descrição da família.
   - `ordem_id`: Chave estrangeira que indica a qual ordem a família pertence.
 
+</details>
+
 #### Tabela [genero](https://pt.wikipedia.org/wiki/G%C3%A9nero_(biologia))
 - **Descrição**: Armazena os gêneros dentro de cada família.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada gênero.
   - `nome_cientifico`: Nome científico do gênero.
   - `nome`: Nome comum do gênero.
   - `descricao`: Descrição do gênero.
   - `familia_id`: Chave estrangeira que indica a qual família o gênero pertence.
 
+</details>
+
 #### Tabela [especie](https://pt.wikipedia.org/wiki/Esp%C3%A9cie)
 - **Descrição**: Armazena as espécies dentro de cada gênero.
-- **Colunas**:
+  <details>
+  <summary>Colunas</summary>
+  
   - `id`: Número único para identificar cada espécie.
   - `nome_cientifico`: Nome científico da espécie.
   - `nome`: Nome comum da espécie.
@@ -184,6 +214,9 @@ e a integridade, views para facilitar o acesso, funções e triggers para automa
   - `genero_id`: Chave estrangeira que indica a qual gênero a espécie pertence.
   - `migratoria`: Indica se a espécie é migratória.
   - `localizacao_pontual`: Localização geográfica da espécie.
+
+</details>
+
 
 ### Relacionamentos Entre as Tabelas
 - **dominio -> reino**: Um domínio pode ter múltiplos reinos.
