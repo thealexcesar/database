@@ -1,5 +1,22 @@
 # Exercício Avaliativo - Banco de Dados - Catálogo de Seres Vivos
 
+## Introdução
+Este banco de dados armazena informações detalhadas sobre a classificação de seres vivos com conceitos de
+[Classificação Científica](https://pt.wikipedia.org/wiki/Classifica) visando a conservação e estudo da [Biodiversidade](https://pt.wikipedia.org/wiki/Biodiversidade).
+Para otimizar consultas, automatizar tarefas e garantir a consistência dos dados, aplicamos técnicas avançadas como constraints e índices para melhorar o desempenho 
+e a integridade, views para facilitar o acesso, funções e triggers para automatizar processos, e enums para assegurar a consistência dos valores.
+
+### Alunos
+
+- [Alex Cesar](https://github.com/thealexcesar)
+- [Emilly Santiago](https://github.com/emillysant)
+- [Leonardo Raposo](https://github.com/Leo-Raposo)
+
+---
+
+<details>
+  <summary>Enunciado do Trabalho</summary>
+
 ## Modelagem
 - [X] **Entidades**: Abstrair e criar tabelas para representar corretamente as necessidades que o exercício exige
 - [X] **Atributos**: Incluir atributos detalhados como nome científico, nome comum, descrição, status de conservação, localização geográfica (geometry), data e hora de observações, tipo de interação ecológica, etc.
@@ -14,9 +31,9 @@
 
 ## Considerações
 - [X] **Normalização**: Aplicar as regras de normalização para garantir a integridade dos dados.
-- [ ] **Índices**: Criar índices adequados, incluindo índices espaciais, para otimizar as consultas.
+- [X] **Índices**: Criar índices adequados, incluindo índices espaciais, para otimizar as consultas.
 - [X] **Constraints**: Utilizar constraints para garantir a consistência dos dados.
-- [ ] **Documentação**: Gerar uma documentação completa do banco de dados, incluindo diagramas ER e descrições detalhadas das tabelas, colunas e relacionamentos.
+- [X] **Documentação**: Gerar uma documentação completa do banco de dados, incluindo diagramas ER e descrições detalhadas das tabelas, colunas e relacionamentos.
 
 ## Consultas Necessárias
 ### Distribuição Geográfica e Ecologia
@@ -75,4 +92,115 @@
 - [ ] **Estudando o Impacto de Pesticidas na Fauna Aquática**:
   - [ ] Questão: Quais são os efeitos de diferentes pesticidas na abundância de invertebrados aquáticos?
   - [ ] Consulta: "Qual a redução na abundância de macroinvertebrados em rios próximos a áreas agrícolas?"
+</details>
 
+---
+
+## Modelagem
+
+### Entidades e Atributos
+- **Entidades**: 
+  - As tabelas representam diferentes níveis [taxonomônicos](https://pt.wikipedia.org/wiki/Taxonomia) e outros aspectos relacionados aos seres vivos.
+- **Atributos**:
+  - Incluem nome científico, nome comum, descrição, status de conservação, localização geográfica (geometry), data e hora de observações, tipo de interação ecológica, entre outros.
+
+## Diagrama de Modelagem de Dados
+
+<img src="images/img.png" width="500" style="border-radius:4px;">
+
+### Estrutura das Tabelas Principais
+
+#### Tabela [domínio](https://pt.wikipedia.org/wiki/Dom%C3%ADnio)
+- **Descrição**: Armazena os domínios da vida, categorias mais amplas na taxonomia.
+- **Colunas**:
+  - `id`: Número único para identificar cada domínio.
+  - `nome_cientifico`: Nome científico do domínio (ex.: 'Eukarya', 'Bacteria').
+
+#### Tabela [reino](https://pt.wikipedia.org/wiki/Reino)
+- **Descrição**: Armazena os reinos dentro de cada domínio.
+- **Colunas**:
+  - `id`: Número único para identificar cada reino.
+  - `nome_cientifico`: Nome científico do reino.
+  - `nome`: Nome comum do reino.
+  - `descricao`: Descrição do reino.
+  - `dominio_id`: Chave estrangeira que indica a qual domínio o reino pertence.
+
+#### Tabela [filo](https://pt.wikipedia.org/wiki/Filo)
+- **Descrição**: Armazena os filos dentro de cada reino.
+- **Colunas**:
+  - `id`: Número único para identificar cada filo.
+  - `nome_cientifico`: Nome científico do filo.
+  - `nome`: Nome comum do filo.
+  - `descricao`: Descrição do filo.
+  - `reino_id`: Chave estrangeira que indica a qual reino o filo pertence.
+
+#### Tabela [classe](https://pt.wikipedia.org/wiki/Classe)
+- **Descrição**: Armazena as classes dentro de cada filo.
+- **Colunas**:
+  - `id`: Número único para identificar cada classe.
+  - `nome_cientifico`: Nome científico da classe.
+  - `nome`: Nome comum da classe.
+  - `descricao`: Descrição da classe.
+  - `filo_id`: Chave estrangeira que indica a qual filo a classe pertence.
+
+#### Tabela [ordem](https://pt.wikipedia.org/wiki/Ordem)
+- **Descrição**: Armazena as ordens dentro de cada classe.
+- **Colunas**:
+  - `id`: Número único para identificar cada ordem.
+  - `nome_cientifico`: Nome científico da ordem.
+  - `nome`: Nome comum da ordem.
+  - `descricao`: Descrição da ordem.
+  - `classe_id`: Chave estrangeira que indica a qual classe a ordem pertence.
+
+#### Tabela [familia](https://pt.wikipedia.org/wiki/Fam%C3%ADlia_(biologia))
+- **Descrição**: Armazena as famílias dentro de cada ordem.
+- **Colunas**:
+  - `id`: Número único para identificar cada família.
+  - `nome_cientifico`: Nome científico da família.
+  - `nome`: Nome comum da família.
+  - `descricao`: Descrição da família.
+  - `ordem_id`: Chave estrangeira que indica a qual ordem a família pertence.
+
+#### Tabela [genero](https://pt.wikipedia.org/wiki/G%C3%A9nero_(biologia))
+- **Descrição**: Armazena os gêneros dentro de cada família.
+- **Colunas**:
+  - `id`: Número único para identificar cada gênero.
+  - `nome_cientifico`: Nome científico do gênero.
+  - `nome`: Nome comum do gênero.
+  - `descricao`: Descrição do gênero.
+  - `familia_id`: Chave estrangeira que indica a qual família o gênero pertence.
+
+#### Tabela [especie](https://pt.wikipedia.org/wiki/Esp%C3%A9cie)
+- **Descrição**: Armazena as espécies dentro de cada gênero.
+- **Colunas**:
+  - `id`: Número único para identificar cada espécie.
+  - `nome_cientifico`: Nome científico da espécie.
+  - `nome`: Nome comum da espécie.
+  - `descricao`: Descrição da espécie.
+  - `status_conservacao`: Status de conservação da espécie (ex.: 'Em Perigo', 'Vulnerável').
+  - `populacao`: População estimada da espécie.
+  - `criado_em`: Data de criação do registro.
+  - `atualizado_em`: Data da última atualização do registro.
+  - `genero_id`: Chave estrangeira que indica a qual gênero a espécie pertence.
+  - `migratoria`: Indica se a espécie é migratória.
+  - `localizacao_pontual`: Localização geográfica da espécie.
+
+### Relacionamentos Entre as Tabelas
+- **dominio -> reino**: Um domínio pode ter múltiplos reinos.
+- **reino -> filo**: Um reino pode ter múltiplos filos.
+- **filo -> classe**: Um filo pode ter múltiplas classes.
+- **classe -> ordem**: Uma classe pode ter múltiplas ordens.
+- **ordem -> familia**: Uma ordem pode ter múltiplas famílias.
+- **familia -> genero**: Uma família pode ter múltiplos gêneros.
+- **genero -> especie**: Um gênero pode ter múltiplas espécies.
+
+## Tecnologias Utilizadas
+  - [Vertabelo](https://my.vertabelo.com/drive): Utilizado para a modelagem do banco de dados
+  - [PostgreSQL](https://www.postgresql.org/): SGBD - Banco de dados relacional utilizado para armazenar os dados.
+  - [PostGIS](https://postgis.net/): Extensão do PostgreSQL utilizada para trabalhar com dados geográficos (Geometry).
+
+## Referências
+- [WWF Brasil](https://www.wwf.org.br/)
+- [Catalogue of Life](https://www.catalogueoflife.org/)
+- [Technical Documentation](https://techdocs.gbif.org/en/)
+- [Youtube](https://www.youtube.com/)
