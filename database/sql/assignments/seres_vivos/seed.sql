@@ -20,6 +20,9 @@ INSERT INTO filo (nome_cientifico, nome, descricao, reino_id) VALUES
     ('Tracheophyta', 'Tracheófitas', 'Plantas vasculares', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae')),
     ('Magnoliophyta', 'Angiospermas', 'Plantas com flores', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae')),
     ('Angiospermae', 'Angiospermae', 'Plantas com flores e frutos', (SELECT id FROM reino WHERE nome_cientifico = 'Plantae'));
+INSERT INTO filo (nome_cientifico, nome, descricao, reino_id) VALUES ('Proteobacteria', 'Proteobactérias', 'Filo das proteobactérias', (SELECT id FROM reino WHERE nome_cientifico = 'Monera'));
+INSERT INTO filo (nome_cientifico, nome, descricao, reino_id) VALUES ('Firmicutes', 'Firmicutes', 'Filo dos firmicutes', (SELECT id FROM reino WHERE nome_cientifico = 'Monera'));
+INSERT INTO filo (nome_cientifico, nome, descricao, reino_id) VALUES ('Actinobacteria', 'Actinobactérias', 'Filo das actinobactérias', (SELECT id FROM reino WHERE nome_cientifico = 'Monera'));
 
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES
     ('Mammalia', 'Mamíferos', 'Animais com glândulas mamárias', (SELECT id FROM filo WHERE nome_cientifico = 'Chordata')),
@@ -45,6 +48,9 @@ INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES
     ('Pinopsida', 'Pinopsida', 'Classe de coníferas', (SELECT id FROM filo WHERE nome_cientifico = 'Tracheophyta')),
     ('Liliopsida', 'Monocotiledôneas', 'Plantas com uma folha embrionária', (SELECT id FROM filo WHERE nome_cientifico = 'Angiospermae')),
     ('Magnoliopsida', 'Dicotiledôneas', 'Plantas com dois cotilédones', (SELECT id FROM filo WHERE nome_cientifico = 'Magnoliophyta'));
+INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Gammaproteobacteria', 'Gammaproteobactérias', 'Classe das gammaproteobactérias', (SELECT id FROM filo WHERE nome_cientifico = 'Proteobacteria'));
+INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Bacilli', 'Bacilos', 'Classe dos bacilos', (SELECT id FROM filo WHERE nome_cientifico = 'Firmicutes'));
+INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Actinobacteria', 'Actinobactérias', 'Classe das actinobactérias', (SELECT id FROM filo WHERE nome_cientifico = 'Actinobacteria'));
 
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES
     ('Carnivora', 'Carnívoros', 'Mamíferos carnívoros', (SELECT id FROM classe WHERE nome_cientifico = 'Mammalia')),
@@ -69,6 +75,10 @@ INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES
     ('Myrtales', 'Mirtales', 'Ordem de plantas dicotiledôneas', (SELECT id FROM classe WHERE nome_cientifico = 'Magnoliopsida')),
     ('Nymphaeales', 'Ninféias', 'Plantas aquáticas', (SELECT id FROM classe WHERE nome_cientifico = 'Magnoliopsida')),
     ('Sapindales', 'Sapindales', 'Ordem de plantas dicotiledôneas', (SELECT id FROM classe WHERE nome_cientifico = 'Magnoliopsida'));
+INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Enterobacterales', 'Enterobacteriais', 'Ordem das enterobacteriais', (SELECT id FROM classe WHERE nome_cientifico = 'Gammaproteobacteria'));
+INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Lactobacillales', 'Lactobacilales', 'Ordem das lactobacilales', (SELECT id FROM classe WHERE nome_cientifico = 'Bacilli'));
+INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Clostridiales', 'Clostridiales', 'Ordem das clostridiales', (SELECT id FROM classe WHERE nome_cientifico = 'Bacilli'));
+INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Actinomycetales', 'Actinomicetales', 'Ordem das actinomicetales', (SELECT id FROM classe WHERE nome_cientifico = 'Actinobacteria'));
 
 INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES
     ('Hominidae', 'Hominídeos', 'Primatas de grande porte', (SELECT id FROM ordem WHERE nome_cientifico = 'Primates')),
@@ -95,6 +105,10 @@ INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES
     ('Nymphaeaceae', 'Ninféias', 'Família das plantas aquáticas', (SELECT id FROM ordem WHERE nome_cientifico = 'Nymphaeales')),
     ('Anacardiaceae', 'Anacardiáceas', 'Família do caju', (SELECT id FROM ordem WHERE nome_cientifico = 'Sapindales')),
     ('Fabaceae', 'Fabaceae', 'Família de plantas leguminosas', (SELECT id FROM ordem WHERE nome_cientifico = 'Fabales'));
+INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Enterobacteriaceae', 'Enterobacteriáceas', 'Família das enterobacteriáceas', (SELECT id FROM ordem WHERE nome_cientifico = 'Enterobacterales'));
+INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Lactobacillaceae', 'Lactobaciláceas', 'Família das lactobaciláceas', (SELECT id FROM ordem WHERE nome_cientifico = 'Lactobacillales'));
+INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Clostridiaceae', 'Clostridiaceae', 'Família dos clostrídios', (SELECT id FROM ordem WHERE nome_cientifico = 'Clostridiales'));
+INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Streptomycetaceae', 'Streptomycetaceae', 'Família das streptomycetaceae', (SELECT id FROM ordem WHERE nome_cientifico = 'Actinomycetales'));
 
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
     ('Ara', 'Arara', 'Araras', (SELECT id FROM familia WHERE nome_cientifico = 'Psittacidae')),
@@ -117,26 +131,31 @@ INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
     ('Anacardium', 'Cajueiro', 'Árvores frutíferas', (SELECT id FROM familia WHERE nome_cientifico = 'Anacardiaceae')),
     ('Dalbergia', 'Dalbergia', 'Árvores e arbustos conhecidos por sua madeira de alta qualidade.', (SELECT id FROM familia WHERE nome_cientifico = 'Fabaceae')),
     ('Felis', 'Gatos', 'Gênero de pequenos felinos dentro da família Felidae', (SELECT id FROM familia WHERE nome_cientifico = 'Felidae'));
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Escherichia', 'Escherichia', 'Gênero das Escherichia', (SELECT id FROM familia WHERE nome_cientifico = 'Enterobacteriaceae'));
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Salmonella', 'Salmonela', 'Gênero das salmonelas', (SELECT id FROM familia WHERE nome_cientifico = 'Enterobacteriaceae'));
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Lactobacillus', 'Lactobacilos', 'Gênero dos lactobacilos', (SELECT id FROM familia WHERE nome_cientifico = 'Lactobacillaceae'));
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Streptomyces', 'Streptomyces', 'Gênero das streptomyces', (SELECT id FROM familia WHERE nome_cientifico = 'Streptomycetaceae'));
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Clostridium', 'Clostrídio', 'Gênero dos clostrídios', (SELECT id FROM familia WHERE nome_cientifico = 'Clostridiaceae'));
 
 INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, localizacao_pontual, genero_id) VALUES
-    ('Amazona ochrocephala', 'Papagaio-cabeça-amarela', 'Papagaio encontrado em florestas tropicais', FALSE, 50000, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
+    ('Amazona ochrocephala', 'Papagaio-cabeça-amarela', 'Papagaio encontrado em florestas tropicais', FALSE, 50000, ST_GeomFromText('POINT(-7.0943 -66.3519)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Gorilla gorilla', 'Gorila', 'Gorila das florestas da África central', FALSE, 100000, ST_GeomFromText('POINT(-55 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Gorilla')),
     ('Amazona aestiva', 'Papagaio-verdadeiro', 'Papagaio comum nas florestas brasileiras', FALSE, 100000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Dendrocygna viduata', 'Irerê', 'Pato encontrado em lagos e pântanos', FALSE, 300000, ST_GeomFromText('POINT(-5.79448 -35.211)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dendrocygna')),
     ('Turdus rufiventris', 'Sabiá-laranjeira', 'Ave canora comum em todo o Brasil', FALSE, 2000000, ST_GeomFromText('POINT(-19.9167 -43.9345)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Turdus')),
     ('Cathartes aura', 'Urubu-de-cabeça-vermelha', 'Grande ave necrófaga', FALSE, 100000, ST_GeomFromText('POINT(-15.7941 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Cathartes')),
-    ('Geranoaetus melanoleucus', 'Gavião-de-rabo-branco', 'Grande ave de rapina', true, 50000, ST_GeomFromText('POINT(-22.9068 -43.1729)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Geranoaetus')),
+    ('Geranoaetus melanoleucus', 'Gavião-de-rabo-branco', 'Grande ave de rapina', true, 50000, ST_GeomFromText('POINT(7.0399 -62.8369)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Geranoaetus')),
     ('Rhea americana', 'Ema', 'Grande ave não voadora', FALSE, 50000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Rhea')),
     ('Homo sapiens', 'Ser humano', 'Espécie humana moderna', FALSE, 7800000000, ST_GeomFromText('POINT(0 0)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Homo')),
     ('Ara ararauna', 'Arara-canindé', 'Grande arara azul e amarela encontrada em florestas tropicais', FALSE, 60000, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
     ('Dendrocygna autumnalis', 'Irerê-de-cara-branca', 'Pato encontrado em lagos e pântanos', FALSE, 250000, ST_GeomFromText('POINT(-5.79448 -35.211)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dendrocygna')),
     ('Chiroxiphia lanceolata', 'Tangará-dançarino', 'Pequena ave frugívora encontrada em matas', FALSE, 45000, ST_GeomFromText('POINT(-15.7941 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Chiroxiphia')),
     ('Turdus leucomelas', 'Sabiá-barranco', 'Ave canora comum em várias regiões do Brasil', FALSE, 1500000, ST_GeomFromText('POINT(-19.9167 -43.9345)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Turdus')),
-    ('Cathartes burrovianus', 'Urubu-de-cabeça-amarela', 'Grande ave necrófaga', true, 120000, ST_GeomFromText('POINT(-15.7941 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Cathartes')),
-    ('Geranoaetus polyosoma', 'Gavião-cinzento', 'Grande ave de rapina', true, 40000, ST_GeomFromText('POINT(-22.9068 -43.1729)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Geranoaetus')),
+    ('Cathartes burrovianus', 'Urubu-de-cabeça-amarela', 'Grande ave necrófaga', true, 120000, ST_GeomFromText('POINT(-7.5513 -60.3237)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Cathartes')),
+    ('Geranoaetus polyosoma', 'Gavião-cinzento', 'Grande ave de rapina', true, 40000, ST_GeomFromText('POINT(-5.1281 -66.3519)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Geranoaetus')),
     ('Rhea pennata', 'Ema-de-darwin', 'Grande ave não voadora', FALSE, 55000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Rhea')),
-    ('Amazilia lactea', 'Beija-flor-de-peito-azul', 'Pequena ave nectarívora', true, 450000, ST_GeomFromText('POINT(-15.7941 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazilia')),
-    ('Ara chloropterus', 'Arara-vermelha', 'Grande arara encontrada em florestas tropicais', true, 50000, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
+    ('Amazilia lactea', 'Beija-flor-de-peito-azul', 'Pequena ave nectarívora', true, 450000, ST_GeomFromText('POINT(-6.4246 -68.0676)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazilia')),
+    ('Ara chloropterus', 'Arara-vermelha', 'Grande arara encontrada em florestas tropicais', true, 50, ST_GeomFromText('POINT(0.0908 -57.9350)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
     ('Panthera leo', 'Leão', 'Grande felino encontrado na savana africana', FALSE, 20000, ST_GeomFromText('POINT(1.2921 36.8219)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
     ('Homo neanderthalensis', 'Neandertal', 'Espécie extinta de hominídeo que viveu na Europa e na Ásia', FALSE, 0, ST_GeomFromText('POINT(50.1109 8.6821)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Homo')),
     ('Pan troglodytes', 'Chimpanzé-comum', 'Espécie de chimpanzé encontrada na África subsaariana', FALSE, 200000, ST_GeomFromText('POINT(15 0)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Pan')),
@@ -149,53 +168,60 @@ INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, lo
     ('Victoria amazonica', 'Vitória-régia', 'Planta aquática nativa da Amazônia', FALSE, 100000, ST_GeomFromText('POINT(-3.4166 -65.8561)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Victoria')),
     ('Anacardium occidentale', 'Cajueiro', 'Árvore frutífera nativa do Nordeste do Brasil', FALSE, 2000000, ST_GeomFromText('POINT(-5.79448 -35.211)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Anacardium')),
     ('Ara macao', 'Arara-vermelha', 'Grande arara vermelha encontrada em florestas tropicais', FALSE, 700, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
-    ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas', FALSE, 800000, ST_GeomFromText('POINT(-50 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
+    ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas', FALSE, 80, ST_GeomFromText('POINT(-50 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
     ('Amazona farinosa', 'Papagaio-moleiro', 'Papagaio comum nas florestas brasileiras', FALSE, 75000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Dalbergia nigra', 'Jacarandá-da-Bahia', 'Árvore de madeira nobre, endêmica da Mata Atlântica, e criticamente ameaçada.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
     ('Dalbergia frutescens', 'Jacarandá-do-serrado', 'Árvore de madeira nobre, endêmica do Cerrado brasileiro, e vulnerável à extinção.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
-    ('Felis catus', 'Gato-doméstico', 'Pequeno felino amplamente domesticado e encontrado em todo o mundo', FALSE, 500000000, ST_GeomFromText('POINT(-75 40)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Felis'));
+    ('Felis catus', 'Gato-doméstico', 'Pequeno felino amplamente domesticado e encontrado em todo o mundo', FALSE, 500000000, ST_GeomFromText('POINT(-23.5290 -46.4859)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Felis'));
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Escherichia coli', 'E. coli', 'Espécie de bactéria comum', 1000000000, (SELECT id FROM genero WHERE nome_cientifico = 'Escherichia'), FALSE);
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Salmonella enterica', 'S. enterica', 'Espécie de bactéria causadora de salmonelose', 500000000, (SELECT id FROM genero WHERE nome_cientifico = 'Salmonella'), FALSE);
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Lactobacillus acidophilus', 'L. acidophilus', 'Espécie de bactéria probiótica', 100000000, (SELECT id FROM genero WHERE nome_cientifico = 'Lactobacillus'), FALSE);
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Streptomyces griseus', 'S. griseus', 'Espécie produtora de antibióticos', 200000000, (SELECT id FROM genero WHERE nome_cientifico = 'Streptomyces'), FALSE);
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Clostridium botulinum', 'C. botulinum', 'Espécie causadora de botulismo', 80000000, (SELECT id FROM genero WHERE nome_cientifico = 'Clostridium'), FALSE);
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Clostridium difficile', 'C. difficile', 'Espécie causadora de infecções intestinais', 50000000, (SELECT id FROM genero WHERE nome_cientifico = 'Clostridium'), FALSE);
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, localizacao_pontual, genero_id, migratoria) VALUES ('Zonotrichia capensis', 'Tico-tico', 'Ave encontrada em áreas montanhosas e planícies, adaptada a uma variedade de habitats', 1000000, ST_SetSRID(ST_MakePoint(-43.2, -22.9), 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Zonotrichia'), FALSE);
 
-INSERT INTO habitat (bioma, localizacao) VALUES
-    ('Floresta Amazônica', ST_SetSRID(ST_GeomFromText('POLYGON((-74 -3, -54 -3, -54 5, -74 5, -74 -3))'), 4326)),
-    ('Pantanal', ST_SetSRID(ST_GeomFromText('POLYGON((-58 -20, -56 -20, -56 -17, -58 -17, -58 -20))'), 4326)),
-    ('Mata Atlântica', ST_SetSRID(ST_GeomFromText('POLYGON((-45 -25, -35 -25, -35 -15, -45 -15, -45 -25))'), 4326)),
-    ('Cerrado', ST_SetSRID(ST_GeomFromText('POLYGON((-55 -20, -45 -20, -45 -10, -55 -10, -55 -20))'), 4326)),
-    ('Caatinga', ST_SetSRID(ST_GeomFromText('POLYGON((-40 -12, -36 -12, -36 -8, -40 -8, -40 -12))'), 4326)),
-    ('Recife de Coral', ST_SetSRID(ST_GeomFromText('POLYGON((145 -10, 145 -5, 150 -5, 150 -10, 145 -10))'), 4326));
+INSERT INTO habitat (bioma, localizacao) VALUES ('Amazônia Brasileira', poligono_amazonia_brasileira());
+INSERT INTO habitat (bioma, localizacao) VALUES ('Caatinga', ST_GeomFromText('POLYGON((-2.6220 -40.5416, -7.2616 -35.6197, -15.4404 -43.7057, -10.5607 -45.0240, -2.6220 -40.5416))', 4326));
+INSERT INTO habitat (bioma, localizacao) VALUES ('Cerrado', ST_GeomFromText('POLYGON((-2.4542 -43.1908, -18.0492 -45.1119, -21.4402 -49.2428, -14.2510 -58.1197, -2.4542 -43.1908))', 4326));
+INSERT INTO habitat (bioma, localizacao) VALUES ('Mata Atlântica', ST_SetSRID(ST_GeomFromText('POLYGON((-5.272 -35.469, -8.057 -34.882, -24.007 -46.422, -29.687 -51.162, -19.924 -43.935, -5.272 -35.469))'), 4326));
+INSERT INTO habitat (bioma, localizacao) VALUES ('Pantanal', ST_GeomFromText('POLYGON((-15.6097 -57.0651, -16.4545 -55.8346, -21.7671 -58.0319, -15.7790 -59.8776, -15.6097 -57.0651))', 4326));
+INSERT INTO habitat (bioma, localizacao) VALUES ('Zona Costeira e Marinha', ST_SetSRID(ST_GeomFromText('POLYGON((-8.0456 -35.2682, -8.21 -35.1803, -30.2851 -52.4947, -29.8287 -57.5045, -8.0456 -35.2682))'), 4326));
 
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara ararauna'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Gorilla gorilla'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna autumnalis'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Chiroxiphia lanceolata'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus leucomelas'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes burrovianus'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus polyosoma'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Rhea pennata'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Amazilia lactea'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona aestiva'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna viduata'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus rufiventris'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes aura'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus melanoleucus'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus rufiventris'), (SELECT id FROM habitat WHERE bioma = 'Caatinga'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Ara macao'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Pan troglodytes'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona farinosa'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona farinosa'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus melanoleucus'), (SELECT id FROM habitat WHERE bioma = 'Recife de Coral'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Caatinga'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES  ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Recife de Coral'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara ararauna'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Gorilla gorilla'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna autumnalis'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Chiroxiphia lanceolata'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus leucomelas'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes burrovianus'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus polyosoma'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Rhea pennata'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Amazilia lactea'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona aestiva'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dendrocygna viduata'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus rufiventris'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes aura'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus melanoleucus'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus rufiventris'), (SELECT id FROM habitat WHERE bioma = 'Caatinga'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara macao'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Pan troglodytes'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona farinosa'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona farinosa'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus melanoleucus'), (SELECT id FROM habitat WHERE bioma = 'Zona Costeira e Marinha'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Caatinga'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Homo sapiens'), (SELECT id FROM habitat WHERE bioma = 'Zona Costeira e Marinha'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-INSERT INTO especie_habitat (especie_id, habitat_id) VALUES     ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia frutescens'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia frutescens'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
 
 INSERT INTO doenca (nome, descricao, taxa_mortalidade) VALUES
     ('Malária', 'Doença parasitária transmitida por mosquitos', 5),
@@ -225,16 +251,19 @@ INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM espec
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus rufiventris'), (SELECT id FROM doenca WHERE nome = 'Tuberculose'));
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Geranoaetus melanoleucus'), (SELECT id FROM doenca WHERE nome = 'Malária'));
 INSERT INTO especie_doenca (especie_id, doenca_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara macao'), (SELECT id FROM doenca WHERE nome = 'Febre Amarela'));
+INSERT INTO especie (nome_cientifico, nome, descricao, status_conservacao, populacao, genero_id, migratoria, localizacao_pontual)
+VALUES ('Ave_Montanha', 'Nome Comum da Espécie', 'Descrição da Espécie', 'Não Avaliado', 1000, 1, FALSE, ST_SetSRID(ST_MakePoint(-43.2, -22.9), 4326));
 
+INSERT INTO area (localizacao, desmatado, protegido, habitat_id)
+VALUES (poligono_amazonia_brasileira(), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
 INSERT INTO area (localizacao, desmatado, protegido, habitat_id) VALUES
-    (ST_GeomFromText('POLYGON((-60 -2, -60 2, -54 2, -54 -2, -60 -2))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Floresta Amazônica')),
     (ST_GeomFromText('POLYGON((-58 -20, -56 -20, -56 -17, -58 -17, -58 -20))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Pantanal')),
     (ST_GeomFromText('POLYGON((-45 -25, -35 -25, -35 -15, -45 -15, -45 -25))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica')),
     (ST_GeomFromText('POLYGON((-55 -20, -45 -20, -45 -10, -55 -10, -55 -20))', 4326), TRUE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Cerrado')),
     (ST_GeomFromText('POLYGON((-40 -12, -36 -12, -36 -8, -40 -8, -40 -12))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Caatinga')),
-    (ST_GeomFromText('POLYGON((145 -10, 145 -5, 150 -5, 150 -10, 145 -10))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Recife de Coral'));
-UPDATE area SET localizacao = ST_GeomFromText('POLYGON((-60 -20, -60 20, -50 20, -50 -20, -60 -20))', 4326) WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8);
-UPDATE area SET desmatado = TRUE WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8);
+    (ST_GeomFromText('POLYGON((145 -10, 145 -5, 150 -5, 150 -10, 145 -10))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Zona Costeira e Marinha'));
+-- UPDATE area SET localizacao = ST_GeomFromText('POLYGON((-60 -20, -60 20, -50 20, -50 -20, -60 -20))', 4326) WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8);
+-- UPDATE area SET desmatado = TRUE WHERE id IN (1, 2, 3, 4, 5, 6, 7, 8);
 
 INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id) VALUES
     (5, 'Avistados próximos ao rio', '2024-08-01 10:00:00', 'Dr. João Silva', (SELECT id FROM especie WHERE nome_cientifico = 'Pan troglodytes')),
@@ -251,6 +280,16 @@ INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, no
     (50, 'Observação em floresta densa', '2024-01-15', 'Dr. Ana Silva', 1),
     (30, 'Observação durante o dia', '2024-06-22', 'Dr. João Oliveira', 1),
     (40, 'Observação em área restaurada', '2024-12-05', 'Dr. Maria Costa', 1);
+INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id, altitude) VALUES (5, 'Avistados próximos ao rio', '1974-08-01 10:00:00', 'Dr. João Silva', (SELECT id FROM especie WHERE nome_cientifico = 'Zonotrichia capensis'), 1500);
+INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id, altitude) VALUES (8, 'Grupo avistado nas copas das árvores', '1984-07-20 09:30:00', 'Dra. Maria Oliveira', (SELECT id FROM especie WHERE nome_cientifico = 'Zonotrichia capensis'), 1400);
+INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id, altitude) VALUES (3, 'Indivíduos observados alimentando-se de frutos', '1994-06-15 14:45:00', 'Dr. Pedro Lima', (SELECT id FROM especie WHERE nome_cientifico = 'Zonotrichia capensis'), 1300);
+INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id, altitude) VALUES (7, 'Avistados nadando em lagoa', '2004-05-10 11:00:00', 'Dra. Ana Paula', (SELECT id FROM especie WHERE nome_cientifico = 'Zonotrichia capensis'), 1200);
+INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id, altitude) VALUES (10, 'Grupo observando o comportamento de dança', '2014-04-25 16:20:00', 'Dr. Carlos Alberto', (SELECT id FROM especie WHERE nome_cientifico = 'Zonotrichia capensis'), 1100);
+INSERT INTO avistamento (quantidade_individuos, observacao, data_avistamento, nome_biologo, especie_id, altitude) VALUES (20, 'Indivíduos cantando no amanhecer', '2024-03-30 05:50:00', 'Dra. Fernanda Costa', (SELECT id FROM especie WHERE nome_cientifico = 'Zonotrichia capensis'), 1000);
+INSERT INTO avistamento (quantidade_individuos, observacao, localizacao_pontual, nome_biologo, especie_id, altitude, registrar_individuo) VALUES
+(5, 'Avistamento de grupo de aves', ST_SetSRID(ST_MakePoint(-60.0, -3.0), 4326), 'Dr. João Silva', (SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), 300, TRUE),
+(3, 'Avistamento de grupo de aves', ST_SetSRID(ST_MakePoint(-47.0, -16.0), 4326), 'Dr. Maria Souza', (SELECT id FROM especie WHERE nome_cientifico = 'Ara macao'), 500, TRUE),
+(8, 'Avistamento de grupo de aves', ST_SetSRID(ST_MakePoint(-46.6, -23.5), 4326), 'Dr. Pedro Santos', (SELECT id FROM especie WHERE nome_cientifico = 'Ara ararauna'), 200, TRUE);
 
 INSERT INTO interacao_ecologica (descricao, tipo_interacao) VALUES
     ('Polinização por abelhas', 'Colônia'),
@@ -268,3 +307,9 @@ INSERT INTO interacao_especie (especie_id, interacao_ecologica_id) VALUES
 
 INSERT INTO area (localizacao, protegido, desmatado, habitat_id) VALUES
 (ST_GeomFromText('POLYGON((-39.6 -13.1, -39.6 -12.9, -39.4 -12.9, -39.4 -13.1, -39.6 -13.1))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
+
+INSERT INTO area (localizacao, desmatado, protegido, habitat_id) VALUES
+    (ST_GeomFromText('POLYGON((-60.0 -3.0, -60.0 -2.5, -59.5 -2.5, -59.5 -3.0, -60.0 -3.0))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
+    (ST_GeomFromText('POLYGON((-61.0 -4.0, -61.0 -3.5, -60.5 -3.5, -60.5 -4.0, -61.0 -4.0))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
+    (ST_GeomFromText('POLYGON((-62.0 -5.0, -62.0 -4.5, -61.5 -4.5, -61.5 -5.0, -62.0 -5.0))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
+    (ST_GeomFromText('POLYGON((-63.0 -6.0, -63.0 -5.5, -62.5 -5.5, -62.5 -6.0, -63.0 -6.0))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));

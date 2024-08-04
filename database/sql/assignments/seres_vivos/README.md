@@ -227,18 +227,19 @@ e a integridade, views para facilitar o acesso, funções e triggers para automa
 - **genero -> especie**: Um gênero pode ter muitas espécies.
 
 ## Tecnologias Utilizadas
-- [Vertabelo](https://my.vertabelo.com/drive): Utilizado para a modelagem do banco de dados
+- [Vertabelo](https://my.vertabelo.com/drive): Utilizado para a modelagem do banco de dados.
 - [PostgreSQL](https://www.postgresql.org/): SGBD - Banco de dados relacional utilizado para armazenar os dados.
 - [PostGIS](https://postgis.net/): Extensão do PostgreSQL utilizada para trabalhar com dados geográficos (Geometry).
 
 ## Referências
-- [IUCN Red List of Threatened Species](https://www.iucnredlist.org/)
-- [WWF Brasil](https://www.wwf.org.br/)
-- [Prepara Enem](https://www.preparaenem.com/geografia)
-- [Catalogue of Life](https://www.catalogueoflife.org/)
-- [Technical Documentation](https://techdocs.gbif.org/en/)
-- [Youtube](https://www.youtube.com/)
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/current/)
-- [PostGIS Manual](https://postgis.net/docs/manual-3.4/using_postgis_dbmanagement.html#Point)
-- [PostgreSQL Tutorial](https://www.postgresqltutorial.com/)
-- [pgPedia](https://pgpedia.info/)
+- [IUCN Red List of Threatened Species](https://www.iucnredlist.org/);
+- [WWF Brasil](https://www.wwf.org.br/);
+- [Prepara Enem](https://www.preparaenem.com/geografia/biomas-brasil.htm);
+- [Catalogue of Life](https://www.catalogueoflife.org/);
+- [Technical Documentation](https://techdocs.gbif.org/en/);
+- [Youtube](https://www.youtube.com/);
+- [Google Maps](https://www.google.com/maps/);
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/current/);
+- [PostGIS Manual](https://postgis.net/docs/manual-3.4/using_postgis_dbmanagement.html#Point);
+- [PostgreSQL Tutorial](https://www.postgresqltutorial.com/);
+- [pgPedia](https://pgpedia.info/).

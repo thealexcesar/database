@@ -1,15 +1,26 @@
--- DROP DATABASE seres_vivos;
--- DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat, doenca, especie_doenca, populacao, avistamento, area CASCADE;
--- DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
--- DROP FUNCTION IF EXISTS incrementar_populacao_especie CASCADE;
--- DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
--- DROP VIEW IF EXISTS HierarquiaTaxonomica;
-
+-- DROP DATABASE IF EXISTS seres_vivos;
 -- CREATE DATABASE seres_vivos;
+
+DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat,
+    doenca, especie_doenca, populacao, avistamento, area, interacao_especie, interacao_ecologica CASCADE;
+
+DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
+DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
+DROP FUNCTION IF EXISTS poligono_amazonia CASCADE;
+DROP FUNCTION IF EXISTS poligono_amazonia_brasileira CASCADE;
+
+DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
+DROP VIEW IF EXISTS HierarquiaTaxonomica;
+
+DROP INDEX IF EXISTS index_reino_dominio_idindex_filo_reino_id, index_classe_filo_id, index_ordem_classe_id,
+    index_familia_ordem_id, index_genero_familia_id, index_especie_genero_id, index_especie_habitat_especie_id,
+    index_especie_habitat_habitat_id, index_especie_doenca_especie_id, index_especie_doenca_doenca_id, index_area_habitat_id,
+    index_avistamento_especie_id, index_interacao_especie_especie_id, index_interacao_especie_interacao_ecologica_id;
+
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 /* ENUMS
-----------------------------------------------------------------------------------------------------------------------*/
+--------------------------------------------------------------------------------------------------------------------- */
 CREATE TYPE DOMAINS AS ENUM ('Eukarya', 'Bacteria');
 CREATE TYPE REINOS AS ENUM ('Animalia', 'Monera', 'Protista', 'Fungi', 'Plantae', 'Archaea');
 CREATE TYPE STATUS AS ENUM (
@@ -23,10 +34,10 @@ CREATE TYPE STATUS AS ENUM (
     'Pouco Preocupante',
     'Dados Insuficientes'
 );
-/* End ENUMS ---------------------------------------------------------------------------------------------------------*/
+/* End ENUMS -------------------------------------------------------------------------------------------------------- */
 
 /* Tables
-----------------------------------------------------------------------------------------------------------------------*/
+--------------------------------------------------------------------------------------------------------------------- */
 CREATE TABLE IF NOT EXISTS dominio (
      id SERIAL PRIMARY KEY,
      nome_cientifico DOMAINS NOT NULL UNIQUE DEFAULT 'Eukarya'
@@ -97,14 +108,22 @@ CREATE TABLE IF NOT EXISTS especie (
     atualizado_em DATE NOT NULL DEFAULT CURRENT_DATE,
     genero_id BIGINT,
     migratoria BOOLEAN NOT NULL DEFAULT FALSE,
-    localizacao_pontual geometry(POINT, 4326),
+    localizacao_pontual geometry(POINT, 4326) NOT NULL DEFAULT ST_SetSRID(ST_MakePoint(-4.0965, -63.3176), 4326),
     CONSTRAINT fk_genero_id FOREIGN KEY (genero_id) REFERENCES genero(id) ON DELETE CASCADE
 );
 
+CREATE OR REPLACE FUNCTION poligono_amazonia_brasileira() RETURNS geometry AS $$
+BEGIN
+    RETURN ST_GeomFromText(
+            'POLYGON((5.2631 -60.0518,1.8549 -48.4792,-15.5944 -52.8781,-10.4952 -70.4036,5.2631 -60.0518))', 4326
+           );
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE TABLE IF NOT EXISTS habitat (
     id SERIAL PRIMARY KEY,
-    bioma VARCHAR(100) NOT NULL UNIQUE DEFAULT 'Amazônia',
-    localizacao geometry(POLYGON, 4326) NOT NULL
+    bioma VARCHAR(100) UNIQUE NOT NULL DEFAULT 'Amazônia',
+    localizacao geometry(POLYGON, 4326) NOT NULL DEFAULT poligono_amazonia_brasileira()
 );
 
 CREATE TABLE IF NOT EXISTS especie_habitat (
@@ -132,7 +151,7 @@ CREATE TABLE IF NOT EXISTS especie_doenca (
 
 CREATE TABLE IF NOT EXISTS area (
     id SERIAL PRIMARY KEY,
-    localizacao geometry(POLYGON, 4326) NOT NULL,
+    localizacao geometry(POLYGON, 4326) NOT NULL DEFAULT poligono_amazonia_brasileira(),
     desmatado BOOLEAN DEFAULT FALSE,
     protegido BOOLEAN DEFAULT FALSE,
     habitat_id BIGINT NOT NULL,
@@ -141,8 +160,11 @@ CREATE TABLE IF NOT EXISTS area (
 
 CREATE TABLE IF NOT EXISTS avistamento (
     id SERIAL PRIMARY KEY,
-    quantidade_individuos BIGINT,
     observacao TEXT,
+    altitude INTEGER DEFAULT 10 CHECK(altitude > 0),
+    quantidade_individuos INTEGER NOT NULL NOT NULL DEFAULT 1 CHECK(quantidade_individuos > 0),
+    registrar_individuo BOOLEAN NOT NULL DEFAULT FALSE,
+    localizacao_pontual geometry(POINT, 4326) NOT NULL DEFAULT ST_SetSRID(ST_MakePoint(-1.7312, -62.7151), 4326),
     data_avistamento TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     nome_biologo VARCHAR(100) NOT NULL,
     especie_id BIGINT NOT NULL,
@@ -162,6 +184,42 @@ CREATE TABLE IF NOT EXISTS interacao_especie (
     CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE,
     CONSTRAINT fk_interacao_ecologica FOREIGN KEY (interacao_ecologica_id) REFERENCES interacao_ecologica(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS diversidade_genetica (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    populacao VARCHAR(100) NOT NULL,
+    diversidade_genetica NUMERIC,
+    CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS planta (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    tamanho_corola DECIMAL(5,2) NOT NULL,
+    CONSTRAINT fk_especie_planta FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS polinizador (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    comprimento_proboscide DECIMAL(5,2) NOT NULL,
+    CONSTRAINT fk_especie_polinizador FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS planta_polinizador (
+    id SERIAL PRIMARY KEY,
+    planta_id BIGINT NOT NULL,
+    polinizador_id BIGINT NOT NULL,
+    CONSTRAINT fk_planta FOREIGN KEY (planta_id) REFERENCES planta(id) ON DELETE CASCADE,
+    CONSTRAINT fk_polinizador FOREIGN KEY (polinizador_id) REFERENCES polinizador(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS altitude_raster (
+    id SERIAL PRIMARY KEY,
+    rast geometry(POLYGON, 4326) NOT NULL DEFAULT poligono_amazonia_brasileira(),
+    altitude INTEGER NOT NULL
+);
 /* End Tables ------------------------------------------------------------------------------------------------------- */
 
 /* Functions
@@ -171,10 +229,10 @@ BEGIN
     UPDATE especie
     SET status_conservacao = CASE
         WHEN NEW.populacao = 0 THEN 'Extinto'::STATUS
-        WHEN NEW.populacao BETWEEN 1 AND 500 THEN 'Criticamente em Perigo'::STATUS
-        WHEN NEW.populacao BETWEEN 501 AND 1000 THEN 'Em Perigo'::STATUS
-        WHEN NEW.populacao BETWEEN 1001 AND 1500 THEN 'Vulnerável'::STATUS
-        WHEN NEW.populacao BETWEEN 1501 AND 2000 THEN 'Quase Ameaçado'::STATUS
+        WHEN NEW.populacao <= 50 THEN 'Criticamente em Perigo'::STATUS
+        WHEN NEW.populacao <= 250 THEN 'Em Perigo'::STATUS
+        WHEN NEW.populacao <= 1000 THEN 'Vulnerável'::STATUS
+        WHEN NEW.populacao <= 2000 THEN 'Quase Ameaçado'::STATUS
         WHEN NEW.populacao > 2000 THEN 'Pouco Preocupante'::STATUS
         ELSE 'Dados Insuficientes'::STATUS
     END
@@ -187,15 +245,16 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 CREATE OR REPLACE FUNCTION incrementar_populacao_especie() RETURNS TRIGGER AS $$
 BEGIN
-    UPDATE especie SET populacao = especie.populacao + NEW.quantidade_individuos
-    WHERE especie.id = NEW.especie_id;
-    RAISE NOTICE 'População de espécie incrementada pelo biólogo: %', NEW.nome_biologo;
+    IF NEW.registrar_individuo THEN
+        UPDATE especie SET populacao = especie.populacao + NEW.quantidade_individuos
+        WHERE especie.id = NEW.especie_id;
+        RAISE NOTICE 'População de espécie incrementada pelo biólogo: %', NEW.nome_biologo;
+    END IF;
     RETURN NEW;
-END
-$$ language plpgsql;
+END;
+$$ LANGUAGE plpgsql;
 /* End Functions ---------------------------------------------------------------------------------------------------- */
 
 /* Triggers
@@ -205,11 +264,6 @@ CREATE TRIGGER atualiza_status_conservacao_especie
     FOR EACH ROW
     EXECUTE FUNCTION atualizar_status_conservacao();
 
-/* OBS:
-------------------------------------------------------------------------------------------------------------------------
- Entendemos que uma espécie não deveria ser incrementada sempre que avistada. Pois, ela pode já estar no número de
- populações registrada. Porém, para este trabalho, consideremos que todas as avistadas não estavam contadas no sistema.
---------------------------------------------------------------------------------------------------------------------- */
 CREATE TRIGGER incrementa_species_quando_avistadas
     AFTER INSERT ON avistamento
     FOR EACH ROW
@@ -220,16 +274,26 @@ CREATE TRIGGER incrementa_species_quando_avistadas
 --------------------------------------------------------------------------------------------------------------------- */
 CREATE VIEW HierarquiaTaxonomica AS
 SELECT
-    e.id AS especie_id,
-    e.nome_cientifico AS especie,
-    e.nome AS nome_comum,
-    e.migratoria AS migratoria,
-    r.nome AS reino,
-    f.nome AS filo,
-    c.nome AS classe,
-    o.nome AS ordem,
-    fa.nome AS familia,
-    g.nome AS genero
+    e.id                  AS especie_id,
+    e.nome_cientifico     AS especie,
+    e.nome                AS nome_comum,
+    e.descricao           AS descricao,
+    e.migratoria          AS migratoria,
+    e.localizacao_pontual AS localizacao_pontual,
+    e.status_conservacao  AS status_conservacao,
+    r.nome_cientifico     AS reino,
+    r.nome                AS reino_nome,
+    r.descricao           AS reino_descricao,
+    f.nome_cientifico     AS filo,
+    f.nome                AS filo_nome,
+    c.nome_cientifico     AS classe,
+    c.nome                AS classe_nome,
+    o.nome_cientifico     AS ordem,
+    o.nome                AS ordem_nome,
+    fa.nome_cientifico    AS familia,
+    fa.nome               AS familia_nome,
+    g.nome_cientifico     AS genero,
+    g.nome                AS genero_nome
 FROM especie e
     INNER JOIN Genero g ON e.genero_id = g.id
     INNER JOIN Familia fa ON g.familia_id = fa.id
