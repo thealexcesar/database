@@ -232,8 +232,7 @@ e a integridade, views para facilitar o acesso, funções e triggers para automa
 - [PostGIS](https://postgis.net/): Extensão do PostgreSQL utilizada para trabalhar com dados geográficos (Geometry).
 
 ## Referências
-- [ IUCN Red List of Threatened Species](https://www.iucnredlist.org/)
-- <a href="https://www.iucnredlist.org/" title="![IUCN Red List](images/img.png) IUCN Red List of Threatened Species">IUCN Red List of Threatened Species</a>
+- [IUCN Red List of Threatened Species](https://www.iucnredlist.org/)
 - [WWF Brasil](https://www.wwf.org.br/)
 - [Prepara Enem](https://www.preparaenem.com/geografia)
 - [Catalogue of Life](https://www.catalogueoflife.org/)
