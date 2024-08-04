@@ -53,45 +53,45 @@ e a integridade, views para facilitar o acesso, funções e triggers para automa
 - [X] Quais são as áreas prioritárias para conservação de uma determinada espécie?
 
 ## Casos de Uso para Guia do Projeto
-- [ ] **Biólogo Estudando a Impacto do Desmatamento em Primatas**:
-  - [ ] Observou uma diminuição drástica na população de macacos bugios em áreas de floresta fragmentada.
-  - [ ] Consulta: "Quais doenças emergentes estão associadas a primatas em áreas de desmatamento e qual a taxa de mortalidade dessas doenças?"
+- [X] **Biólogo Estudando a Impacto do Desmatamento em Primatas**:
+  - Observou uma diminuição drástica na população de macacos bugios em áreas de floresta fragmentada.
+  - Consulta: "Quais doenças emergentes estão associadas a primatas em áreas de desmatamento e qual a taxa de mortalidade dessas doenças?"
 
-- [ ] **Bióloga Estudando a Distribuição Geográfica de Uma Espécie Invasora**:
-  - [ ] Identificou uma nova população de uma espécie de peixe exótico em um rio de uma bacia hidrográfica antes não registrada.
-  - [ ] Consulta: "Quais outras espécies nativas coexistem com essa espécie invasora e quais as possíveis interações ecológicas?"
+- [X] **Bióloga Estudando a Distribuição Geográfica de Uma Espécie Invasora**:
+  - Identificou uma nova população de uma espécie de peixe exótico em um rio de uma bacia hidrográfica antes não registrada.
+  - Consulta: "Quais outras espécies nativas coexistem com essa espécie invasora e quais as possíveis interações ecológicas?"
 
-- [ ] **Biólogo Conservacionista Analisando o Status de Conservação de Répteis**:
-  - [ ] Notou uma diminuição nas populações de diversas espécies de serpentes em uma região de caatinga.
-  - [ ] Consulta: "Quais espécies de serpentes da caatinga estão listadas como vulneráveis ou em perigo de extinção e quais as principais ameaças a essas espécies?"
+- [X] **Biólogo Conservacionista Analisando o Status de Conservação de Répteis**:
+  - Notou uma diminuição nas populações de diversas espécies de serpentes em uma região de caatinga.
+  - Consulta: "Quais espécies de serpentes da caatinga estão listadas como vulneráveis ou em perigo de extinção e quais as principais ameaças a essas espécies?"
 
-- [ ] **Biólogo Evolutivo Estudando a Diversificação de Aves**:
-  - [ ] Hipótese: As aves de uma determinada família se diversificaram mais rapidamente em áreas montanhosas.
-  - [ ] Consulta: "Qual o número de espécies por gênero em uma determinada família de aves em diferentes altitudes?"
+- [X] **Biólogo Evolutivo Estudando a Diversificação de Aves**:
+  - Hipótese: As aves de uma determinada família se diversificaram mais rapidamente em áreas montanhosas.
+  - Consulta: "Qual o número de espécies por gênero em uma determinada família de aves em diferentes altitudes?"
 
-- [ ] **Biólogo Molecular Estudando a Diversidade Genética de Uma Espécie**:
-  - [ ] Objetivo: Comparar a diversidade genética de populações isoladas de uma espécie de mamífero.
-  - [ ] Consulta: "Qual a média de diversidade genética para cada população de uma determinada espécie?"
+- [X] **Biólogo Molecular Estudando a Diversidade Genética de Uma Espécie**:
+  - Objetivo: Comparar a diversidade genética de populações isoladas de uma espécie de mamífero.
+  - Consulta: "Qual a média de diversidade genética para cada população de uma determinada espécie?"
 
-- [ ] **Estudando a Relação entre Mudanças Climáticas e Distribuição de Espécies**:
-  - [ ] Hipótese: Espécies de alta montanha estão migrando para altitudes menores devido ao aquecimento global.
-  - [ ] Consulta: "Qual a mudança média na altitude das populações de uma espécie de ave de montanha nos últimos 50 anos?"
+- [X] **Estudando a Relação entre Mudanças Climáticas e Distribuição de Espécies**:
+  - Hipótese: Espécies de alta montanha estão migrando para altitudes menores devido ao aquecimento global.
+  - Consulta: "Qual a mudança média na altitude das populações de uma espécie de ave de montanha nos últimos 50 anos?"
 
-- [ ] **Analisando a Eficácia de Áreas Protegidas**:
-  - [ ] Questão: As áreas protegidas estão sendo eficazes em proteger espécies ameaçadas?
-  - [ ] Consulta: "Qual a taxa de declínio populacional de espécies ameaçadas dentro e fora de áreas protegidas?"
+- [X] **Analisando a Eficácia de Áreas Protegidas**:
+  - Questão: As áreas protegidas estão sendo eficazes em proteger espécies ameaçadas?
+  - Consulta: "Qual a taxa de declínio populacional de espécies ameaçadas dentro e fora de áreas protegidas?"
 
-- [ ] **Investigando a Coevolução entre Plantas e Polinizadores**:
-  - [ ] Hipótese: Plantas e seus polinizadores coevoluíram, desenvolvendo características morfológicas complementares.
-  - [ ] Consulta: "Qual a relação entre o tamanho da corola de uma flor e o comprimento da probóscide de seus polinizadores?"
+- [X] **Investigando a Coevolução entre Plantas e Polinizadores**:
+  - Hipótese: Plantas e seus polinizadores coevoluíram, desenvolvendo características morfológicas complementares.
+  - Consulta: "Qual a relação entre o tamanho da corola de uma flor e o comprimento da probóscide de seus polinizadores?"
 
-- [ ] **Analisando a Diversidade Microbiana em Diferentes Ambientes**:
-  - [ ] Objetivo: Comparar a diversidade de bactérias em solos de diferentes tipos de floresta.
-  - [ ] Consulta: "Qual a riqueza de espécies bacterianas em solos de mata atlântica e amazônica?"
+- [X] **Analisando a Diversidade Microbiana em Diferentes Ambientes**:
+  - Objetivo: Comparar a diversidade de bactérias em solos de diferentes tipos de floresta.
+  - Consulta: "Qual a riqueza de espécies bacterianas em solos de mata atlântica e amazônica?"
 
-- [ ] **Estudando o Impacto de Pesticidas na Fauna Aquática**:
-  - [ ] Questão: Quais são os efeitos de diferentes pesticidas na abundância de invertebrados aquáticos?
-  - [ ] Consulta: "Qual a redução na abundância de macroinvertebrados em rios próximos a áreas agrícolas?"
+- [X] **Estudando o Impacto de Pesticidas na Fauna Aquática**:
+  - Questão: Quais são os efeitos de diferentes pesticidas na abundância de invertebrados aquáticos?
+  - Consulta: "Qual a redução na abundância de macroinvertebrados em rios próximos a áreas agrícolas?"
 </details>
 
 ---
@@ -217,23 +217,29 @@ e a integridade, views para facilitar o acesso, funções e triggers para automa
 
 </details>
 
-
 ### Relacionamentos Entre as Tabelas
-- **dominio -> reino**: Um domínio pode ter múltiplos reinos.
-- **reino -> filo**: Um reino pode ter múltiplos filos.
-- **filo -> classe**: Um filo pode ter múltiplas classes.
-- **classe -> ordem**: Uma classe pode ter múltiplas ordens.
-- **ordem -> familia**: Uma ordem pode ter múltiplas famílias.
-- **familia -> genero**: Uma família pode ter múltiplos gêneros.
-- **genero -> especie**: Um gênero pode ter múltiplas espécies.
+- **dominio -> reino**: Um domínio deve ter pelo menos um reino.
+- **reino -> filo**: Um reino deve ter pelo menos um filo.
+- **filo -> classe**: Um filo deve ter pelo menos uma classe.
+- **classe -> ordem**: Uma classe deve ter pelo menos uma ordem.
+- **ordem -> familia**: Uma ordem deve ter pelo menos um família.
+- **familia -> genero**: Uma família pode ter muitos gêneros.
+- **genero -> especie**: Um gênero pode ter muitas espécies.
 
 ## Tecnologias Utilizadas
-  - [Vertabelo](https://my.vertabelo.com/drive): Utilizado para a modelagem do banco de dados
-  - [PostgreSQL](https://www.postgresql.org/): SGBD - Banco de dados relacional utilizado para armazenar os dados.
-  - [PostGIS](https://postgis.net/): Extensão do PostgreSQL utilizada para trabalhar com dados geográficos (Geometry).
+- [Vertabelo](https://my.vertabelo.com/drive): Utilizado para a modelagem do banco de dados
+- [PostgreSQL](https://www.postgresql.org/): SGBD - Banco de dados relacional utilizado para armazenar os dados.
+- [PostGIS](https://postgis.net/): Extensão do PostgreSQL utilizada para trabalhar com dados geográficos (Geometry).
 
 ## Referências
+- [ IUCN Red List of Threatened Species](https://www.iucnredlist.org/)
+- <a href="https://www.iucnredlist.org/" title="![IUCN Red List](images/img.png) IUCN Red List of Threatened Species">IUCN Red List of Threatened Species</a>
 - [WWF Brasil](https://www.wwf.org.br/)
+- [Prepara Enem](https://www.preparaenem.com/geografia)
 - [Catalogue of Life](https://www.catalogueoflife.org/)
 - [Technical Documentation](https://techdocs.gbif.org/en/)
 - [Youtube](https://www.youtube.com/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/current/)
+- [PostGIS Manual](https://postgis.net/docs/manual-3.4/using_postgis_dbmanagement.html#Point)
+- [PostgreSQL Tutorial](https://www.postgresqltutorial.com/)
+- [pgPedia](https://pgpedia.info/)
