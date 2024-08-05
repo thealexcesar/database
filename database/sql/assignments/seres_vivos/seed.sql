@@ -483,9 +483,80 @@ VALUES
 (ST_GeomFromText('POLYGON((-48 -16, -48 -15, -46 -15, -46 -16, -48 -16))', 4326), 1500),
 (ST_GeomFromText('POLYGON((-50 -17, -50 -16, -48 -16, -48 -17, -50 -17))', 4326), 2000);
 
-INSERT INTO ameaca (descricao) VALUES ('Desmatamento'), ('Perda de Habitat'), ('Caça Ilegal');
+INSERT INTO ameaca (descricao)
+VALUES ('Desmatamento'), ('Perda de habitat')
+ON CONFLICT (descricao) DO NOTHING;
 
-INSERT INTO especie_ameaca(especie_id, ameaca_id) VALUES
-    (1, (SELECT id FROM ameaca WHERE descricao = 'Desmatamento')),
-    (1, (SELECT id FROM ameaca WHERE descricao = 'Perda de Habitat')),
-    (1, (SELECT id FROM ameaca WHERE descricao = 'Caça Ilegal'));
+-- Verificar os dados na tabela especie
+SELECT * FROM especie WHERE nome_cientifico IN ('Bothrops erythromelas', 'Micrurus ibiboboca');
+
+-- Verificar os dados na tabela genero
+SELECT * FROM genero WHERE nome_cientifico IN ('Bothrops', 'Micrurus');
+
+-- Verificar os dados na tabela familia
+SELECT * FROM familia WHERE nome_cientifico IN ('Viperidae', 'Elapidae');
+
+-- Verificar os dados na tabela ordem
+SELECT * FROM ordem WHERE nome_cientifico = 'Squamata';
+
+-- Verificar os dados na tabela classe
+SELECT * FROM classe WHERE nome_cientifico = 'Reptilia';
+
+-- Verificar os dados na tabela filo
+SELECT * FROM filo WHERE nome_cientifico = 'Chordata';
+
+-- Verificar os dados na tabela reino
+SELECT * FROM reino WHERE nome_cientifico = 'Animalia';
+
+-- Verificar os dados na tabela dominio
+SELECT * FROM dominio WHERE nome_cientifico = 'Eukarya';
+
+-- Inserir dados no habitat, se ainda não estiverem lá
+INSERT INTO habitat (bioma, localizacao)
+VALUES ('Caatinga', ST_GeomFromText('POLYGON((-39.0 -9.0, -39.0 -4.0, -36.0 -4.0, -36.0 -9.0, -39.0 -9.0))', 4326))
+ON CONFLICT (bioma) DO NOTHING;
+
+-- Inserir dados na tabela especie_habitat
+INSERT INTO especie_habitat (especie_id, habitat_id)
+VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Bothrops erythromelas'), (SELECT id FROM habitat WHERE bioma = 'Caatinga')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Micrurus ibiboboca'), (SELECT id FROM habitat WHERE bioma = 'Caatinga'))
+ON CONFLICT DO NOTHING;
+
+-- Inserir dados na tabela ameaca
+INSERT INTO ameaca (descricao)
+VALUES ('Desmatamento'), ('Perda de habitat')
+ON CONFLICT (descricao) DO NOTHING;
+
+-- Inserir dados na tabela especie_ameaca
+INSERT INTO especie_ameaca (especie_id, ameaca_id)
+VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Bothrops erythromelas'), (SELECT id FROM ameaca WHERE descricao = 'Desmatamento')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Micrurus ibiboboca'), (SELECT id FROM ameaca WHERE descricao = 'Perda de habitat'))
+ON CONFLICT DO NOTHING;
+
+INSERT INTO especie_ameaca (especie_id, ameaca_id)
+VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Bothrops erythromelas'), (SELECT id FROM ameaca WHERE descricao = 'Desmatamento')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Micrurus ibiboboca'), (SELECT id FROM ameaca WHERE descricao = 'Perda de habitat'))
+ON CONFLICT DO NOTHING;
+
+-- Inserir na tabela ordem
+INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id)
+VALUES
+('Squamata', 'Escamados', 'Ordem dos escamados', (SELECT id FROM classe WHERE nome_cientifico = 'Reptilia'))
+ON CONFLICT (nome_cientifico) DO NOTHING;
+
+-- Inserir na tabela familia
+INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id)
+VALUES
+('Viperidae', 'Viperídeos', 'Família dos viperídeos', (SELECT id FROM ordem WHERE nome_cientifico = 'Squamata')),
+('Elapidae', 'Elapídeos', 'Família dos elapídeos', (SELECT id FROM ordem WHERE nome_cientifico = 'Squamata'))
+ON CONFLICT (nome_cientifico) DO NOTHING;
+
+-- Inserir na tabela genero
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id)
+VALUES
+('Bothrops', 'Bothrops', 'Gênero Bothrops', (SELECT id FROM familia WHERE nome_cientifico = 'Viperidae')),
+('Micrurus', 'Micrurus', 'Gênero Micrurus', (SELECT id FROM familia WHERE nome_cientifico = 'Elapidae'))
+ON CONFLICT (nome_cientifico) DO NOTHING;

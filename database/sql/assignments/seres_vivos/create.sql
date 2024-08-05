@@ -248,6 +248,8 @@ CREATE TABLE IF NOT EXISTS especie_ameaca (
     CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE,
     CONSTRAINT fk_ameaca FOREIGN KEY (ameaca_id) REFERENCES ameaca(id) ON DELETE CASCADE
 );
+ALTER TABLE ameaca ADD CONSTRAINT unique_ameaca_descricao UNIQUE (descricao);
+
 /* End Tables ------------------------------------------------------------------------------------------------------- */
 
 /* Functions
@@ -321,7 +323,7 @@ EXECUTE FUNCTION atualizar_avistamento_altitude();
 
 /* Views
 --------------------------------------------------------------------------------------------------------------------- */
-CREATE VIEW HierarquiaTaxonomica AS
+CREATE OR REPLACE VIEW HierarquiaTaxonomica AS
 SELECT
     e.id                  AS especie_id,
     e.nome_cientifico     AS especie,

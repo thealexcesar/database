@@ -64,17 +64,24 @@ FROM
 WHERE ie.especie_nativa_id = (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus');
 
 -- 3. ------------------------------------------------------------------------------------------------------------------
-SELECT 
-    (SELECT COUNT(DISTINCT eh.especie_id)
-     FROM especie_habitat eh
-     INNER JOIN habitat h ON eh.habitat_id = h.id
-     WHERE h.bioma = 'Mata Atlântica') AS riqueza_especies_mata_atlantica,
-    
-    (SELECT COUNT(DISTINCT eh.especie_id)
-     FROM especie_habitat eh
-     INNER JOIN habitat h ON eh.habitat_id = h.id
-     WHERE h.bioma = 'Amazônia') AS riqueza_especies_amazonia;
-
+SELECT
+    ht.especie,
+    ht.nome_comum,
+    ht.status_conservacao,
+    a.descricao AS ameaca
+FROM
+    HierarquiaTaxonomica ht
+    INNER JOIN especie_habitat eh ON ht.especie_id = eh.especie_id
+    INNER JOIN habitat h ON eh.habitat_id = h.id
+    INNER JOIN especie_ameaca ea ON ht.especie_id = ea.especie_id
+    INNER JOIN ameaca a ON ea.ameaca_id = a.id
+WHERE
+    ht.classe = 'Reptilia' AND
+    ht.ordem = 'Serpentes' AND
+    h.bioma = 'Caatinga' AND
+    ht.status_conservacao IN ('Vulnerável', 'Em Perigo')
+ORDER BY
+    ht.especie;
 
 -- 4. ------------------------------------------------------------------------------------------------------------------
 WITH especie_altitude AS (
@@ -231,39 +238,6 @@ FROM HierarquiaTaxonomica ht
 WHERE ht.reino = 'Monera'
   AND h.bioma IN ('Mata Atlântica', 'Amazônia Brasileira')
 GROUP BY h.bioma;
-
--- Listando espécies da caatinga vulneráveis ou em perigo de extinção - FIXME!
-SELECT
-    e.nome_cientifico AS especie,
-    e.status_conservacao,
-    e.descricao AS ameacas
-FROM
-    especie e
-    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
-    INNER JOIN habitat h ON eh.habitat_id = h.id
-WHERE
-    h.bioma = 'Caatinga'
-AND
-    (e.status_conservacao = 'Vulnerável' OR e.status_conservacao = 'Em Perigo')
-AND
-    e.nome_cientifico IN ('Bothrops atrox', 'Bothrops jararaca', 'Bothrops erythromelas');
-
-
--- Listando espécies da caatinga vulneráveis ou em perigo de extinção
-SELECT
-    e.nome_cientifico AS especie,
-    e.status_conservacao,
-    e.descricao AS ameacas
-FROM
-    especie e
-    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
-    INNER JOIN habitat h ON eh.habitat_id = h.id
-WHERE
-    h.bioma = 'Caatinga'
-AND
-    (e.status_conservacao = 'Vulnerável' OR e.status_conservacao = 'Em Perigo')
-AND
-    e.nome_cientifico IN ('Bothrops atrox', 'Bothrops jararaca', 'Bothrops erythromelas');
 
 -- 10. -----------------------------------------------------------------------------------------------------------------
 SELECT
