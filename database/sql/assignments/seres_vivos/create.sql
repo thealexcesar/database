@@ -2,7 +2,7 @@
 -- CREATE DATABASE seres_vivos;
 
 DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat,
-    doenca, especie_doenca, populacao, avistamento, area, interacao_especie, interacao_ecologica CASCADE;
+    doenca, especie_doenca, populacao, avistamento, area, interacao_especie, interacao_ecologica, ameaca, especie_ameaca CASCADE;
 
 DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
 DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
@@ -234,6 +234,19 @@ CREATE TABLE IF NOT EXISTS diversidade_genetica (
     populacao VARCHAR(100) NOT NULL,
     diversidade_genetica NUMERIC,
     CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ameaca (
+    id SERIAL PRIMARY KEY,
+    descricao TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS especie_ameaca (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    ameaca_id BIGINT NOT NULL,
+    CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE,
+    CONSTRAINT fk_ameaca FOREIGN KEY (ameaca_id) REFERENCES ameaca(id) ON DELETE CASCADE
 );
 /* End Tables ------------------------------------------------------------------------------------------------------- */
 
