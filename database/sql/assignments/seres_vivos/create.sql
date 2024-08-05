@@ -235,29 +235,6 @@ CREATE TABLE IF NOT EXISTS diversidade_genetica (
     diversidade_genetica NUMERIC,
     CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
 );
-
-CREATE TABLE IF NOT EXISTS planta (
-    id SERIAL PRIMARY KEY,
-    especie_id BIGINT NOT NULL,
-    tamanho_corola DECIMAL(5,2) NOT NULL,
-    CONSTRAINT fk_especie_planta FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS polinizador (
-    id SERIAL PRIMARY KEY,
-    especie_id BIGINT NOT NULL,
-    comprimento_proboscide DECIMAL(5,2) NOT NULL,
-    CONSTRAINT fk_especie_polinizador FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS planta_polinizador (
-    id SERIAL PRIMARY KEY,
-    planta_id BIGINT NOT NULL,
-    polinizador_id BIGINT NOT NULL,
-    CONSTRAINT fk_planta FOREIGN KEY (planta_id) REFERENCES planta(id) ON DELETE CASCADE,
-    CONSTRAINT fk_polinizador FOREIGN KEY (polinizador_id) REFERENCES polinizador(id) ON DELETE CASCADE
-);
-
 /* End Tables ------------------------------------------------------------------------------------------------------- */
 
 /* Functions
