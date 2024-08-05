@@ -48,6 +48,7 @@ INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES
     ('Pinopsida', 'Pinopsida', 'Classe de coníferas', (SELECT id FROM filo WHERE nome_cientifico = 'Tracheophyta')),
     ('Liliopsida', 'Monocotiledôneas', 'Plantas com uma folha embrionária', (SELECT id FROM filo WHERE nome_cientifico = 'Angiospermae')),
     ('Magnoliopsida', 'Dicotiledôneas', 'Plantas com dois cotilédones', (SELECT id FROM filo WHERE nome_cientifico = 'Magnoliophyta'));
+
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Gammaproteobacteria', 'Gammaproteobactérias', 'Classe das gammaproteobactérias', (SELECT id FROM filo WHERE nome_cientifico = 'Proteobacteria'));
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Bacilli', 'Bacilos', 'Classe dos bacilos', (SELECT id FROM filo WHERE nome_cientifico = 'Firmicutes'));
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Actinobacteria', 'Actinobactérias', 'Classe das actinobactérias', (SELECT id FROM filo WHERE nome_cientifico = 'Actinobacteria'));
@@ -76,6 +77,7 @@ INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES
     ('Myrtales', 'Mirtales', 'Ordem de plantas dicotiledôneas', (SELECT id FROM classe WHERE nome_cientifico = 'Magnoliopsida')),
     ('Nymphaeales', 'Ninféias', 'Plantas aquáticas', (SELECT id FROM classe WHERE nome_cientifico = 'Magnoliopsida')),
     ('Sapindales', 'Sapindales', 'Ordem de plantas dicotiledôneas', (SELECT id FROM classe WHERE nome_cientifico = 'Magnoliopsida'));
+
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Enterobacterales', 'Enterobacteriais', 'Ordem das enterobacteriais', (SELECT id FROM classe WHERE nome_cientifico = 'Gammaproteobacteria'));
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Lactobacillales', 'Lactobacilales', 'Ordem das lactobacilales', (SELECT id FROM classe WHERE nome_cientifico = 'Bacilli'));
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Clostridiales', 'Clostridiales', 'Ordem das clostridiales', (SELECT id FROM classe WHERE nome_cientifico = 'Bacilli'));
@@ -195,6 +197,7 @@ INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, lo
     ('Dalbergia nigra', 'Jacarandá-da-Bahia', 'Árvore de madeira nobre, endêmica da Mata Atlântica, e criticamente ameaçada.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
     ('Dalbergia frutescens', 'Jacarandá-do-serrado', 'Árvore de madeira nobre, endêmica do Cerrado brasileiro, e vulnerável à extinção.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
     ('Felis catus', 'Gato-doméstico', 'Pequeno felino amplamente domesticado e encontrado em todo o mundo', FALSE, 500000000, ST_GeomFromText('POINT(-23.5290 -46.4859)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Felis'));
+
 INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Escherichia coli', 'E. coli', 'Espécie de bactéria comum', 1000000000, (SELECT id FROM genero WHERE nome_cientifico = 'Escherichia'), FALSE);
 INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Salmonella enterica', 'S. enterica', 'Espécie de bactéria causadora de salmonelose', 500000000, (SELECT id FROM genero WHERE nome_cientifico = 'Salmonella'), FALSE);
 INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Lactobacillus acidophilus', 'L. acidophilus', 'Espécie de bactéria probiótica', 100000000, (SELECT id FROM genero WHERE nome_cientifico = 'Lactobacillus'), FALSE);
@@ -409,7 +412,6 @@ VALUES
 ON CONFLICT (tipo_interacao) DO NOTHING;
 
 
--- Inserir interações entre espécies
 INSERT INTO interacao_especie (especie_nativa_id, especie_invasora_id, interacao_ecologica_id)
 VALUES
 ((SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'),
@@ -487,48 +489,20 @@ INSERT INTO ameaca (descricao)
 VALUES ('Desmatamento'), ('Perda de habitat')
 ON CONFLICT (descricao) DO NOTHING;
 
--- Verificar os dados na tabela especie
-SELECT * FROM especie WHERE nome_cientifico IN ('Bothrops erythromelas', 'Micrurus ibiboboca');
-
--- Verificar os dados na tabela genero
-SELECT * FROM genero WHERE nome_cientifico IN ('Bothrops', 'Micrurus');
-
--- Verificar os dados na tabela familia
-SELECT * FROM familia WHERE nome_cientifico IN ('Viperidae', 'Elapidae');
-
--- Verificar os dados na tabela ordem
-SELECT * FROM ordem WHERE nome_cientifico = 'Squamata';
-
--- Verificar os dados na tabela classe
-SELECT * FROM classe WHERE nome_cientifico = 'Reptilia';
-
--- Verificar os dados na tabela filo
-SELECT * FROM filo WHERE nome_cientifico = 'Chordata';
-
--- Verificar os dados na tabela reino
-SELECT * FROM reino WHERE nome_cientifico = 'Animalia';
-
--- Verificar os dados na tabela dominio
-SELECT * FROM dominio WHERE nome_cientifico = 'Eukarya';
-
--- Inserir dados no habitat, se ainda não estiverem lá
 INSERT INTO habitat (bioma, localizacao)
 VALUES ('Caatinga', ST_GeomFromText('POLYGON((-39.0 -9.0, -39.0 -4.0, -36.0 -4.0, -36.0 -9.0, -39.0 -9.0))', 4326))
 ON CONFLICT (bioma) DO NOTHING;
 
--- Inserir dados na tabela especie_habitat
 INSERT INTO especie_habitat (especie_id, habitat_id)
 VALUES
 ((SELECT id FROM especie WHERE nome_cientifico = 'Bothrops erythromelas'), (SELECT id FROM habitat WHERE bioma = 'Caatinga')),
 ((SELECT id FROM especie WHERE nome_cientifico = 'Micrurus ibiboboca'), (SELECT id FROM habitat WHERE bioma = 'Caatinga'))
 ON CONFLICT DO NOTHING;
 
--- Inserir dados na tabela ameaca
 INSERT INTO ameaca (descricao)
 VALUES ('Desmatamento'), ('Perda de habitat')
 ON CONFLICT (descricao) DO NOTHING;
 
--- Inserir dados na tabela especie_ameaca
 INSERT INTO especie_ameaca (especie_id, ameaca_id)
 VALUES
 ((SELECT id FROM especie WHERE nome_cientifico = 'Bothrops erythromelas'), (SELECT id FROM ameaca WHERE descricao = 'Desmatamento')),
@@ -541,20 +515,17 @@ VALUES
 ((SELECT id FROM especie WHERE nome_cientifico = 'Micrurus ibiboboca'), (SELECT id FROM ameaca WHERE descricao = 'Perda de habitat'))
 ON CONFLICT DO NOTHING;
 
--- Inserir na tabela ordem
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id)
 VALUES
 ('Squamata', 'Escamados', 'Ordem dos escamados', (SELECT id FROM classe WHERE nome_cientifico = 'Reptilia'))
 ON CONFLICT (nome_cientifico) DO NOTHING;
 
--- Inserir na tabela familia
 INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id)
 VALUES
 ('Viperidae', 'Viperídeos', 'Família dos viperídeos', (SELECT id FROM ordem WHERE nome_cientifico = 'Squamata')),
 ('Elapidae', 'Elapídeos', 'Família dos elapídeos', (SELECT id FROM ordem WHERE nome_cientifico = 'Squamata'))
 ON CONFLICT (nome_cientifico) DO NOTHING;
 
--- Inserir na tabela genero
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id)
 VALUES
 ('Bothrops', 'Bothrops', 'Gênero Bothrops', (SELECT id FROM familia WHERE nome_cientifico = 'Viperidae')),
