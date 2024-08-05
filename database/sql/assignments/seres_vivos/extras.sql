@@ -64,21 +64,17 @@ FROM
 WHERE ie.especie_nativa_id = (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus');
 
 -- 3. ------------------------------------------------------------------------------------------------------------------
-SELECT
-    ht.especie,
-    ht.nome_comum,
-    ht.status_conservacao
-FROM
-    HierarquiaTaxonomica ht
-    INNER JOIN especie_habitat eh ON ht.especie_id = eh.especie_id
-    INNER JOIN habitat h ON eh.habitat_id = h.id
-WHERE
-    ht.classe_nome = 'Reptilia' AND
-    ht.ordem_nome = 'Serpentes' AND
-    h.bioma = 'Caatinga' AND
-    ht.status_conservacao IN ('Vulnerável', 'Em Perigo')
-ORDER BY
-    ht.especie;
+SELECT 
+    (SELECT COUNT(DISTINCT eh.especie_id)
+     FROM especie_habitat eh
+     INNER JOIN habitat h ON eh.habitat_id = h.id
+     WHERE h.bioma = 'Mata Atlântica') AS riqueza_especies_mata_atlantica,
+    
+    (SELECT COUNT(DISTINCT eh.especie_id)
+     FROM especie_habitat eh
+     INNER JOIN habitat h ON eh.habitat_id = h.id
+     WHERE h.bioma = 'Amazônia') AS riqueza_especies_amazonia;
+
 
 -- 4. ------------------------------------------------------------------------------------------------------------------
 WITH especie_altitude AS (
@@ -210,87 +206,6 @@ ORDER BY
 
 -----------------------------------------------------------------------------------------------------------------------
 -- 8. Investigando a Coevolução entre Plantas e Polinizadores:
-WITH planta_especie AS (
-    INSERT INTO especie (nome_cientifico, nome, descricao)
-    VALUES ('Rosa sp.', 'Rosa', 'Descrição da Rosa')
-    RETURNING id
-),
-polinizador_especie AS (
-    INSERT INTO especie (nome_cientifico, nome, descricao)
-    VALUES ('Apis mellifera', 'Abelha', 'Descrição da Abelha')
-    RETURNING id
-),
-insert_planta AS (
-    INSERT INTO planta (especie_id, tamanho_corola)
-    SELECT id, 5.0 FROM planta_especie
-    RETURNING id
-),
-insert_polinizador AS (
-    INSERT INTO polinizador (especie_id, comprimento_proboscide)
-    SELECT id, 1.5 FROM polinizador_especie
-    RETURNING id
-)
-
-INSERT INTO planta_polinizador (planta_id, polinizador_id)
-VALUES (
-    (SELECT id FROM insert_planta),
-    (SELECT id FROM insert_polinizador)
-);
-
-WITH lavanda_especie AS (
-    INSERT INTO especie (nome_cientifico, nome, descricao)
-    VALUES ('Lavandula angustifolia', 'Lavanda', 'Descrição da Lavanda')
-    RETURNING id
-),
-abelha_terrestre_especie AS (
-    INSERT INTO especie (nome_cientifico, nome, descricao)
-    VALUES ('Bombus terrestris', 'Abelha terrestre', 'Descrição da Abelha terrestre')
-    RETURNING id
-),
-insert_lavanda AS (
-    INSERT INTO planta (especie_id, tamanho_corola)
-    SELECT id, 3.5 FROM lavanda_especie
-    RETURNING id
-),
-insert_abelha_terrestre AS (
-    INSERT INTO polinizador (especie_id, comprimento_proboscide)
-    SELECT id, 2.0 FROM abelha_terrestre_especie
-    RETURNING id
-)
-
-INSERT INTO planta_polinizador (planta_id, polinizador_id)
-VALUES (
-    (SELECT id FROM insert_lavanda),
-    (SELECT id FROM insert_abelha_terrestre)
-);
-
-WITH girassol_especie AS (
-    INSERT INTO especie (nome_cientifico, nome, descricao)
-    VALUES ('Helianthus annuus', 'Girassol', 'Descrição do Girassol')
-    RETURNING id
-),
-abelha_carpinteira_especie AS (
-    INSERT INTO especie (nome_cientifico, nome, descricao)
-    VALUES ('Xylocopa violacea', 'Abelha carpinteira', 'Descrição da Abelha carpinteira')
-    RETURNING id
-),
-insert_girassol AS (
-    INSERT INTO planta (especie_id, tamanho_corola)
-    SELECT id, 7.0 FROM girassol_especie
-    RETURNING id
-),
-insert_abelha_carpinteira AS (
-    INSERT INTO polinizador (especie_id, comprimento_proboscide)
-    SELECT id, 2.5 FROM abelha_carpinteira_especie
-    RETURNING id
-)
-
-INSERT INTO planta_polinizador (planta_id, polinizador_id)
-VALUES (
-    (SELECT id FROM insert_girassol),
-    (SELECT id FROM insert_abelha_carpinteira)
-);
-
 SELECT
     e_planta.nome AS planta,
     p.tamanho_corola,
