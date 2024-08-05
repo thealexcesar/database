@@ -1,27 +1,6 @@
--- DROP DATABASE IF EXISTS seres_vivos;
--- CREATE DATABASE seres_vivos;
-
-DROP TABLE IF EXISTS dominio, reino, filo, classe, ordem, familia, genero, especie, habitat, especie_habitat,
-    doenca, especie_doenca, populacao, avistamento, area, interacao_especie, interacao_ecologica, ameaca, especie_ameaca CASCADE;
-
-DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
-DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
-DROP FUNCTION IF EXISTS poligono_amazonia CASCADE;
-DROP FUNCTION IF EXISTS poligono_amazonia_brasileira CASCADE;
-DROP FUNCTION IF EXISTS atualizar_avistamento_altitude() CASCADE;
-
-DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
-DROP VIEW IF EXISTS HierarquiaTaxonomica;
-
-DROP INDEX IF EXISTS index_reino_dominio_idindex_filo_reino_id, index_classe_filo_id, index_ordem_classe_id,
-    index_familia_ordem_id, index_genero_familia_id, index_especie_genero_id, index_especie_habitat_especie_id,
-    index_especie_habitat_habitat_id, index_especie_doenca_especie_id, index_especie_doenca_doenca_id, index_area_habitat_id,
-    index_avistamento_especie_id, index_interacao_especie_especie_id, index_interacao_especie_interacao_ecologica_id;
-
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-/* ENUMS
---------------------------------------------------------------------------------------------------------------------- */
+-- ENUMS ---------------------------------------------------------------------------------------------------------------------
 CREATE TYPE DOMAINS AS ENUM ('Eukarya', 'Bacteria');
 CREATE TYPE REINOS AS ENUM ('Animalia', 'Monera', 'Protista', 'Fungi', 'Plantae', 'Archaea');
 CREATE TYPE STATUS AS ENUM (
@@ -35,10 +14,8 @@ CREATE TYPE STATUS AS ENUM (
     'Pouco Preocupante',
     'Dados Insuficientes'
 );
-/* End ENUMS -------------------------------------------------------------------------------------------------------- */
 
-/* Tables
---------------------------------------------------------------------------------------------------------------------- */
+-- Tabelas ---------------------------------------------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS dominio (
      id SERIAL PRIMARY KEY,
      nome_cientifico DOMAINS NOT NULL UNIQUE DEFAULT 'Eukarya'
@@ -250,10 +227,7 @@ CREATE TABLE IF NOT EXISTS especie_ameaca (
 );
 ALTER TABLE ameaca ADD CONSTRAINT unique_ameaca_descricao UNIQUE (descricao);
 
-/* End Tables ------------------------------------------------------------------------------------------------------- */
-
-/* Functions
---------------------------------------------------------------------------------------------------------------------- */
+-- Funções ---------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION atualizar_status_conservacao() RETURNS TRIGGER AS $$
 BEGIN
     UPDATE especie
@@ -301,10 +275,8 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
-/* End Functions ---------------------------------------------------------------------------------------------------- */
 
-/* Triggers
---------------------------------------------------------------------------------------------------------------------- */
+-- Triggers ---------------------------------------------------------------------------------------------------------------------
 CREATE TRIGGER atualiza_status_conservacao_especie
     AFTER INSERT OR UPDATE OF populacao ON especie
     FOR EACH ROW
@@ -319,10 +291,8 @@ CREATE TRIGGER trigger_atualizar_avistamento_altitude
 AFTER INSERT ON altitude_raster
 FOR EACH ROW
 EXECUTE FUNCTION atualizar_avistamento_altitude();
-/* End Triggers ----------------------------------------------------------------------------------------------------- */
 
-/* Views
---------------------------------------------------------------------------------------------------------------------- */
+-- Views ---------------------------------------------------------------------------------------------------------------------
 CREATE OR REPLACE VIEW HierarquiaTaxonomica AS
 SELECT
     e.id                  AS especie_id,
@@ -352,10 +322,8 @@ FROM especie e
     INNER JOIN classe c ON o.classe_id = c.id
     INNER JOIN filo f ON c.filo_id = f.id
     INNER JOIN reino r ON f.reino_id = r.id;
-/* End Views -------------------------------------------------------------------------------------------------------- */
 
-/* Index
---------------------------------------------------------------------------------------------------------------------- */
+-- Index ---------------------------------------------------------------------------------------------------------------------
 CREATE INDEX index_reino_dominio_id ON reino(dominio_id);
 CREATE INDEX index_filo_reino_id ON filo(reino_id);
 CREATE INDEX index_classe_filo_id ON classe(filo_id);
