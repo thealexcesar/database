@@ -1,4 +1,5 @@
--- Aves migratórias que passam pela Amazônia brasileira ----------------------------------------------------------------
+-- 1º Distribuição Geográfica e Ecologia ----------------------------------------------------------------
+-- A) Aves migratórias que passam pela Amazônia brasileira ----------------------------------------------------------------
 SELECT DISTINCT ON (ht.especie)
     ht.especie,
     ht.nome_comum,
@@ -13,7 +14,7 @@ WHERE
     AND ht.classe = 'Aves'
     AND ST_Within(h.localizacao, poligono_amazonia_brasileira());
 
--- Densidade populacional de onças-pintadas em áreas protegidas do Cerrado ---------------------------------------------
+-- B) Densidade populacional de onças-pintadas em áreas protegidas do Cerrado ---------------------------------------------
 SELECT
     e.nome_cientifico, SUM(e.populacao) AS total,
     ROUND(CAST(SUM(ST_Area(a.localizacao::geography)) / 1000000.0 AS numeric), 2) AS area_km2,
@@ -30,7 +31,7 @@ WHERE
 GROUP BY
     e.nome_cientifico;
 
--- Espécies de plantas endêmicas da Mata Atlântica e ameaçadas de extinção ---------------------------------------------
+-- C) Espécies de plantas endêmicas da Mata Atlântica e ameaçadas de extinção ---------------------------------------------
 SELECT
     ht.especie, ht.nome_comum, ht.descricao, ht.reino_descricao
 FROM
@@ -43,7 +44,8 @@ WHERE
     AND ht.status_conservacao IN ('Criticamente em Perigo', 'Em Perigo', 'Vulnerável')
     AND translate(lower(ht.descricao), 'ê', 'e') ILIKE '%endemica%';
 
--- Doenças que acometem principalmente primatas em áreas de desmatamento -----------------------------------------------
+-- 2º Doenças e Saúde Animal ----------------------------------------------------------------
+-- A) Doenças que acometem principalmente primatas em áreas de desmatamento -----------------------------------------------
 SELECT
     ht.especie AS especie,
     CASE
@@ -62,7 +64,7 @@ GROUP BY
 ORDER BY
     ht.ordem_nome = 'Primatas' DESC, quantidade_especies DESC, ht.especie;
 
--- Taxa de mortalidade por determinada doença em uma espécie específica ------------------------------------------------
+-- B) Taxa de mortalidade por determinada doença em uma espécie específica ------------------------------------------------
 SELECT
     e.nome_cientifico AS especie,
     d.nome AS doenca,
@@ -75,7 +77,8 @@ FROM
 WHERE
     d.nome = 'Doença de Chagas' AND e.id = 2;
 
--- Gêneros mais diversos da família Felidae ----------------------------------------------------------------------------
+-- 3º Evolução e Filogenia ----------------------------------------------------------------
+-- A) Gêneros mais diversos da família Felidae ----------------------------------------------------------------------------
 SELECT
     ht.genero, COUNT(ht.especie_id) AS numero_de_especies
 FROM
@@ -87,7 +90,8 @@ GROUP BY
 ORDER BY
     numero_de_especies DESC;
 
--- Evolução da população de uma espécie ao longo dos anos --------------------------------------------------------------
+-- 4º Monitoramento e Conservação ----------------------------------------------------------------
+-- A) Evolução da população de uma espécie ao longo dos anos --------------------------------------------------------------
 SELECT
     especie, ano,
     COALESCE(populacao_anterior, 0) AS populacao_anterior,
@@ -120,7 +124,7 @@ ORDER BY
     ano DESC, evolucao DESC, especie;
 
 
--- Áreas prioritárias para conservação de uma determinada espécie ------------------------------------------------------
+-- B) Áreas prioritárias para conservação de uma determinada espécie ------------------------------------------------------
 SELECT
     h.bioma, h.bioma, ht.especie,
     ht.status_conservacao,
@@ -136,29 +140,3 @@ WHERE
     AND a.protegido = TRUE AND a.desmatado = FALSE
     AND ht.status_conservacao IN ('Criticamente em Perigo', 'Em Perigo', 'Vulnerável');
 
-
--- Consulta para verificar as espécies nativas que coexistem com a espécie invasora e suas interações ecológicas
-SELECT
-    ns.nome_cientifico,
-    ns.nome AS nome_comum,
-    ns.bioma,
-    ie.tipo_interacao AS interacao_ecologica,
-    ie.descricao AS descricao_interacao
-FROM (
-    SELECT DISTINCT e.id AS especie_id, e.nome_cientifico, e.nome, h.bioma
-    FROM especie e
-    INNER JOIN especie_habitat eh ON e.id = eh.especie_id
-    INNER JOIN habitat h ON eh.habitat_id = h.id
-    WHERE e.migratoria = FALSE
-    AND e.id <> (SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri')
-    AND eh.habitat_id IN (
-        SELECT eh.habitat_id
-        FROM especie e
-        INNER JOIN especie_habitat eh ON e.id = eh.especie_id
-        WHERE e.nome_cientifico = 'Pygocentrus nattereri'
-    )
-) AS ns
-LEFT JOIN interacao_especie iee ON (ns.especie_id = iee.especie_nativa_id OR ns.especie_id = iee.especie_invasora_id)
-LEFT JOIN interacao_ecologica ie ON iee.interacao_ecologica_id = ie.id
-WHERE (iee.especie_nativa_id = (SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri')
-    OR iee.especie_invasora_id = (SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'));
