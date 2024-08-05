@@ -173,17 +173,23 @@ CREATE TABLE IF NOT EXISTS avistamento (
 
 CREATE TABLE IF NOT EXISTS interacao_ecologica (
     id SERIAL PRIMARY KEY,
-    tipo_interacao VARCHAR(255) UNIQUE NULL DEFAULT 'Não Definido',
+    harmonica boolean NOT NULL DEFAULT FALSE,
+    tipo_interacao VARCHAR(255) UNIQUE NULL DEFAULT 'Competição',
     descricao VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS interacao_especie (
     id SERIAL PRIMARY KEY,
-    especie_id BIGINT NOT NULL,
+    especie_nativa_id BIGINT NOT NULL,
+    especie_invasora_id BIGINT NOT NULL,
     interacao_ecologica_id BIGINT,
-    CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE,
+    CONSTRAINT fk_especie_nativa FOREIGN KEY (especie_nativa_id) REFERENCES especie(id) ON DELETE CASCADE,
+    CONSTRAINT fk_especie_invasora FOREIGN KEY (especie_invasora_id) REFERENCES especie(id) ON DELETE CASCADE,
     CONSTRAINT fk_interacao_ecologica FOREIGN KEY (interacao_ecologica_id) REFERENCES interacao_ecologica(id) ON DELETE CASCADE
 );
+ALTER TABLE interacao_especie
+    ADD COLUMN avistamento_id BIGINT,
+    ADD CONSTRAINT fk_avistamento FOREIGN KEY (avistamento_id) REFERENCES avistamento(id) ON DELETE SET NULL;
 
 CREATE TABLE IF NOT EXISTS diversidade_genetica (
     id SERIAL PRIMARY KEY,
@@ -318,5 +324,5 @@ CREATE INDEX index_especie_doenca_especie_id ON especie_doenca(especie_id);
 CREATE INDEX index_especie_doenca_doenca_id ON especie_doenca(doenca_id);
 CREATE INDEX index_area_habitat_id ON area(habitat_id);
 CREATE INDEX index_avistamento_especie_id ON avistamento(especie_id);
-CREATE INDEX index_interacao_especie_especie_id ON interacao_especie(especie_id);
+-- CREATE INDEX index_interacao_especie_especie_id ON interacao_especie(especie_id);
 CREATE INDEX index_interacao_especie_interacao_ecologica_id ON interacao_especie(interacao_ecologica_id);

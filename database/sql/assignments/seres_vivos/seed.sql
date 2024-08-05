@@ -51,6 +51,8 @@ INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Gammaproteobacteria', 'Gammaproteobactérias', 'Classe das gammaproteobactérias', (SELECT id FROM filo WHERE nome_cientifico = 'Proteobacteria'));
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Bacilli', 'Bacilos', 'Classe dos bacilos', (SELECT id FROM filo WHERE nome_cientifico = 'Firmicutes'));
 INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Actinobacteria', 'Actinobactérias', 'Classe das actinobactérias', (SELECT id FROM filo WHERE nome_cientifico = 'Actinobacteria'));
+INSERT INTO classe (nome_cientifico, nome, descricao, filo_id) VALUES ('Actinopterygii', 'Peixes ósseos', 'Classe dos peixes ósseos', (SELECT id FROM filo WHERE nome_cientifico = 'Chordata')) ON CONFLICT (nome_cientifico) DO NOTHING;
+
 
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES
     ('Carnivora', 'Carnívoros', 'Mamíferos carnívoros', (SELECT id FROM classe WHERE nome_cientifico = 'Mammalia')),
@@ -79,6 +81,9 @@ INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Enterob
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Lactobacillales', 'Lactobacilales', 'Ordem das lactobacilales', (SELECT id FROM classe WHERE nome_cientifico = 'Bacilli'));
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Clostridiales', 'Clostridiales', 'Ordem das clostridiales', (SELECT id FROM classe WHERE nome_cientifico = 'Bacilli'));
 INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES ('Actinomycetales', 'Actinomicetales', 'Ordem das actinomicetales', (SELECT id FROM classe WHERE nome_cientifico = 'Actinobacteria'));
+INSERT INTO ordem (nome_cientifico, nome, descricao, classe_id) VALUES
+('Characiformes', 'Caracídeos', 'Ordem dos caracídeos', (SELECT id FROM classe WHERE nome_cientifico = 'Actinopterygii')),
+('Perciformes', 'Perciformes', 'Ordem dos perciformes', (SELECT id FROM classe WHERE nome_cientifico = 'Actinopterygii')) ON CONFLICT (nome_cientifico) DO NOTHING;
 
 INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES
     ('Hominidae', 'Hominídeos', 'Primatas de grande porte', (SELECT id FROM ordem WHERE nome_cientifico = 'Primates')),
@@ -109,6 +114,11 @@ INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Entero
 INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Lactobacillaceae', 'Lactobaciláceas', 'Família das lactobaciláceas', (SELECT id FROM ordem WHERE nome_cientifico = 'Lactobacillales'));
 INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Clostridiaceae', 'Clostridiaceae', 'Família dos clostrídios', (SELECT id FROM ordem WHERE nome_cientifico = 'Clostridiales'));
 INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES ('Streptomycetaceae', 'Streptomycetaceae', 'Família das streptomycetaceae', (SELECT id FROM ordem WHERE nome_cientifico = 'Actinomycetales'));
+INSERT INTO familia (nome_cientifico, nome, descricao, ordem_id) VALUES
+('Serrasalmidae', 'Piranhas', 'Família das piranhas', (SELECT id FROM ordem WHERE nome_cientifico = 'Characiformes')),
+('Erythrinidae', 'Traíras', 'Família das traíras', (SELECT id FROM ordem WHERE nome_cientifico = 'Characiformes')),
+('Cichlidae', 'Ciclídeos', 'Família dos ciclídeos', (SELECT id FROM ordem WHERE nome_cientifico = 'Perciformes')) ON CONFLICT (nome_cientifico) DO NOTHING;
+
 
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
     ('Ara', 'Arara', 'Araras', (SELECT id FROM familia WHERE nome_cientifico = 'Psittacidae')),
@@ -136,6 +146,10 @@ INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Salmo
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Lactobacillus', 'Lactobacilos', 'Gênero dos lactobacilos', (SELECT id FROM familia WHERE nome_cientifico = 'Lactobacillaceae'));
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Streptomyces', 'Streptomyces', 'Gênero das streptomyces', (SELECT id FROM familia WHERE nome_cientifico = 'Streptomycetaceae'));
 INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Clostridium', 'Clostrídio', 'Gênero dos clostrídios', (SELECT id FROM familia WHERE nome_cientifico = 'Clostridiaceae'));
+INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES
+('Pygocentrus', 'Piranha', 'Genus de piranhas', (SELECT id FROM familia WHERE nome_cientifico = 'Serrasalmidae')),
+('Hoplias', 'Traíra', 'Genus de traíras', (SELECT id FROM familia WHERE nome_cientifico = 'Erythrinidae')),
+('Astronotus', 'Oscar', 'Genus de ciclídeos', (SELECT id FROM familia WHERE nome_cientifico = 'Cichlidae'));
 
 INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, localizacao_pontual, genero_id) VALUES
     ('Amazona ochrocephala', 'Papagaio-cabeça-amarela', 'Papagaio encontrado em florestas tropicais', FALSE, 50000, ST_GeomFromText('POINT(-7.0943 -66.3519)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
@@ -180,6 +194,33 @@ INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, mig
 INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Clostridium botulinum', 'C. botulinum', 'Espécie causadora de botulismo', 80000000, (SELECT id FROM genero WHERE nome_cientifico = 'Clostridium'), FALSE);
 INSERT INTO especie (nome_cientifico, nome, descricao, populacao, genero_id, migratoria) VALUES ('Clostridium difficile', 'C. difficile', 'Espécie causadora de infecções intestinais', 50000000, (SELECT id FROM genero WHERE nome_cientifico = 'Clostridium'), FALSE);
 INSERT INTO especie (nome_cientifico, nome, descricao, populacao, localizacao_pontual, genero_id, migratoria) VALUES ('Zonotrichia capensis', 'Tico-tico', 'Ave encontrada em áreas montanhosas e planícies, adaptada a uma variedade de habitats', 1000000, ST_SetSRID(ST_MakePoint(-43.2, -22.9), 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Zonotrichia'), FALSE);
+-- Inserir espécie "Zonotrichia capensis"
+INSERT INTO especie (nome_cientifico, nome, descricao, populacao, localizacao_pontual, genero_id, migratoria)
+VALUES
+('Zonotrichia capensis', 'Tico-tico', 'Ave encontrada em áreas montanhosas e planícies, adaptada a uma variedade de habitats',
+1000000, ST_SetSRID(ST_MakePoint(-43.2, -22.9), 4326),
+(SELECT id FROM genero WHERE nome_cientifico = 'Zonotrichia'), FALSE)
+ON CONFLICT (nome_cientifico) DO NOTHING;
+
+-- Inserir espécies "Pygocentrus nattereri", "Hoplias malabaricus", "Astronotus ocellatus" com status de conservação
+INSERT INTO especie (nome_cientifico, nome, descricao, status_conservacao, genero_id)
+VALUES
+('Pygocentrus nattereri', 'Piranha Vermelha', 'Espécie de piranha nativa da Amazônia', 'Pouco Preocupante',
+ (SELECT id FROM genero WHERE nome_cientifico = 'Pygocentrus')),
+('Hoplias malabaricus', 'Traíra', 'Espécie de traíra nativa da América do Sul', 'Pouco Preocupante',
+ (SELECT id FROM genero WHERE nome_cientifico = 'Hoplias')),
+('Astronotus ocellatus', 'Oscar', 'Espécie de ciclídeo nativa da Amazônia', 'Pouco Preocupante',
+ (SELECT id FROM genero WHERE nome_cientifico = 'Astronotus'))
+ON CONFLICT (nome_cientifico) DO NOTHING;
+
+-- Inserir espécie "Oreochromis niloticus" sem status de conservação específico
+INSERT INTO especie (nome_cientifico, nome, descricao, genero_id)
+VALUES
+('Oreochromis niloticus', 'Tilápia-do-Nilo', 'Espécie exótica de peixe introduzida em várias bacias hidrográficas',
+ (SELECT id FROM genero WHERE nome_cientifico = 'Oreochromis'))
+ON CONFLICT (nome_cientifico) DO NOTHING;
+
+
 
 INSERT INTO habitat (bioma, localizacao) VALUES ('Amazônia Brasileira', poligono_amazonia_brasileira());
 INSERT INTO habitat (bioma, localizacao) VALUES ('Caatinga', ST_GeomFromText('POLYGON((-2.6220 -40.5416, -7.2616 -35.6197, -15.4404 -43.7057, -10.5607 -45.0240, -2.6220 -40.5416))', 4326));
@@ -222,6 +263,9 @@ INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM esp
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra'), (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia frutescens'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
 INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Ara chloropterus'), (SELECT id FROM habitat WHERE bioma = 'Cerrado'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'), (SELECT id FROM habitat WHERE bioma = 'Pantanal'));
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES ((SELECT id FROM especie WHERE nome_cientifico = 'Astronotus ocellatus'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
 
 INSERT INTO doenca (nome, descricao, taxa_mortalidade) VALUES
     ('Malária', 'Doença parasitária transmitida por mosquitos', 5),
@@ -291,25 +335,81 @@ INSERT INTO avistamento (quantidade_individuos, observacao, localizacao_pontual,
 (3, 'Avistamento de grupo de aves', ST_SetSRID(ST_MakePoint(-47.0, -16.0), 4326), 'Dr. Maria Souza', (SELECT id FROM especie WHERE nome_cientifico = 'Ara macao'), 500, TRUE),
 (8, 'Avistamento de grupo de aves', ST_SetSRID(ST_MakePoint(-46.6, -23.5), 4326), 'Dr. Pedro Santos', (SELECT id FROM especie WHERE nome_cientifico = 'Ara ararauna'), 200, TRUE);
 
-INSERT INTO interacao_ecologica (descricao, tipo_interacao) VALUES
-    ('Polinização por abelhas', 'Colônia'),
-    ('Predação por onças', 'Predação'),
-    ('Dispersão de sementes por aves', 'Mutualismo'),
-    ('Competição por recursos', 'Competição'),
-    ('Parasitismo por fungos', 'Parasitismo');
+INSERT INTO avistamento (observacao, altitude, quantidade_individuos, registrar_individuo, localizacao_pontual, data_avistamento, nome_biologo, especie_id) VALUES
+('Avistamento de piranha vermelha', 15, 3, TRUE, ST_SetSRID(ST_MakePoint(-1.7312, -62.7151), 4326), '2024-08-05 10:00:00', 'Dr. Smith', (SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri')),
+('Avistamento de traíra', 10, 5, TRUE, ST_SetSRID(ST_MakePoint(-1.7300, -62.7100), 4326), '2024-08-05 11:00:00', 'Dr. Johnson', (SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'));
 
-INSERT INTO interacao_especie (especie_id, interacao_ecologica_id) VALUES
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Amazona ochrocephala' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Dispersão de sementes por aves' LIMIT 1)),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Panthera onca' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Predação por onças' LIMIT 1)),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Turdus leucomelas' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Polinização por abelhas' LIMIT 1)),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Cathartes burrovianus' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Competição por recursos' LIMIT 1)),
-    ((SELECT id FROM especie WHERE nome_cientifico = 'Dalbergia nigra' LIMIT 1), (SELECT id FROM interacao_ecologica WHERE descricao = 'Parasitismo por fungos' LIMIT 1));
+INSERT INTO avistamento (observacao, altitude, quantidade_individuos, registrar_individuo, localizacao_pontual, data_avistamento, nome_biologo, especie_id)
+VALUES ('Observação de interação em área de estudo.', 150, 5, TRUE, ST_SetSRID(ST_MakePoint(-1.7345, -62.7185), 4326), '2024-08-01 10:00:00', 'Dr. João Silva', 1);
+
+INSERT INTO interacao_ecologica (tipo_interacao, descricao, harmonica)
+VALUES
+('Predação', 'Um organismo preda outros organismos menores', FALSE),
+('Competição', 'Um organismo compete por recursos com outros organismos', FALSE),
+('Dispersão de sementes', 'Um organismo dispersa sementes de plantas', TRUE),
+('Colônia', 'Organismos vivendo em uma colônia', TRUE),
+('Mutualismo', 'Dois organismos interagem de forma benéfica para ambos', TRUE)
+ON CONFLICT (tipo_interacao) DO NOTHING;
+
+
+-- Inserir interações entre espécies
+INSERT INTO interacao_especie (especie_nativa_id, especie_invasora_id, interacao_ecologica_id)
+VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'),
+ (SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'),
+ (SELECT id FROM interacao_ecologica WHERE descricao = 'A piranha vermelha preda outros peixes menores')),
+
+((SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'),
+ (SELECT id FROM especie WHERE nome_cientifico = 'Astronotus ocellatus'),
+ (SELECT id FROM interacao_ecologica WHERE descricao = 'A traíra compete por recursos com outras espécies de peixes')),
+
+((SELECT id FROM especie WHERE nome_cientifico = 'Astronotus ocellatus'),
+ (SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'),
+ (SELECT id FROM interacao_ecologica WHERE descricao = 'O Oscar dispersa sementes de plantas aquáticas')),
+
+((SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'),
+ (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus'),
+ (SELECT id FROM interacao_ecologica WHERE descricao = 'A tilápia compete por recursos com espécies nativas')),
+
+((SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'),
+ (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus'),
+ (SELECT id FROM interacao_ecologica WHERE descricao = 'A tilápia preda pequenos invertebrados aquáticos'))
+ON CONFLICT DO NOTHING;
 
 INSERT INTO area (localizacao, protegido, desmatado, habitat_id) VALUES
 (ST_GeomFromText('POLYGON((-39.6 -13.1, -39.6 -12.9, -39.4 -12.9, -39.4 -13.1, -39.6 -13.1))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Mata Atlântica'));
-
 INSERT INTO area (localizacao, desmatado, protegido, habitat_id) VALUES
     (ST_GeomFromText('POLYGON((-60.0 -3.0, -60.0 -2.5, -59.5 -2.5, -59.5 -3.0, -60.0 -3.0))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
     (ST_GeomFromText('POLYGON((-61.0 -4.0, -61.0 -3.5, -60.5 -3.5, -60.5 -4.0, -61.0 -4.0))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
     (ST_GeomFromText('POLYGON((-62.0 -5.0, -62.0 -4.5, -61.5 -4.5, -61.5 -5.0, -62.0 -5.0))', 4326), TRUE, FALSE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
     (ST_GeomFromText('POLYGON((-63.0 -6.0, -63.0 -5.5, -62.5 -5.5, -62.5 -6.0, -63.0 -6.0))', 4326), FALSE, TRUE, (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'));
+
+
+INSERT INTO interacao_especie (especie_nativa_id, especie_invasora_id, interacao_ecologica_id) VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'),
+ (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus'),
+ (SELECT id FROM interacao_ecologica WHERE descricao = 'A tilápia preda pequenos invertebrados aquáticos'))
+ON CONFLICT DO NOTHING;
+
+UPDATE interacao_especie
+SET interacao_ecologica_id = 2
+WHERE especie_nativa_id = (SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri')
+  AND especie_invasora_id = (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus');
+
+UPDATE interacao_especie
+SET interacao_ecologica_id = 1
+WHERE especie_nativa_id = (SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus')
+  AND especie_invasora_id = (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus');
+
+INSERT INTO interacao_especie (especie_nativa_id, especie_invasora_id, interacao_ecologica_id) VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'), (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Competição')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'), (SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus'), (SELECT id FROM interacao_ecologica WHERE descricao = 'Predação'))
+ON CONFLICT DO NOTHING;
+
+INSERT INTO especie_habitat (especie_id, habitat_id) VALUES
+((SELECT id FROM especie WHERE nome_cientifico = 'Oreochromis niloticus'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Pygocentrus nattereri'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Hoplias malabaricus'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira')),
+((SELECT id FROM especie WHERE nome_cientifico = 'Astronotus ocellatus'), (SELECT id FROM habitat WHERE bioma = 'Amazônia Brasileira'))
+ON CONFLICT DO NOTHING;
+
