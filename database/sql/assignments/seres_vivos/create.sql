@@ -205,14 +205,6 @@ CREATE TABLE IF NOT EXISTS altitude_raster (
     altitude INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS diversidade_genetica (
-    id SERIAL PRIMARY KEY,
-    especie_id BIGINT NOT NULL,
-    populacao VARCHAR(100) NOT NULL,
-    diversidade_genetica NUMERIC,
-    CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
-);
-
 CREATE TABLE IF NOT EXISTS ameaca (
     id SERIAL PRIMARY KEY,
     descricao TEXT NOT NULL
@@ -337,5 +329,6 @@ CREATE INDEX index_especie_doenca_especie_id ON especie_doenca(especie_id);
 CREATE INDEX index_especie_doenca_doenca_id ON especie_doenca(doenca_id);
 CREATE INDEX index_area_habitat_id ON area(habitat_id);
 CREATE INDEX index_avistamento_especie_id ON avistamento(especie_id);
-CREATE INDEX index_interacao_especie_especie_id ON interacao_especie(especie_id);
+CREATE INDEX index_interacao_especie_especie_nativa_id ON interacao_especie(especie_nativa_id);
+CREATE INDEX index_interacao_especie_especie_invasora_id ON interacao_especie(especie_invasora_id);
 CREATE INDEX index_interacao_especie_interacao_ecologica_id ON interacao_especie(interacao_ecologica_id);
