@@ -482,3 +482,10 @@ VALUES
 (ST_GeomFromText('POLYGON((-61 -4, -61 -3, -59 -3, -59 -4, -61 -4))', 4326), 1000),
 (ST_GeomFromText('POLYGON((-48 -16, -48 -15, -46 -15, -46 -16, -48 -16))', 4326), 1500),
 (ST_GeomFromText('POLYGON((-50 -17, -50 -16, -48 -16, -48 -17, -50 -17))', 4326), 2000);
+
+INSERT INTO ameaca (descricao) VALUES ('Desmatamento'), ('Perda de Habitat'), ('Caça Ilegal');
+
+INSERT INTO especie_ameaca(especie_id, ameaca_id) VALUES
+    (1, (SELECT id FROM ameaca WHERE descricao = 'Desmatamento')),
+    (1, (SELECT id FROM ameaca WHERE descricao = 'Perda de Habitat')),
+    (1, (SELECT id FROM ameaca WHERE descricao = 'Caça Ilegal'));
