@@ -369,5 +369,5 @@ CREATE INDEX index_especie_doenca_especie_id ON especie_doenca(especie_id);
 CREATE INDEX index_especie_doenca_doenca_id ON especie_doenca(doenca_id);
 CREATE INDEX index_area_habitat_id ON area(habitat_id);
 CREATE INDEX index_avistamento_especie_id ON avistamento(especie_id);
--- CREATE INDEX index_interacao_especie_especie_id ON interacao_especie(especie_id);
+CREATE INDEX index_interacao_especie_especie_id ON interacao_especie(especie_id);
 CREATE INDEX index_interacao_especie_interacao_ecologica_id ON interacao_especie(interacao_ecologica_id);
