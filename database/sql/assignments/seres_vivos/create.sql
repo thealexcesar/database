@@ -8,6 +8,7 @@ DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
 DROP FUNCTION IF EXISTS atualizar_status_conservacao CASCADE;
 DROP FUNCTION IF EXISTS poligono_amazonia CASCADE;
 DROP FUNCTION IF EXISTS poligono_amazonia_brasileira CASCADE;
+DROP FUNCTION IF EXISTS atualizar_avistamento_altitude() CASCADE;
 
 DROP TYPE IF EXISTS DOMAINS, REINOS, STATUS CASCADE;
 DROP VIEW IF EXISTS HierarquiaTaxonomica;
@@ -122,7 +123,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS habitat (
     id SERIAL PRIMARY KEY,
-    bioma VARCHAR(100) UNIQUE NOT NULL DEFAULT 'Amazônia',
+    bioma VARCHAR(100) UNIQUE NOT NULL DEFAULT 'Amazônia Brasileira',
     localizacao geometry(POLYGON, 4326) NOT NULL DEFAULT poligono_amazonia_brasileira()
 );
 
@@ -224,8 +225,39 @@ CREATE TABLE IF NOT EXISTS planta_polinizador (
 CREATE TABLE IF NOT EXISTS altitude_raster (
     id SERIAL PRIMARY KEY,
     rast geometry(POLYGON, 4326) NOT NULL DEFAULT poligono_amazonia_brasileira(),
-    altitude INTEGER NOT NULL
+    altitude INTEGER
 );
+
+CREATE TABLE IF NOT EXISTS diversidade_genetica (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    populacao VARCHAR(100) NOT NULL,
+    diversidade_genetica NUMERIC,
+    CONSTRAINT fk_especie FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS planta (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    tamanho_corola DECIMAL(5,2) NOT NULL,
+    CONSTRAINT fk_especie_planta FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS polinizador (
+    id SERIAL PRIMARY KEY,
+    especie_id BIGINT NOT NULL,
+    comprimento_proboscide DECIMAL(5,2) NOT NULL,
+    CONSTRAINT fk_especie_polinizador FOREIGN KEY (especie_id) REFERENCES especie(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS planta_polinizador (
+    id SERIAL PRIMARY KEY,
+    planta_id BIGINT NOT NULL,
+    polinizador_id BIGINT NOT NULL,
+    CONSTRAINT fk_planta FOREIGN KEY (planta_id) REFERENCES planta(id) ON DELETE CASCADE,
+    CONSTRAINT fk_polinizador FOREIGN KEY (polinizador_id) REFERENCES polinizador(id) ON DELETE CASCADE
+);
+
 /* End Tables ------------------------------------------------------------------------------------------------------- */
 
 /* Functions
@@ -261,6 +293,22 @@ BEGIN
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION atualizar_avistamento_altitude()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE avistamento
+    SET altitude = (
+        SELECT r.altitude
+        FROM altitude_raster r
+        WHERE ST_Intersects(r.rast, (SELECT e.localizacao_pontual FROM especie e WHERE e.id = avistamento.especie_id))
+        LIMIT 1
+    )
+    WHERE altitude IS NULL;
+    RAISE NOTICE 'Altitude atualizada para %', NEW.altitude;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 /* End Functions ---------------------------------------------------------------------------------------------------- */
 
 /* Triggers
@@ -274,6 +322,11 @@ CREATE TRIGGER incrementa_species_quando_avistadas
     AFTER INSERT ON avistamento
     FOR EACH ROW
     EXECUTE FUNCTION incrementar_populacao_especie();
+
+CREATE TRIGGER trigger_atualizar_avistamento_altitude
+AFTER INSERT ON altitude_raster
+FOR EACH ROW
+EXECUTE FUNCTION atualizar_avistamento_altitude();
 /* End Triggers ----------------------------------------------------------------------------------------------------- */
 
 /* Views
@@ -301,12 +354,12 @@ SELECT
     g.nome_cientifico     AS genero,
     g.nome                AS genero_nome
 FROM especie e
-    INNER JOIN Genero g ON e.genero_id = g.id
-    INNER JOIN Familia fa ON g.familia_id = fa.id
-    INNER JOIN Ordem o ON fa.ordem_id = o.id
-    INNER JOIN Classe c ON o.classe_id = c.id
-    INNER JOIN Filo f ON c.filo_id = f.id
-    INNER JOIN Reino r ON f.reino_id = r.id;
+    INNER JOIN genero g ON e.genero_id = g.id
+    INNER JOIN familia fa ON g.familia_id = fa.id
+    INNER JOIN ordem o ON fa.ordem_id = o.id
+    INNER JOIN classe c ON o.classe_id = c.id
+    INNER JOIN filo f ON c.filo_id = f.id
+    INNER JOIN reino r ON f.reino_id = r.id;
 /* End Views -------------------------------------------------------------------------------------------------------- */
 
 /* Index
