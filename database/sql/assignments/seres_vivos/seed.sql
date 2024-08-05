@@ -139,7 +139,7 @@ INSERT INTO genero (nome_cientifico, nome, descricao, familia_id) VALUES ('Clost
 
 INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, localizacao_pontual, genero_id) VALUES
     ('Amazona ochrocephala', 'Papagaio-cabeça-amarela', 'Papagaio encontrado em florestas tropicais', FALSE, 50000, ST_GeomFromText('POINT(-7.0943 -66.3519)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
-    ('Gorilla gorilla', 'Gorila', 'Gorila das florestas da África central', FALSE, 100000, ST_GeomFromText('POINT(-55 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Gorilla')),
+    ('Gorilla gorilla', 'Gorila', 'Gorila das florestas da África central', FALSE, 127, ST_GeomFromText('POINT(-55 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Gorilla')),
     ('Amazona aestiva', 'Papagaio-verdadeiro', 'Papagaio comum nas florestas brasileiras', FALSE, 100000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Dendrocygna viduata', 'Irerê', 'Pato encontrado em lagos e pântanos', FALSE, 300000, ST_GeomFromText('POINT(-5.79448 -35.211)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dendrocygna')),
     ('Turdus rufiventris', 'Sabiá-laranjeira', 'Ave canora comum em todo o Brasil', FALSE, 2000000, ST_GeomFromText('POINT(-19.9167 -43.9345)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Turdus')),
@@ -167,8 +167,8 @@ INSERT INTO especie (nome_cientifico, nome, descricao, migratoria, populacao, lo
     ('Myrciaria dubia', 'Camu-camu', 'Fruto nativo da Amazônia conhecido por seu alto teor de vitamina C', FALSE, 1000000, ST_GeomFromText('POINT(-3.4653 -62.2159)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Myrciaria')),
     ('Victoria amazonica', 'Vitória-régia', 'Planta aquática nativa da Amazônia', FALSE, 100000, ST_GeomFromText('POINT(-3.4166 -65.8561)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Victoria')),
     ('Anacardium occidentale', 'Cajueiro', 'Árvore frutífera nativa do Nordeste do Brasil', FALSE, 2000000, ST_GeomFromText('POINT(-5.79448 -35.211)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Anacardium')),
-    ('Ara macao', 'Arara-vermelha', 'Grande arara vermelha encontrada em florestas tropicais', FALSE, 700, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
-    ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas', FALSE, 80, ST_GeomFromText('POINT(-50 -15)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
+    ('Ara macao', 'Arara-vermelha', 'Grande arara vermelha encontrada em florestas tropicais', FALSE, 7000000, ST_GeomFromText('POINT(-3.71722 -38.54337)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Ara')),
+    ('Panthera onca', 'Onça-pintada', 'Grande felino encontrado nas Américas', FALSE, 847090, ST_GeomFromText('POINT(-1.0440 -62.9076)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Panthera')),
     ('Amazona farinosa', 'Papagaio-moleiro', 'Papagaio comum nas florestas brasileiras', FALSE, 75000, ST_GeomFromText('POINT(-15.7801 -47.9292)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Amazona')),
     ('Dalbergia nigra', 'Jacarandá-da-Bahia', 'Árvore de madeira nobre, endêmica da Mata Atlântica, e criticamente ameaçada.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
     ('Dalbergia frutescens', 'Jacarandá-do-serrado', 'Árvore de madeira nobre, endêmica do Cerrado brasileiro, e vulnerável à extinção.', FALSE, 100, ST_GeomFromText('POINT(-43.2 -22.9)', 4326), (SELECT id FROM genero WHERE nome_cientifico = 'Dalbergia')),
