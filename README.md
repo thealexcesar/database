@@ -264,14 +264,14 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
 
 <details><summary>Content</summary>
 
-- [ ] What is a Database
+- [X] What is a Database
   <details>
   <summary>Details</summary>
 
     - Concept: A structured collection of data that is stored and accessed electronically. Databases are managed by Database Management Systems (DBMS).
   </details>
 
-- [ ] Categories of Databases
+- [X] Categories of Databases
   <details>
   <summary>Details</summary>
 
@@ -282,7 +282,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
     - Network Databases: Data is represented in a graph structure with nodes and relationships. Examples: Integrated Data Store (IDS).
   </details>
 
-- [ ] DBMS Concepts
+- [X] DBMS Concepts
   <details>
   <summary>Details</summary>
 
@@ -290,7 +290,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
     - Examples: MySQL, Oracle, Microsoft SQL Server.
   </details>
 
-- [ ] Database Modeling
+- [X] Database Modeling
   <details>
   <summary>Details</summary>
 
@@ -298,7 +298,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
     - Tools: Entity-Relationship Diagrams (ERDs), UML Class Diagrams.
   </details>
 
-- [ ] DDL Commands
+- [X] DDL Commands
   <details>
   <summary>Details</summary>
 
@@ -309,7 +309,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
         - `DROP TABLE`: Deletes a table.
   </details>
 
-- [ ] Indexes
+- [X] Indexes
   <details>
   <summary>Details</summary>
 
@@ -317,7 +317,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
     - Types: B-Tree, Hash, Bitmap.
   </details>
 
-- [ ] Constraints
+- [X] Constraints
   <details>
   <summary>Details</summary>
 
@@ -325,14 +325,14 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
     - Examples: `NOT NULL`, `UNIQUE`, `CHECK`.
   </details>
 
-- [ ] Foreign Keys
+- [X] Foreign Keys
   <details>
   <summary>Details</summary>
 
     - Concept: A constraint that ensures the values in a column (or a set of columns) match values in another table’s primary key.
   </details>
 
-- [ ] DML Commands
+- [X] DML Commands
   <details>
   <summary>Details</summary>
 
@@ -343,7 +343,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
         - `DELETE`: Removes data from a table.
   </details>
 
-- [ ] DQL Commands
+- [X] DQL Commands
   <details>
   <summary>Details</summary>
 
@@ -358,7 +358,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
         - `ORDER BY`: Sorts results.
   </details>
 
-- [ ] TCL Commands
+- [X] TCL Commands
   <details>
   <summary>Details</summary>
 
@@ -369,7 +369,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
         - `SAVEPOINT`: Sets a point in a transaction to which you can roll back.
   </details>
 
-- [ ] Normalization and Denormalization
+- [X] Normalization and Denormalization
   <details>
   <summary>Details</summary>
 
@@ -378,7 +378,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
     - **Denormalization**: Process of introducing redundancy to improve read performance.
   </details>
 
-- [ ] Optimizing Queries
+- [X] Optimizing Queries
   <details>
   <summary>Details</summary>
 
@@ -397,7 +397,157 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
 ### [Module 08 – Java EE](#module-08---java-ee)
 
 [//]: # (TODO)
-### [Module 09 – Spring Boot](#module-09---spring-boot)
+
+### <a href="https://github.com/thealexcesar/T-Academy/tree/main/spring-boot" id="module-09">Module – Spring Boot</a>
+
+<details><summary>Content</summary>
+
+- [ ] Environment Setup
+  <details>
+  <summary>Details</summary>
+
+    - Concept: The process of preparing your development environment to build and run Spring Boot applications.
+    - Steps: Install Java, set up IDE (e.g., IntelliJ IDEA), and configure necessary plugins.
+  </details>
+
+- [ ] Maven
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A build automation tool used for Java projects, which simplifies the build process.
+    - Features: Dependency management, project configuration, and build lifecycle management.
+  </details>
+
+- [ ] Spring Initializr
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A web-based tool provided by Spring to quickly bootstrap a new Spring Boot project.
+    - Usage: Select dependencies, generate project, and download the ready-to-use project structure.
+  </details>
+
+- [ ] Understanding Project Structure
+  <details>
+  <summary>Details</summary>
+
+    - Concept: Comprehending the organization of files and directories in a Spring Boot project.
+    - Components: `src/main/java`, `src/main/resources`, `src/test/java`, application properties.
+  </details>
+
+- [ ] DevTools
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A Spring Boot module that provides tools for improving the development experience.
+    - Features: Automatic restart, live reload, and configurations for better development workflow.
+  </details>
+
+- [ ] Spring Data
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A module of Spring that simplifies database access and integrates with various data storage technologies.
+    - Features: Repositories, query methods, and data access abstractions.
+  </details>
+
+- [ ] Models
+  <details>
+  <summary>Details</summary>
+
+    - Concept: Java classes that represent the structure of data in your application.
+    - Usage: Define fields, getters, setters, and any necessary annotations (e.g., `@Entity`).
+  </details>
+
+- [ ] Repositories
+  <details>
+  <summary>Details</summary>
+
+    - Concept: Interfaces that provide CRUD operations for your entities.
+    - Usage: Extend `JpaRepository`, `CrudRepository`, or other Spring Data interfaces.
+  </details>
+
+- [ ] Services
+  <details>
+  <summary>Details</summary>
+
+    - Concept: Classes that contain business logic and interact with repositories.
+    - Usage: Annotate with `@Service` and implement methods to process data and handle business rules.
+  </details>
+
+- [ ] Controllers
+  <details>
+  <summary>Details</summary>
+
+    - Concept: Classes that handle HTTP requests and map them to service methods.
+    - Usage: Annotate with `@RestController`, define request mappings, and return responses.
+  </details>
+
+- [ ] Bean Validation
+  <details>
+  <summary>Details</summary>
+
+    - Concept: Ensuring the correctness of data before processing it.
+    - Usage: Use `javax.validation` annotations like `@NotNull`, `@Size`, `@Email` in your models.
+  </details>
+
+- [ ] Spring Cache
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A mechanism to improve performance by storing frequently accessed data in memory.
+    - Usage: Enable caching with `@EnableCaching` and use `@Cacheable`, `@CacheEvict` annotations.
+  </details>
+
+- [ ] Spring Security
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A framework for securing Spring applications.
+    - Features: Authentication, authorization, and security configuration.
+  </details>
+
+- [ ] Test-Driven Development (TDD)
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A software development approach where tests are written before the code they are testing.
+    - Benefits: Ensures code quality, prevents bugs, and promotes good design practices.
+  </details>
+
+    - JUnit
+      <details>
+      <summary>Details</summary>
+
+        - Concept: A framework for writing and running tests in Java.
+        - Features: Annotations like `@Test`, assertion methods, and test runners.
+      </details>
+
+    - Mockito
+      <details>
+      <summary>Details</summary>
+
+        - Concept: A framework for creating mock objects in unit tests.
+        - Usage: Mock dependencies, define behavior, and verify interactions.
+      </details>
+
+    - Unit Tests
+      <details>
+      <summary>Details</summary>
+
+        - Concept: Tests that verify the functionality of a specific section of code, usually a method.
+        - Benefits: Isolate code for testing, ensure correctness, and facilitate refactoring.
+      </details>
+
+- [ ] Documenting the API with Swagger
+  <details>
+  <summary>Details</summary>
+
+    - Concept: A tool for generating interactive API documentation.
+    - Usage: Integrate `springfox-swagger2` and `springfox-swagger-ui` to generate and view API docs.
+  </details>
+
+- [ ] Building the Application
+  </details>
 
 [//]: # (TODO)
 ### [Module 10 – Introduction to DevOps](#module-10---introduction-to-devops)
