@@ -1,4 +1,6 @@
 package com.example.exercicio.livro.dto;
 
-public record LivroUpdateDTO(String titulo, String autor, String genero, int ano) {
+import java.time.LocalDate;
+
+public record LivroUpdateDTO(String titulo, String autor, String genero, int ano, LocalDate createdAt) {
 }

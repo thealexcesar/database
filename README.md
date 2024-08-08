@@ -430,7 +430,7 @@ T-Academy is a comprehensive bootcamp that prepares me for various areas of tech
   <details>
   <summary>Details</summary>
 
-    - Concept: Comprehending the organization of files and directories in a Spring Boot project.
+    - Concept: Comprehending the orfganization of files and directories in a Spring Boot project.
     - Components: `src/main/java`, `src/main/resources`, `src/test/java`, application properties.
   </details>
 

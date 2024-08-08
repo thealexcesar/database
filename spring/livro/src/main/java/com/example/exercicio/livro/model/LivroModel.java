@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -22,4 +22,5 @@ public class LivroModel {
     private String autor;
     private String genero;
     private int ano;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
