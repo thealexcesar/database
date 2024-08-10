@@ -2,9 +2,10 @@ package com.exercise.devs.controllers;
 
 import com.exercise.devs.dtos.MutantDTO;
 import com.exercise.devs.models.MutantModel;
-import com.exercise.devs.repositories.MutantRepository;
 import com.exercise.devs.service.MutantService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,23 +21,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/mutants")
+@RequiredArgsConstructor
 public class MutantController {
+
     private final MutantService mutantService;
-    private final MutantRepository mutantRepository;
 
-    @Autowired
-    public MutantController(MutantService mutantService, MutantRepository mutantRepository) {
-        this.mutantService = mutantService;
-        this.mutantRepository = mutantRepository;
-    }
-
-    @PostMapping("/create")
-    public ResponseEntity<MutantDTO> createMutant(@RequestBody MutantDTO mutantDTO, UriComponentsBuilder uriBuilder) {
+    @PostMapping
+    @Transactional
+    public ResponseEntity<MutantDTO> createMutant(@Valid @RequestBody MutantDTO mutantDTO, UriComponentsBuilder uriBuilder) {
         MutantModel savedMutant = mutantService.saveMutant(mutantDTO);
-
-        String location = uriBuilder.path("/mutants/create/{id}")
-                .buildAndExpand(savedMutant.getId())
-                .toUriString();
+        String location = uriBuilder.path("/mutants/{id}").buildAndExpand(savedMutant.getId()).toUriString();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", location);
 
@@ -50,7 +44,7 @@ public class MutantController {
             @RequestParam(defaultValue = "createdAt") String sortBy
     ) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortBy));
-        Page<MutantModel> mutantPage = mutantRepository.findAll(pageable);
+        Page<MutantModel> mutantPage = mutantService.findAllMutants(pageable);
         List<MutantDTO> dtoList = mutantPage.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
         HttpHeaders headers = createPaginationHeaders(mutantPage);
 
@@ -71,13 +65,21 @@ public class MutantController {
         return ResponseEntity.ok().headers(headers).body(dtoList);
     }
 
+    @GetMapping("/onschool/count")
+    public ResponseEntity<Long> countMutantsInSchool() {
+        long count = mutantService.countMutantsOnSchoolGrounds();
+        return ResponseEntity.ok(count);
+    }
+
     @PostMapping("/{id}/enter-school")
+    @Transactional
     public ResponseEntity<MutantDTO> enterSchool(@PathVariable Long id, @RequestBody String password) {
         MutantModel updatedMutant = mutantService.enterSchool(id, password);
         return ResponseEntity.ok(convertToDTO(updatedMutant));
     }
 
     @PostMapping("/{id}/exit-school")
+    @Transactional
     public ResponseEntity<Void> exitSchool(@PathVariable Long id) {
         mutantService.exitSchool(id);
         return ResponseEntity.ok().build();
@@ -89,8 +91,14 @@ public class MutantController {
         return ResponseEntity.ok(enlist);
     }
 
+    @GetMapping("/{id}/enemies-defeated")
+    public ResponseEntity<String> calculateEnemiesDefeated(@PathVariable Long id) {
+        String response = mutantService.calculateEnemiesDefeated(id);
+        return ResponseEntity.ok(response);
+    }
+
     private MutantDTO convertToDTO(MutantModel m) {
-        return new MutantDTO(m.getName(),m.getPower(),m.getAge(),m.getEnemiesDefeated(),m.isOnSchoolGrounds());
+        return new MutantDTO(m.getId(),m.getName(),m.getPower(),m.getAge(),m.getEnemiesDefeated(),m.isOnSchoolGrounds());
     }
 
     private static HttpHeaders createPaginationHeaders(Page<?> page) {

@@ -3,10 +3,10 @@ package com.exercise.devs.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Table(name = "mutant")
 public class MutantModel implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -24,20 +24,25 @@ public class MutantModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "O nome é obrigatório.")
     private String name;
 
-    @NotBlank
+    @Column(nullable = false)
+    @NotBlank(message = "O poder é obrigatório.")
     private String power;
 
-    @Min(1)
+    @Column(nullable = false)
+    @Min(value = 1, message = "A idade deve ser maior que zero.")
     private int age;
 
-    @Min(0)
+    @Column(nullable = false)
+    @Min(value = 0, message = "O número de inimigos derrotados não pode ser negativo.")
     private int enemiesDefeated;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(nullable = false)
     private boolean onSchoolGrounds;
 }

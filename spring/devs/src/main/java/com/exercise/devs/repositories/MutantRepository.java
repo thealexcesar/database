@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MutantRepository extends JpaRepository<MutantModel, Long> {
     Page<MutantModel> findAllByOnSchoolGroundsTrue(Pageable pageable);
+    long countByOnSchoolGroundsTrue();
 }
