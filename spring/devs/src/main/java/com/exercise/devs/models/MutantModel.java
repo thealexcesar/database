@@ -3,35 +3,41 @@ package com.exercise.devs.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-@Table(name="mutant")
+@Builder
+@Table(name = "mutant")
 public class MutantModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final Long id;
+    private Long id;
 
     @NotBlank
-    private final String name;
+    private String name;
 
     @NotBlank
-    private final String power;
+    private String power;
 
     @Min(1)
-    private final int age;
+    private int age;
 
     @Min(0)
-    private final int enemiesDefeated;
+    private int enemiesDefeated;
 
-    private final boolean onSchoolGrounds;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    private boolean onSchoolGrounds;
 }
