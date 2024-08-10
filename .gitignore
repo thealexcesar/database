@@ -31,7 +31,7 @@ hs_err_pid*
 replay_pid*
 
 # Credentials
-*/.env
+**/*.env
 
 documents
 documents/
