@@ -26,6 +26,7 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -96,6 +97,7 @@ public class TripController {
 
         DestinationModel destination = destinationRepository.findById(tripDTO.destinationId())
                 .orElseThrow(() -> new NotFoundException("Destino não encontrado com ID: " + tripDTO.destinationId()));
+        String code = "tchuqui-tchuqui-" + UUID.randomUUID().toString().split("-")[0];
 
         TripModel trip = TripModel.builder()
                 .title(tripDTO.title())
@@ -109,6 +111,7 @@ public class TripController {
                 .endDate(tripDTO.endDate())
                 .customer(tripDTO.customer())
                 .createdAt(LocalDateTime.now())
+                .code(code)
                 .build();
 
         TripModel savedTrip = tripRepository.save(trip);
@@ -190,7 +193,8 @@ public class TripController {
                 trip.getStartDate(),
                 trip.getEndDate(),
                 trip.getCreatedAt(),
-                trip.getCustomer()
+                trip.getCustomer(),
+                trip.getCode()
         );
     }
 }

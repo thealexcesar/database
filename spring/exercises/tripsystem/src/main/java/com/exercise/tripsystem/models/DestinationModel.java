@@ -35,11 +35,10 @@ public class DestinationModel implements Serializable {
 
     @Column(nullable = false)
     private String country;
-    
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TripModel> trips;
 }
-

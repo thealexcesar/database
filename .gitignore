@@ -30,6 +30,9 @@
 hs_err_pid*
 replay_pid*
 
+# Credentials
+*/.env
+
 documents
 documents/
 documents/*
@@ -37,5 +40,3 @@ documents/*
 # CSV
 # CSV
 transactions.csv
-*/user.csv
-*/favorites.csv

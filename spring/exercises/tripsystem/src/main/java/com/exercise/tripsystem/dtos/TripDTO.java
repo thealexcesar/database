@@ -14,5 +14,6 @@ public record TripDTO(
         LocalDateTime startDate,
         LocalDateTime endDate,
         LocalDateTime createdAt,
-        String customer
+        String customer,
+        String code
 ) {}

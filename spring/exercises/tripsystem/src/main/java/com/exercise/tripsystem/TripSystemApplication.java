@@ -1,19 +1,20 @@
 package com.exercise.tripsystem;
 
-import com.exercise.tripsystem.models.enums.UfType;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.UUID;
 
 @SpringBootApplication
 public class TripSystemApplication {
 
     public static void main(String[] args) {
+        Dotenv dotenv = Dotenv.load();
+        System.setProperty("DB_NAME", dotenv.get("DB_NAME"));
+        System.setProperty("DB_USER", dotenv.get("DB_USER"));
+        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+        System.setProperty("DB_HOST", dotenv.get("DB_HOST"));
+
         SpringApplication.run(TripSystemApplication.class, args);
-        System.out.println("chave: " + UfType.RS); // FIXME remove
-        System.out.println("valor " + UfType.RS.getUf()); // FIXME remove
-        System.out.println("tchuqui-tchuqui-"+UUID.randomUUID().toString().split("-")[0]); // FIXME remove
     }
 
 }

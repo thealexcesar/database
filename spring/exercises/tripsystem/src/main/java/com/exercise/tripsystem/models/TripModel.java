@@ -11,16 +11,15 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "trips")
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class TripModel implements Serializable {
     private final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -43,6 +42,9 @@ public class TripModel implements Serializable {
     private StatusType status;
 
     @Column(nullable = false)
+    private String code;
+
+    @Column(nullable = false)
     private String origin;
 
     @Column(nullable = false)
@@ -61,4 +63,11 @@ public class TripModel implements Serializable {
     @JoinColumn(name = "destination_id", nullable = false)
     private DestinationModel destination;
 
+    public TripModel() {
+        this.code = generateUniqueCode();
+    }
+
+    private String generateUniqueCode() {
+        return "tchuqui-tchuqui-" + UUID.randomUUID().toString().split("-")[0];
+    }
 }
