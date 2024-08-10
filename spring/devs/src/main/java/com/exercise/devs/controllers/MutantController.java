@@ -1,5 +1,6 @@
 package com.exercise.devs.controllers;
 
+import com.exercise.devs.dtos.MutantDTO;
 import com.exercise.devs.models.MutantModel;
 import com.exercise.devs.service.MutantService;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,20 @@ public class MutantController {
 
     public MutantController(MutantService mutantService) {
         this.mutantService = mutantService;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<MutantModel> createMutant(@RequestBody MutantDTO mutantDTO) {
+        MutantModel mutant = new MutantModel(
+                null,
+                mutantDTO.name(),
+                mutantDTO.power(),
+                mutantDTO.age(),
+                mutantDTO.enemiesDefeated(),
+                false
+        );
+        MutantModel savedMutant = mutantService.saveMutant(mutant);
+        return ResponseEntity.ok(savedMutant);
     }
 
     @GetMapping("/onschoolgrounds")
