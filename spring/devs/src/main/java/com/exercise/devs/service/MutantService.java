@@ -5,6 +5,7 @@ import com.exercise.devs.exceptions.UnauthorizedException;
 import com.exercise.devs.models.MutantModel;
 import com.exercise.devs.repositories.MutantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class MutantService {
-    private static final String ENIGMA_JAOBSOB_PASSWORD = "Treinamento";
+    private static final String ENIGMA_JAOBSOB_PASSWORD = "glnyply";
 
     private final MutantRepository mutantRepository;
 
@@ -36,7 +37,7 @@ public class MutantService {
     }
 
     public MutantModel enterSchool(Long mutantId, String password) {
-        if (!authenticateMutant(password)) throw new UnauthorizedException("Falha na autenticação");
+        if (!authenticateMutant(password)) throw new UnauthorizedException("Falha na autenticação.");
         return updateSchoolEntryStatus(mutantId, true);
     }
 
