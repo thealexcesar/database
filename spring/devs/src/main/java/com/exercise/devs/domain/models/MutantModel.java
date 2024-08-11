@@ -1,4 +1,4 @@
-package com.exercise.devs.models;
+package com.exercise.devs.domain.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;

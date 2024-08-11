@@ -1,6 +1,6 @@
-package com.exercise.devs.repositories;
+package com.exercise.devs.domain.repositories;
 
-import com.exercise.devs.models.MutantModel;
+import com.exercise.devs.domain.models.MutantModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

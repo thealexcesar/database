@@ -1,12 +1,13 @@
 package com.exercise.devs.controllers;
 
 import com.exercise.devs.dtos.MutantDTO;
-import com.exercise.devs.models.MutantModel;
-import com.exercise.devs.service.MutantService;
+import com.exercise.devs.domain.models.MutantModel;
+import com.exercise.devs.domain.service.MutantService;
+import com.exercise.devs.utils.ConvertToDTO;
+import com.exercise.devs.utils.PaginationHeaders;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,7 +36,7 @@ public class MutantController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", location);
 
-        return new ResponseEntity<>(convertToDTO(savedMutant), headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(ConvertToDTO.mutant(savedMutant), headers, HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -45,9 +46,9 @@ public class MutantController {
             @RequestParam(defaultValue = "createdAt") String sortBy
     ) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortBy));
-        Page<MutantModel> mutantPage = mutantService.findAllMutants(pageable);
-        List<MutantDTO> dtoList = mutantPage.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
-        HttpHeaders headers = createPaginationHeaders(mutantPage);
+        Page<MutantModel> mPage = mutantService.findAllMutants(pageable);
+        List<MutantDTO> dtoList = mPage.getContent().stream().map(ConvertToDTO::mutant).collect(Collectors.toList());
+        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(mPage);
 
         return ResponseEntity.ok().headers(headers).body(dtoList);
     }
@@ -59,9 +60,9 @@ public class MutantController {
             @RequestParam(defaultValue = "createdAt") String sortBy
     ) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortBy));
-        Page<MutantModel> mutantsPage = mutantService.findAllMutantsOnSchoolGrounds(pageable);
-        List<MutantDTO> dtoList = mutantsPage.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
-        HttpHeaders headers = createPaginationHeaders(mutantsPage);
+        Page<MutantModel> mPage = mutantService.findAllMutantsOnSchoolGrounds(pageable);
+        List<MutantDTO> dtoList = mPage.getContent().stream().map(ConvertToDTO::mutant).collect(Collectors.toList());
+        HttpHeaders headers = PaginationHeaders.createPaginationHeaders(mPage);
 
         return ResponseEntity.ok().headers(headers).body(dtoList);
     }
@@ -76,7 +77,7 @@ public class MutantController {
     @Transactional
     public ResponseEntity<MutantDTO> enterSchool(@PathVariable Long id, @RequestBody String password) {
         MutantModel updatedMutant = mutantService.enterSchool(id, password);
-        return ResponseEntity.ok(convertToDTO(updatedMutant));
+        return ResponseEntity.ok(ConvertToDTO.mutant(updatedMutant));
     }
 
     @PostMapping("/{id}/exit-school")
@@ -96,18 +97,5 @@ public class MutantController {
     public ResponseEntity<String> calculateEnemiesDefeated(@PathVariable Long id) {
         String response = mutantService.calculateEnemiesDefeated(id);
         return ResponseEntity.ok(response);
-    }
-
-    private MutantDTO convertToDTO(MutantModel m) {
-        return new MutantDTO(m.getId(),m.getName(),m.getPower(),m.getAge(),m.getEnemiesDefeated(),m.isOnSchoolGrounds());
-    }
-
-    private static HttpHeaders createPaginationHeaders(Page<?> page) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Total-Pages", String.valueOf(page.getTotalPages()));
-        headers.add("X-Total-Elements", String.valueOf(page.getTotalElements()));
-        headers.add("X-Current-Page", String.valueOf(page.getNumber() + 1));
-        headers.add("X-Page-Size", String.valueOf(page.getSize()));
-        return headers;
     }
 }

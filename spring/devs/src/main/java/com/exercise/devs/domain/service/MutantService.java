@@ -1,11 +1,10 @@
-package com.exercise.devs.service;
+package com.exercise.devs.domain.service;
 
+import com.exercise.devs.domain.repositories.MutantRepository;
 import com.exercise.devs.dtos.MutantDTO;
 import com.exercise.devs.exceptions.UnauthorizedException;
-import com.exercise.devs.models.MutantModel;
-import com.exercise.devs.repositories.MutantRepository;
+import com.exercise.devs.domain.models.MutantModel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
