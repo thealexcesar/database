@@ -92,7 +92,7 @@ public class MutantService {
     }
 
     private boolean authenticateMutant(String password) {
-        return ENIGMA_JAOBSOB_PASSWORD.toString().equals(password);
+        return ENIGMA_JAOBSOB_PASSWORD.equals(password);
     }
 
     private MutantModel updateSchoolEntryStatus(Long mutantId, boolean entering) {
