@@ -54,18 +54,12 @@ public class MutantControllerTest {
 
         when(mutantService.saveMutant(any(MutantDTO.class))).thenReturn(savedMutant);
 
-        String responseContent = mockMvc.perform(post("/mutants")
-                        .contentType(MediaType.APPLICATION_JSON)
+        String responseContent = mockMvc.perform(post("/mutants").contentType(MediaType.APPLICATION_JSON)
                         .content("{ \"name\": \"Mustang\", \"power\": \"Alquimia de Fogo\", \"age\": 30, \"enemiesDefeated\": 50, \"onSchoolGrounds\": false }"))
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "http://localhost/mutants/1"))
-                .andReturn().getResponse().getContentAsString();
-
+                .andExpect(status().isCreated()).andExpect(header().string("Location", "http://localhost/mutants/1")).andReturn().getResponse().getContentAsString();
         verify(mutantService).saveMutant(mutantCaptor.capture());
-        MutantDTO capturedMutant = mutantCaptor.getValue();
 
         String expectedResponse = "{\"id\":1,\"name\":\"Mustang\",\"power\":\"Alquimia de Fogo\",\"age\":30,\"enemiesDefeated\":50,\"onSchoolGrounds\":false}";
-
         assertEquals(expectedResponse, responseContent);
         System.out.println("\n\u001B[33mEsperado: " + "\u001B[0m" + expectedResponse);
         System.out.println("\u001B[32mRetorno: " + "\u001B[0m" + responseContent);
@@ -74,7 +68,6 @@ public class MutantControllerTest {
     @Test
     public void testEnterSchool_Success() throws Exception {
         LocalDateTime createdAt = LocalDateTime.now();
-
         MutantModel mutant = MutantModel.builder()
                 .id(1L)
                 .name("Mustang")
@@ -86,7 +79,6 @@ public class MutantControllerTest {
                 .build();
 
         when(mutantService.enterSchool(eq(1L), eq("glnyply"))).thenReturn(mutant);
-
         String responseContent = mockMvc.perform(post("/mutants/1/enter-school")
                         .contentType(MediaType.TEXT_PLAIN)
                         .content("glnyply"))
@@ -119,8 +111,7 @@ public class MutantControllerTest {
         when(mutantService.exitSchool(eq(1L))).thenReturn(mutant);
 
         String responseContent = mockMvc.perform(post("/mutants/1/exit-school"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
         String expectedResponse = String.format(
                 "{\"message\":\"Mutante saiu da escola com sucesso\",\"mutant\":{\"id\":1,\"name\":\"Mustang\",\"power\":\"Alquimia de Fogo\"," +
@@ -140,7 +131,6 @@ public class MutantControllerTest {
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
         String expectedResponse = "5";
-
         assertEquals(expectedResponse, responseContent);
         System.out.println("\n\u001B[33mEsperado: " + "\u001B[0m" + expectedResponse);
         System.out.println("\u001B[32mRetorno: " + "\u001B[0m" + responseContent);
@@ -167,9 +157,7 @@ public class MutantControllerTest {
                 .build();
 
         Page<MutantModel> page = new PageImpl<>(List.of(mutant1, mutant2));
-
         when(mutantService.findAllMutantsOnSchoolGrounds(any(Pageable.class))).thenReturn(page);
-
         String responseContent = mockMvc.perform(get("/mutants/onschool").param("page", "1")
                         .param("size", "2")).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
@@ -186,11 +174,9 @@ public class MutantControllerTest {
         when(mutantService.shouldEnlistInEspada(eq(1L))).thenReturn(true);
 
         String responseContent = mockMvc.perform(get("/mutants/should-enlist/1"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
         String expectedResponse = "true";
-
         assertEquals(expectedResponse, responseContent);
         System.out.println("\n\u001B[33mEsperado: " + "\u001B[0m" + expectedResponse);
         System.out.println("\u001B[32mRetorno: " + "\u001B[0m" + responseContent);
@@ -201,11 +187,9 @@ public class MutantControllerTest {
         when(mutantService.shouldEnlistInEspada(eq(1L))).thenReturn(false);
 
         String responseContent = mockMvc.perform(get("/mutants/should-enlist/1"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
         String expectedResponse = "false";
-
         assertEquals(expectedResponse, responseContent);
         System.out.println("\n\u001B[33mEsperado: " + "\u001B[0m" + expectedResponse);
         System.out.println("\u001B[32mRetorno: " + "\u001B[0m" + responseContent);
@@ -218,8 +202,7 @@ public class MutantControllerTest {
                 .thenReturn(expected);
 
         String responseContent = mockMvc.perform(get("/mutants/1/enemies-defeated"))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
         assertEquals(expected, responseContent);
         System.out.println("\n\u001B[33mEsperado: " + "\u001B[0m" + expected);
@@ -232,13 +215,10 @@ public class MutantControllerTest {
                 .thenThrow(new UnauthorizedException("Falha na autenticação."));
 
         String responseContent = mockMvc.perform(post("/mutants/1/enter-school")
-                        .contentType(MediaType.TEXT_PLAIN)
-                        .content("wrongpassword"))
-                .andExpect(status().isUnauthorized())
-                .andReturn().getResponse().getContentAsString();
+                        .contentType(MediaType.TEXT_PLAIN).content("wrongpassword"))
+                .andExpect(status().isUnauthorized()).andReturn().getResponse().getContentAsString();
 
         String expectedResponse = "Falha na autenticação.";
-
         assertEquals(expectedResponse, responseContent);
         System.out.println("\n\u001B[33mEsperado: " + "\u001B[0m" + expectedResponse);
         System.out.println("\u001B[32mRetorno: " + "\u001B[0m" + responseContent);
