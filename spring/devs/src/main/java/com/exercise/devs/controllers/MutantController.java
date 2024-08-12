@@ -77,15 +77,14 @@ public class MutantController {
     @PostMapping("/{id}/enter-school")
     @Transactional
     public ResponseEntity<MutantResponseDTO> enterSchool(@PathVariable Long id, @RequestBody String password) {
-        MutantModel updatedMutant = mutantService.enterSchool(id, password);
-        return ResponseEntity.ok(new MutantResponseDTO("Mutante entrou na escola com sucesso", updatedMutant, true));
+        MutantModel updatedMutant = mutantService.updateSchoolEntryStatus(id, true);
+        return ResponseEntity.ok(new MutantResponseDTO("Mutante entrou na escola com sucesso.", updatedMutant, true));
     }
 
     @PostMapping("/{id}/exit-school")
-    @Transactional
     public ResponseEntity<MutantResponseDTO> exitSchool(@PathVariable Long id) {
-        MutantModel updatedMutant = mutantService.exitSchool(id);
-        return ResponseEntity.ok(new MutantResponseDTO("Mutante saiu da escola com sucesso", updatedMutant, false));
+        MutantModel updatedMutant = mutantService.updateSchoolEntryStatus(id, false);
+        return ResponseEntity.ok(new MutantResponseDTO("Mutante saiu da escola com sucesso.", updatedMutant, false));
     }
 
     @GetMapping("/should-enlist/{id}")

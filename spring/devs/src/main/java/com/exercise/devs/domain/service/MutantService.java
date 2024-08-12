@@ -46,7 +46,6 @@ public class MutantService {
         return updateSchoolEntryStatus(mutantId, false);
     }
 
-
     public MutantModel saveMutant(MutantDTO mutantDTO) {
         MutantModel mutant;
         if (mutantDTO.id() == null) {
