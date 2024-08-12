@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
@@ -37,7 +40,7 @@ public class MutantService {
         return calculateAliensDefeated(mutant.getEnemiesDefeated()) > 20;
     }
 
-    public MutantModel enterSchool(Long mutantId, String password) {
+    public MutantModel enterSchool(@PathVariable Long mutantId, @RequestBody String password) {
         if (!authenticateMutant(password)) throw new UnauthorizedException("Falha na autenticação.");
         return updateSchoolEntryStatus(mutantId, true);
     }
@@ -89,10 +92,10 @@ public class MutantService {
     }
 
     private boolean authenticateMutant(String password) {
-        return ENIGMA_JAOBSOB_PASSWORD.equals(password);
+        return ENIGMA_JAOBSOB_PASSWORD.toString().equals(password);
     }
 
-    public MutantModel updateSchoolEntryStatus(Long mutantId, boolean entering) {
+    private MutantModel updateSchoolEntryStatus(Long mutantId, boolean entering) {
         MutantModel mutant = getMutantById(mutantId);
         mutant = mutant.toBuilder().onSchoolGrounds(entering).build();
         return mutantRepository.save(mutant);

@@ -4,6 +4,7 @@ import com.exercise.devs.dtos.MutantDTO;
 import com.exercise.devs.domain.models.MutantModel;
 import com.exercise.devs.domain.service.MutantService;
 import com.exercise.devs.dtos.MutantResponseDTO;
+import com.exercise.devs.exceptions.UnauthorizedException;
 import com.exercise.devs.utils.ConvertToDTO;
 import com.exercise.devs.utils.PaginationHeaders;
 import jakarta.transaction.Transactional;
@@ -43,7 +44,7 @@ public class MutantController {
     @GetMapping
     public ResponseEntity<List<MutantDTO>> listAll(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "4") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy
     ) {
         Pageable pageable = PageRequest.of(page - 1, size, Sort.by(sortBy));
@@ -77,13 +78,17 @@ public class MutantController {
     @PostMapping("/{id}/enter-school")
     @Transactional
     public ResponseEntity<MutantResponseDTO> enterSchool(@PathVariable Long id, @RequestBody String password) {
-        MutantModel updatedMutant = mutantService.updateSchoolEntryStatus(id, true);
-        return ResponseEntity.ok(new MutantResponseDTO("Mutante entrou na escola com sucesso.", updatedMutant, true));
+        try {
+            MutantModel updatedMutant = mutantService.enterSchool(id, password);
+            return ResponseEntity.ok(new MutantResponseDTO("Mutante entrou na escola com sucesso.", updatedMutant, true));
+        } catch (UnauthorizedException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MutantResponseDTO("Falha na autenticação.", null, false));
+        }
     }
 
     @PostMapping("/{id}/exit-school")
     public ResponseEntity<MutantResponseDTO> exitSchool(@PathVariable Long id) {
-        MutantModel updatedMutant = mutantService.updateSchoolEntryStatus(id, false);
+        MutantModel updatedMutant = mutantService.exitSchool(id);
         return ResponseEntity.ok(new MutantResponseDTO("Mutante saiu da escola com sucesso.", updatedMutant, false));
     }
 
