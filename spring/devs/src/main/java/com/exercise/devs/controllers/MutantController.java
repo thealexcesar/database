@@ -3,6 +3,7 @@ package com.exercise.devs.controllers;
 import com.exercise.devs.dtos.MutantDTO;
 import com.exercise.devs.domain.models.MutantModel;
 import com.exercise.devs.domain.service.MutantService;
+import com.exercise.devs.dtos.MutantResponseDTO;
 import com.exercise.devs.utils.ConvertToDTO;
 import com.exercise.devs.utils.PaginationHeaders;
 import jakarta.transaction.Transactional;
@@ -75,16 +76,16 @@ public class MutantController {
 
     @PostMapping("/{id}/enter-school")
     @Transactional
-    public ResponseEntity<MutantDTO> enterSchool(@PathVariable Long id, @RequestBody String password) {
+    public ResponseEntity<MutantResponseDTO> enterSchool(@PathVariable Long id, @RequestBody String password) {
         MutantModel updatedMutant = mutantService.enterSchool(id, password);
-        return ResponseEntity.ok(ConvertToDTO.mutant(updatedMutant));
+        return ResponseEntity.ok(new MutantResponseDTO("Mutante entrou na escola com sucesso", updatedMutant, true));
     }
 
     @PostMapping("/{id}/exit-school")
     @Transactional
-    public ResponseEntity<Void> exitSchool(@PathVariable Long id) {
-        mutantService.exitSchool(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<MutantResponseDTO> exitSchool(@PathVariable Long id) {
+        MutantModel updatedMutant = mutantService.exitSchool(id);
+        return ResponseEntity.ok(new MutantResponseDTO("Mutante saiu da escola com sucesso", updatedMutant, false));
     }
 
     @GetMapping("/should-enlist/{id}")

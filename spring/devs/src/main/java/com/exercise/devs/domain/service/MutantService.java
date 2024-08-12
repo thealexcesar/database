@@ -5,6 +5,7 @@ import com.exercise.devs.dtos.MutantDTO;
 import com.exercise.devs.exceptions.UnauthorizedException;
 import com.exercise.devs.domain.models.MutantModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class MutantService {
+
     private static final String ENIGMA_JAOBSOB_PASSWORD = "glnyply";
 
     private final MutantRepository mutantRepository;
@@ -40,21 +42,36 @@ public class MutantService {
         return updateSchoolEntryStatus(mutantId, true);
     }
 
-    public void exitSchool(Long mutantId) {
-        updateSchoolEntryStatus(mutantId, false);
+    public MutantModel exitSchool(Long mutantId) {
+        return updateSchoolEntryStatus(mutantId, false);
     }
 
+
     public MutantModel saveMutant(MutantDTO mutantDTO) {
-        MutantModel mutant = MutantModel.builder()
-                .name(mutantDTO.name())
-                .power(mutantDTO.power())
-                .age(mutantDTO.age())
-                .enemiesDefeated(mutantDTO.enemiesDefeated())
-                .onSchoolGrounds(mutantDTO.onSchoolGrounds())
-                .createdAt(LocalDateTime.now())
-                .build();
+        MutantModel mutant;
+        if (mutantDTO.id() == null) {
+            mutant = MutantModel.builder()
+                    .name(mutantDTO.name())
+                    .power(mutantDTO.power())
+                    .age(mutantDTO.age())
+                    .enemiesDefeated(mutantDTO.enemiesDefeated())
+                    .onSchoolGrounds(mutantDTO.onSchoolGrounds())
+                    .createdAt(LocalDateTime.now())
+                    .build();
+        } else {
+            MutantModel existingMutant = getMutantById(mutantDTO.id());
+            mutant = existingMutant.toBuilder()
+                    .name(mutantDTO.name())
+                    .power(mutantDTO.power())
+                    .age(mutantDTO.age())
+                    .enemiesDefeated(mutantDTO.enemiesDefeated())
+                    .onSchoolGrounds(mutantDTO.onSchoolGrounds())
+                    .createdAt(existingMutant.getCreatedAt())
+                    .build();
+        }
         return mutantRepository.save(mutant);
     }
+
 
     public String calculateEnemiesDefeated(Long mutantId) {
         MutantModel mutant = getMutantById(mutantId);
@@ -76,7 +93,7 @@ public class MutantService {
         return ENIGMA_JAOBSOB_PASSWORD.equals(password);
     }
 
-    private MutantModel updateSchoolEntryStatus(Long mutantId, boolean entering) {
+    public MutantModel updateSchoolEntryStatus(Long mutantId, boolean entering) {
         MutantModel mutant = getMutantById(mutantId);
         mutant = mutant.toBuilder().onSchoolGrounds(entering).build();
         return mutantRepository.save(mutant);
