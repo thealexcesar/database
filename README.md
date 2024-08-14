@@ -5,7 +5,7 @@ relational databases, primarily focused on PostgreSQL, with some introductory co
 
 ## Content Overview
 
-### <a href="https://github.com/thealexcesar/T-Academy/tree/main/database/sql">SQL Database</a>
+### <a href="https://github.com/thealexcesar/T-Academy/tree/main/database/SQL">SQL Database</a>
 
 - **What is a Database**
   - **Concept**: A structured collection of data stored and accessed electronically. Databases are managed by Database Management Systems (DBMS).
@@ -79,7 +79,7 @@ relational databases, primarily focused on PostgreSQL, with some introductory co
 
 ---
 
-### <a href="https://github.com/thealexcesar/T-Academy/tree/main/database/nosql">NoSQL Database</a>
+### <a href="https://github.com/thealexcesar/T-Academy/tree/main/database/NoSQL">NoSQL Database</a>
 
 This section introduces NoSQL databases, focusing on MongoDB. NoSQL databases differ from relational databases in their approach to data storage and retrieval, offering more flexibility in handling unstructured and semi-structured data.
 
