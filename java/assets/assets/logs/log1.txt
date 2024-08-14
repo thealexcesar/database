@@ -1,5 +1,0 @@
-This is a test log file with some error entries.
-This line contains an error.
-Another error is here.
-No errors in this line.
-Final error entry.
